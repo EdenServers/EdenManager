@@ -15,6 +15,7 @@ include Configuration
 require './classes/packet'
 
 EM.run do
+  Console.show 'Starting server...', 'info'
   Configuration.loadConfig
 
   EM.start_server '0.0.0.0', 12345, Packet

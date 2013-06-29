@@ -19,3 +19,4 @@ doc/
 
 .idea
 server.log
+.DS_Store

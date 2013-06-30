@@ -24,10 +24,7 @@ class Packet < EM::Connection
   #A chaque cas il faut bien sûr verifier que l'ensemble des données requises existe
   def executeOrder
     if @request[0] == $masterKey
-      case @order
 
-      end
     end
   end
-
 end

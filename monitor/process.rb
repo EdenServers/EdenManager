@@ -1,37 +1,76 @@
 module Monitoring
   class Process
-    CONFIGURABLE_ATTRIBUTES = [
-      :start_command,
-      :daemonize,
-    ]
-
-    attr_accessor :start_command, :daemonize, :name, :working_dir, :pid_file, :daemon_id
+    attr_accessor :start_command, :name, :working_dir, :pid_file, :daemon_id, :alive, :restart, :monitoring
 
     def initialize(name, start_command)
+      #default properties
       self.name=name
       self.start_command=start_command
-      start_process()
+      self.restart = true
+      self.monitoring = true
     end
 
+    #Start the program
     def start_process
-      @daemon_id = System.daemonize(start_command, {working_dir: '/Users/dernise/minecraft', pid_file: '/Users/dernise/test.pid'})
-      Console.show( "Process started, process id is : #{@daemon_id}", 'info')
+      @daemon_id = get_pid(pid_file)
       if !process_alive?
-        Console.show('Process is not working', 'error')
+        @daemon_id = System.daemonize(start_command, {working_dir: working_dir, pid_file: pid_file})
+        Console.show "Process started, its id is : #{@daemon_id}", 'info'
+      else
+        Console.show "Process is already running, its id is : #{@daemon_id}", 'info'
+      end
+      start_monitoring if monitoring
+    end
+
+    def start_monitoring
+      if @monitor.nil?
+        @monitor=$scheduler.every '5s' do
+          tick
+        end
+      else
+        if @monitor.paused?
+          @monitor.resume
+        end
       end
     end
 
-    def daemonized?
-      self.daemonize
+    #Check the status of the program and monitor it
+    def tick
+      if process_alive?
+        Console.show 'PROCESS IS ALIVE :D', 'info'
+      else
+        Console.show "Process #{@daemon_id} has been killed", 'info'
+        @monitor.pause()
+        start_process if restart
+      end
+    end
+
+    def get_pid(pid_file)
+      begin
+        file = File.open(pid_file)
+        pid = file.readline
+        Integer(pid)
+      rescue Errno::ENOENT #The file doesn't exist
+        return
+      end
     end
 
     def process_alive?
       begin
         ::Process.getpgid(@daemon_id)
+        @alive = true
         true
       rescue Errno::ESRCH
+        @alive = false
+        false
+      rescue TypeError
+        @alive = false
         false
       end
+    end
+
+    def get_name?
+      self.name
     end
   end
 end

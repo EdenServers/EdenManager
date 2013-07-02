@@ -12,7 +12,6 @@ module Monitoring
     #Start the program
     def start_process
       @daemon_id = get_pid(pid_file)
-      puts(@daemon_id)
       if !process_alive?
         @daemon_id = System.daemonize(start_command, {working_dir: working_dir, pid_file: pid_file})
         Console.show "Process started, its id is : #{@daemon_id}", 'info'
@@ -42,6 +41,11 @@ module Monitoring
         Console.show "Process #{@daemon_id} has been killed", 'info'
         @monitor.pause()
       end
+    end
+
+    #Kill the process
+    def kill
+      ::Process.kill('TERM', @daemon_id)
     end
 
     def get_pid(pid_file)

@@ -11,7 +11,6 @@ module Monitoring
         # parent
         ::Process.detach(child)
         wr.close
-        puts('log 1')
         daemon_id = rd.read.to_i
         rd.close
 
@@ -48,7 +47,6 @@ module Monitoring
         ::Process::Sys.setuid(uid_num) if uid
       end
     end
-
 
     def create_unix_user(name, password)
 

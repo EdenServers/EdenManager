@@ -1,11 +1,13 @@
+# Main class
+# Interract with packets' API
 class Packet < EM::Connection
   def receive_data data
     executeOrder if cutPacket data
   end
 
-  #Fonction de découpage des paquets
-  #Un paquet est defini comme suivant
-  # Master Key | Ordre | Data 1 | Data 2 | ...
+  # Method to decompose a packet
+  # A packet is organized like that :
+  # Master Key | Order | Data 1 | Data 2 | ...
   def cutPacket packet
     @request = packet.split("|")
     if @request[0] == "" || @request[1].nil? || @request[1] == ""
@@ -18,10 +20,7 @@ class Packet < EM::Connection
     end
   end
 
-  #Methode qui va analyser l'ordre et le transmettre aux autres classes pour effectuer les actions
-  #C'est ici qu'il faut mettre un switch géant ^^
-  #La masterkey est vérifiée ici
-  #A chaque cas il faut bien sûr verifier que l'ensemble des données requises existe
+  # Method who will analyse the order and execute it
   def executeOrder
     if @request[0] == $masterKey
 

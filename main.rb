@@ -1,4 +1,4 @@
-#Gems
+# Gems (don't forget to do a `bundle install` before running this software)
 require 'rubygems'
 
 require 'colored'
@@ -9,27 +9,20 @@ require 'rufus/scheduler'
 require 'shellwords'
 require 'yaml'
 
-#Include
+#Loader
 # Helpers
-require './helpers/console'
-require './helpers/configuration'
-require './monitor/system'
-require './monitor/process'
+Dir["./helpers/*.rb"].each {|file| require file }
 
-include Console
-include Configuration
-include Monitoring::System
+# Modules
+Dir['./modules/**/initializer.rb'].each{ |f| require f }
 
-
-#Classes
-require './classes/packet'
-
+#Main Loop
 EM.run do
   Configuration.loadConfig
   Console.show 'Starting server...', 'info'
+
   #Rufus Scheduler
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
-
 
   #Sample
    procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M /home/dernise/minecraft/craftbukkit.jar')
@@ -37,10 +30,5 @@ EM.run do
    procTest.working_dir='/home/dernise/minecraft'
    procTest.start_process
 
-  EM.start_server '0.0.0.0', 12345, Packet
+  EM.start_server '0.0.0.0', 12346, Packet
 end
-
-
-
-
-

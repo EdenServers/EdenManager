@@ -1,4 +1,8 @@
+#Console helper provides methods to interract with console
 module Console
+
+  #Print a message 
+  # 5 types of messages : info, error, success, debug or nil
   def show (msg = '', type = '')
     log = Logger.new('server.log')
     if msg == ''
@@ -25,3 +29,5 @@ module Console
     end
   end
 end
+
+include Console

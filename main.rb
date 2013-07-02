@@ -1,42 +1,36 @@
+# Gems (don't forget to do a `bundle install` before running this software)
 require 'rubygems'
+
 require 'colored'
+require 'daemons'
 require 'eventmachine'
 require 'logger'
-require 'yaml'
-require 'daemons'
-require 'shellwords'
 require 'rufus/scheduler'
+require 'shellwords'
+require 'yaml'
 
-#Include
+puts Dir.pwd
+
+#Loader
 # Helpers
-require './helpers/console'
-require './helpers/configuration'
-require './monitor/system'
-require './monitor/process'
+Dir["./helpers/*.rb"].each {|file| require file }
 
-include Console
-include Configuration
-include Monitoring::System
+# Modules
+Dir['./modules/**/initializer.rb'].each{ |f| require f }
 
-
-#Classes
-require './classes/packet'
-
+#Main Loop
 EM.run do
   Configuration.loadConfig
   Console.show 'Starting server...', 'info'
+
   #Rufus Scheduler
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
+
   #Sample
-   procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M /home/dernise/minecraft/craftbukkit.jar')
-   procTest.pid_file = '/home/dernise/test.pid'
-   procTest.working_dir='/home/dernise/minecraft'
+   procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M ' + Dir.pwd.to_s + '/repository/minecraft/bukkit/craftbukkit.jar')
+   procTest.pid_file = './trash_folder/test.pid'
+   procTest.working_dir='./trash_folder/minecraft'
    procTest.start_process
 
-  EM.start_server '0.0.0.0', 12345, Packet
+  EM.start_server '0.0.0.0', 12347, Packet
 end
-
-
-
-
-

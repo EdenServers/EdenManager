@@ -1,3 +1,4 @@
+#Configuration helper provide methods for manipulate the config file
 module Configuration
   def loadConfig
     Console.show 'Loading config...', 'info'
@@ -13,3 +14,5 @@ module Configuration
     end
   end
 end
+
+include Configuration

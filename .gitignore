@@ -19,3 +19,5 @@ doc/
 
 .idea
 server.log
+Gemfile.lock
+.DS_Store

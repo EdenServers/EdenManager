@@ -1,11 +1,13 @@
+#Gems
 require 'rubygems'
+
 require 'colored'
+require 'daemons'
 require 'eventmachine'
 require 'logger'
-require 'yaml'
-require 'daemons'
-require 'shellwords'
 require 'rufus/scheduler'
+require 'shellwords'
+require 'yaml'
 
 #Include
 # Helpers

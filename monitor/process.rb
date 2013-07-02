@@ -1,18 +1,18 @@
 module Monitoring
   class Process
-    attr_accessor :start_command, :name, :working_dir, :pid_file, :daemon_id, :alive, :restart, :monitoring
+    attr_accessor :start_command, :name, :working_dir, :pid_file, :daemon_id, :alive, :monitoring
 
     def initialize(name, start_command)
       #default properties
       self.name=name
       self.start_command=start_command
-      self.restart = true
       self.monitoring = true
     end
 
     #Start the program
     def start_process
       @daemon_id = get_pid(pid_file)
+      puts(@daemon_id)
       if !process_alive?
         @daemon_id = System.daemonize(start_command, {working_dir: working_dir, pid_file: pid_file})
         Console.show "Process started, its id is : #{@daemon_id}", 'info'
@@ -37,11 +37,10 @@ module Monitoring
     #Check the status of the program and monitor it
     def tick
       if process_alive?
-        Console.show 'PROCESS IS ALIVE :D', 'info'
+        Console.show "Process #{@daemon_id} is still alive", 'info'
       else
         Console.show "Process #{@daemon_id} has been killed", 'info'
         @monitor.pause()
-        start_process if restart
       end
     end
 

@@ -11,7 +11,7 @@ module Monitoring
         # parent
         ::Process.detach(child)
         wr.close
-
+        puts('log 1')
         daemon_id = rd.read.to_i
         rd.close
 
@@ -22,11 +22,8 @@ module Monitoring
         rd.close
         set_user(options[:utilisateur]) if !options[:utilisateur].nil?
 
-        # if we cannot write the pid file as the provided user, err out
-        #exit unless can_write_pid_file(options[:pid_file], options[:logger])
-
         to_daemonize = lambda do
-          # Setting up the
+          # Setting up the working_dir
           Dir.chdir(ENV['PWD'] = options[:working_dir].to_s) if options[:working_dir]
           #redirect_io(*options.values_at(:stdin, :stdout, :stderr))
 
@@ -40,7 +37,6 @@ module Monitoring
 
         wr.write daemon_id
         wr.close
-
         exit
       end
     end

@@ -27,8 +27,6 @@ EM.run do
   Console.show 'Starting server...', 'info'
   #Rufus Scheduler
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
-
-
   #Sample
    procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M /home/dernise/minecraft/craftbukkit.jar')
    procTest.pid_file = '/home/dernise/test.pid'

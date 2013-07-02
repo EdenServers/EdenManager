@@ -21,7 +21,7 @@ Dir['./modules/**/initializer.rb'].each{ |f| require f }
 #Main Loop
 EM.run do
   Configuration.loadConfig
-  Console.show 'Starting server...', 'info'
+  Console.show 'Starting manager...', 'info'
 
   #Rufus Scheduler
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
@@ -32,5 +32,7 @@ EM.run do
    procTest.working_dir='./trash_folder/minecraft'
    procTest.start_process
 
-  EM.start_server '0.0.0.0', 12347, Packet
+  EM.start_server '0.0.0.0', 12348, Packet
+
+  Console.show 'Manager is running !', 'success'
 end

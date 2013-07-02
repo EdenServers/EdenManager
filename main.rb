@@ -9,6 +9,8 @@ require 'rufus/scheduler'
 require 'shellwords'
 require 'yaml'
 
+puts Dir.pwd
+
 #Loader
 # Helpers
 Dir["./helpers/*.rb"].each {|file| require file }
@@ -25,10 +27,10 @@ EM.run do
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
 
   #Sample
-   procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M /home/dernise/minecraft/craftbukkit.jar')
-   procTest.pid_file = '/home/dernise/test.pid'
-   procTest.working_dir='/home/dernise/minecraft'
+   procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M ' + Dir.pwd.to_s + '/repository/minecraft/bukkit/craftbukkit.jar')
+   procTest.pid_file = './trash_folder/test.pid'
+   procTest.working_dir='./trash_folder/minecraft'
    procTest.start_process
 
-  EM.start_server '0.0.0.0', 12346, Packet
+  EM.start_server '0.0.0.0', 12347, Packet
 end

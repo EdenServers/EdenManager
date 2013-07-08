@@ -1,6 +1,6 @@
 module System
-  def create_account (name, password, home_folder, group, loggable)
-    Open3.popen3("useradd #{name} -d #{home_folder}  -m #{'-s /bin/false' if !loggable} -p $(mkpasswd -H md5 #{password})") {|stdin, stdout, stderr, wait_thr|
+  def create_account (name, password, options = {}) #Options : home_folder, group, loggable
+    Open3.popen3("useradd #{name} #{"-d #{options[:home_folder]}" if !options[:home_folder].nil?} #{"-G #{options[:group]}" if !options[:group].nil?}  -m #{'-s /bin/false' if !options[:loggable]} -p $(mkpasswd -H md5 #{password})") {|stdin, stdout, stderr, wait_thr|
       exit_status = wait_thr.value.exitstatus
       if !stderr.nil?
         stderr.readlines.each do |e|

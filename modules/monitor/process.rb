@@ -24,7 +24,7 @@ module Monitoring
     def start_monitoring
       if @monitor_timer.nil?
         @monitor = Monitor.new
-        @monitor_timer=$scheduler.every '1s' do
+        @monitor_timer=$scheduler.every '1m' do
           tick
         end
       else
@@ -39,6 +39,7 @@ module Monitoring
       if process_alive?
         Console.show "Process #{@daemon_id} is still alive", 'info'
         Console.show "Currently, the program #{@daemon_id} use #{@monitor.memory_usage(@daemon_id, true)}MB of memory and #{@monitor.cpu_usage(@daemon_id, true)}% of CPU", 'info'
+        #Todo : send an update to the api
         @monitor.reset_ps_axu
       else
         Console.show "Process #{@daemon_id} has been killed", 'info'

@@ -1,6 +1,6 @@
+#Contains system calls for the monitor
 module Monitoring
   module System
-
     def daemonize(cmd, options = {})
       rd, wr = IO.pipe
       if child = Daemonize.safefork

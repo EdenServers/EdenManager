@@ -8,8 +8,7 @@ require 'logger'
 require 'rufus/scheduler'
 require 'shellwords'
 require 'yaml'
-
-puts Dir.pwd
+require 'open3'
 
 #Loader
 # Helpers

@@ -70,7 +70,7 @@ module Monitoring
 
     def ps_axu
       store[:ps_axu] ||= begin
-                           # BSD style ps invocation
+        # BSD style ps invocation
         lines = `ps axo pid,ppid,pcpu,rss,etime`.split("\n")
 
         lines.inject(Hash.new) do |mem, line|

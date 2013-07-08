@@ -14,8 +14,11 @@ module Console
           puts "#{Time.now} [INFO] #{msg}".blue
           log.info msg
         when 'error'
-          puts "#{Time.now} [ERROR] #{msg}".red
+          STDERR.puts "#{Time.now} [ERROR] #{msg}".red
           log.error msg
+        when 'warn'
+          puts "#{Time.now} [WARNING] #{msg}".yellow
+          log.unknown msg
         when 'success'
           puts "#{Time.now} [SUCCESS] #{msg}".green
           log.unknown msg

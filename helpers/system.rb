@@ -58,5 +58,35 @@ module System
       end
     }
   end
+
+  def change_password (name, password)
+    Open3.popen3("echo \"#{password}\" | passwd --stdin #{name}") {|stdin, stdout, stderr, wait_thr|
+      exit_status = wait_thr.value.exitstatus
+      if !stderr.nil?
+        stderr.readlines.each do |e|
+          error = e.gsub("\n", '')  # we do not want new lines
+          case exit_status
+            when 0 #all is fine
+              Console.show error, 'warn'
+              true
+            when 1 # Permission denied : user invalid
+              #TODO: Report to the website the error
+              Console.show error, 'error'
+              false
+            when 5 # Passwd file busy
+              #TODO: Report to the website the error
+              Console.show error, 'error'
+              false
+            else
+              #Unknown error, should be reported on edenservers' forum
+              Console.show error, 'error'
+              false
+          end
+        end
+      else
+        true
+      end
+    }
+  end
 end
 include System

@@ -1,6 +1,7 @@
 # Gems (don't forget to do a `bundle install` before running this software)
 require 'rubygems'
 
+require 'active_record'
 require 'colored'
 require 'daemons'
 require 'eventmachine'
@@ -20,12 +21,14 @@ Dir['./modules/**/initializer.rb'].each{ |f| require f }
 
 #Main Loop
 EM.run do
-  Console.show 'Starting server...', 'info'
-  Configuration.loadConfig
   Console.show 'Starting manager...', 'info'
+  Configuration.loadConfig
+  Console.show 'Config loaded !', 'success'
 
   #Rufus Scheduler
+  Console.show 'Loading scheduler...', 'info'
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
+  Console.show 'Scheduler loaded !', 'success'
 
   #Sample
   #procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M ' + Dir.pwd.to_s + '/repository/minecraft/bukkit/craftbukkit.jar')
@@ -35,5 +38,5 @@ EM.run do
 
   EM.start_server '0.0.0.0', 12348, Packet
 
-  Console.show 'Manager is running !', 'warn'
+  Console.show 'Manager is running !', 'success'
 end

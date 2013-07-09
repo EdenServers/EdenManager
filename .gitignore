@@ -24,4 +24,4 @@ Gemfile.lock
 trash_folder/test.pid
 trash_folder/minecraft/*
 servers/*
-
+database.db

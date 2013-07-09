@@ -1,4 +1,8 @@
+#Console helper provides methods to interract with console
 module Console
+
+  #Print a message 
+  # 6 types of messages : info, error, warn, success, debug or nil
   def show (msg = '', type = '')
     log = Logger.new('server.log')
     if msg == ''
@@ -10,8 +14,11 @@ module Console
           puts "#{Time.now} [INFO] #{msg}".blue
           log.info msg
         when 'error'
-          puts "#{Time.now} [ERROR] #{msg}".red
+          STDERR.puts "#{Time.now} [ERROR] #{msg}".red
           log.error msg
+        when 'warn'
+          puts "#{Time.now} [WARNING] #{msg}".magenta
+          log.unknown msg
         when 'success'
           puts "#{Time.now} [SUCCESS] #{msg}".green
           log.unknown msg
@@ -25,3 +32,5 @@ module Console
     end
   end
 end
+
+include Console

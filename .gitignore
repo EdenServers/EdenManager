@@ -19,4 +19,9 @@ doc/
 
 .idea
 server.log
+Gemfile.lock
 .DS_Store
+trash_folder/test.pid
+trash_folder/minecraft/*
+servers/*
+

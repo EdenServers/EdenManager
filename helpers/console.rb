@@ -2,7 +2,7 @@
 module Console
 
   #Print a message 
-  # 5 types of messages : info, error, success, debug or nil
+  # 6 types of messages : info, error, warn, success, debug or nil
   def show (msg = '', type = '')
     log = Logger.new('server.log')
     if msg == ''
@@ -17,7 +17,7 @@ module Console
           STDERR.puts "#{Time.now} [ERROR] #{msg}".red
           log.error msg
         when 'warn'
-          puts "#{Time.now} [WARNING] #{msg}".yellow
+          puts "#{Time.now} [WARNING] #{msg}".magenta
           log.unknown msg
         when 'success'
           puts "#{Time.now} [SUCCESS] #{msg}".green

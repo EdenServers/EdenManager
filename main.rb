@@ -5,10 +5,11 @@ require 'colored'
 require 'daemons'
 require 'eventmachine'
 require 'logger'
+require 'open3'
 require 'rufus/scheduler'
 require 'shellwords'
 require 'yaml'
-require 'open3'
+
 
 #Loader
 # Helpers
@@ -26,12 +27,12 @@ EM.run do
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
 
   #Sample
-  procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M ' + Dir.pwd.to_s + '/repository/minecraft/bukkit/craftbukkit.jar')
-  procTest.pid_file = Dir.pwd.to_s + '/trash_folder/test.pid'
-  procTest.working_dir= Dir.pwd.to_s + '/trash_folder/minecraft'
-  procTest.start_process
+  #procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M ' + Dir.pwd.to_s + '/repository/minecraft/bukkit/craftbukkit.jar')
+  #procTest.pid_file = Dir.pwd.to_s + '/trash_folder/test.pid'
+  #procTest.working_dir= Dir.pwd.to_s + '/trash_folder/minecraft'
+  #procTest.start_process
 
   EM.start_server '0.0.0.0', 12348, Packet
 
-  Console.show 'Manager is running !', 'success'
+  Console.show 'Manager is running !', 'warn'
 end

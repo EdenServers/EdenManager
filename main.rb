@@ -7,10 +7,10 @@ require 'daemons'
 require 'eventmachine'
 require 'logger'
 require 'open3'
+require 'open-uri'
 require 'rufus/scheduler'
 require 'shellwords'
 require 'yaml'
-
 
 #Loader
 # Helpers
@@ -29,6 +29,11 @@ EM.run do
   Console.show 'Loading scheduler...', 'info'
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
   Console.show 'Scheduler loaded !', 'success'
+
+  toast = Scroll.new
+  toast.url = 'http://dl.bukkit.org/downloads/craftbukkit/get/02169_1.5.2-R1.0/craftbukkit.jar'
+  Console.show toast.download( './downloads', 'test.jar'), 'info'
+
 
   #Sample
   #procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M ' + Dir.pwd.to_s + '/repository/minecraft/bukkit/craftbukkit.jar')

@@ -88,5 +88,28 @@ module System
       end
     }
   end
+
+  def aptitude(command, arguments = nil)
+    Open3.popen3("aptitude -y #{command} #{arguments}") {|stdin, stdout, stderr, wait_thr|
+      exit_status = wait_thr.value.exitstatus
+      if !stderr.nil?
+        stderr.readlines.each do |e|
+          error = e.gsub("\n", '')  # we do not want new lines
+          case exit_status
+            when 0 #all is fine
+              Console.show error, 'warn'
+              true
+            else
+              #Unknown error, should be reported on edenservers' forum
+              Console.show error, 'error'
+              false
+          end
+        end
+      else
+        true
+      end
+    }
+  end
+
 end
 include System

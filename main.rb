@@ -30,9 +30,8 @@ EM.run do
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
   Console.show 'Scheduler loaded !', 'success'
 
-  toast = Scroll.new
-  toast.url = 'http://dl.bukkit.org/downloads/craftbukkit/get/02169_1.5.2-R1.0/craftbukkit.jar'
-  Console.show toast.download( './downloads', 'test.jar'), 'info'
+  blabla = ScrollInstaller.new('Java')
+  blabla.install
 
 
   #Sample

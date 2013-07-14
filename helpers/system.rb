@@ -106,6 +106,36 @@ module System
           end
         end
       else
+        stdout.readlines.each do |l|
+          msg = l.gsub("\n", '')
+          Console.show msg, 'log'
+        end
+        true
+      end
+    }
+  end
+
+  def gem(command, arguments = nil)
+    Open3.popen3("gem #{command} #{arguments}") {|stdin, stdout, stderr, wait_thr|
+      exit_status = wait_thr.value.exitstatus
+      if !stderr.nil?
+        stderr.readlines.each do |e|
+          error = e.gsub("\n", '')  # we do not want new lines
+          case exit_status
+            when 0 #all is fine
+              Console.show error, 'warn'
+              true
+            else
+              #Unknown error, should be reported on edenservers' forum
+              Console.show error, 'error'
+              false
+          end
+        end
+      else
+        stdout.readlines.each do |l|
+          msg = l.gsub("\n", '')
+          Console.show msg, 'log'
+        end
         true
       end
     }

@@ -30,7 +30,7 @@ EM.run do
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
   Console.show 'Scheduler loaded !', 'success'
 
-  blabla = ScrollInstaller.new('Java')
+  blabla = ScrollInstaller.new('Bukkit')
   blabla.install
 
 

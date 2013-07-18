@@ -1,5 +1,5 @@
 class Scroll
-  attr_accessor :name, :homepage, :author, :url, :version, :dependable
+  attr_accessor :name, :homepage, :author, :url, :version, :options, :install_folder ,:dependable
 
   def initialize
     Console.show "Installing scroll #{self.name} v#{self.version}  made by #{self.author} <#{self.homepage}>",'info'
@@ -21,6 +21,7 @@ class Scroll
 
   #Copy a file to destination
   def copy(destination, file, folder = './downloads')
+    FileUtils.mkdir_p(File.dirname(destination))
     FileUtils.cp_r("#{folder}/#{file}", destination)
   end
 
@@ -59,6 +60,11 @@ class Scroll
   #install all dependencies
   def install_dependencies
     @dependencies.install_dependencies
+  end
+
+  #We want to know if the scroll is installed
+  def is_installed?
+
   end
 
   #This function is called to set the dependencies

@@ -31,9 +31,8 @@ EM.run do
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
   Console.show 'Scheduler loaded !', 'success'
 
-  blabla = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise'})
-  blabla.install
-
+  SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
+  SampleScroll.install
 
   #Sample
   #procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M ' + Dir.pwd.to_s + '/repository/minecraft/bukkit/craftbukkit.jar')

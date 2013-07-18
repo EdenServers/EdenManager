@@ -31,9 +31,9 @@ class ScrollInstaller
   def install_dependency
     scroll = get_scroll.new
     begin
-      status = scroll.install_dependencies
-      if scroll.dependable
-        scroll.install unless status
+      scroll.install_dependencies
+      unless scroll.dependable
+        scroll.install
       end
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'

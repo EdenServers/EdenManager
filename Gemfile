@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'activerecord'
 gem 'colored'
@@ -7,3 +7,4 @@ gem 'eventmachine'
 gem 'logger'
 gem 'rufus-scheduler'
 gem 'sqlite3'
+gem 'rubyzip'

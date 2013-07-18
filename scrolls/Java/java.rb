@@ -7,7 +7,7 @@ class Java < Scroll
     super
   end
 
-  def install
+  def install(options = {})
     System.aptitude('update')
     System.aptitude('install', 'openjdk-7-jre')
   end

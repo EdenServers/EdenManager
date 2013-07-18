@@ -8,6 +8,7 @@ require 'eventmachine'
 require 'logger'
 require 'open3'
 require 'open-uri'
+require 'zip/zip'
 require 'rufus/scheduler'
 require 'shellwords'
 require 'yaml'
@@ -30,7 +31,7 @@ EM.run do
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
   Console.show 'Scheduler loaded !', 'success'
 
-  blabla = ScrollInstaller.new('Bukkit')
+  blabla = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise'})
   blabla.install
 
 

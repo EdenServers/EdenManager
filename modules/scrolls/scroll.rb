@@ -1,12 +1,10 @@
 class Scroll
-  attr_accessor :name, :homepage, :author, :url, :version
-
+  attr_accessor :name, :homepage, :author, :url, :version, :dependable
 
   def initialize
     Console.show "Installing scroll #{self.name} v#{self.version}  made by #{self.author} <#{self.homepage}>",'info'
     @dependencies=Dependencies.new
     set_dependencies
-
   end
 
   #add a dependency
@@ -19,6 +17,11 @@ class Scroll
     open('/etc/apt/sources.list', 'a') { |f|
       f.puts source
     }
+  end
+
+  #Copy a file to destination
+  def copy(destination, file, folder = './downloads')
+    FileUtils.cp_r("#{folder}/#{file}", destination)
   end
 
   #Download a file
@@ -37,13 +40,25 @@ class Scroll
     end
   end
 
+  #Extract a file
+  def extract(type, filename, destination, folder = './downloads/')
+    case type
+      when 'zip' #TODO: Make more archive types compatiblec
+        Zip::ZipFile.open("./#{folder}/#{filename}") { |zip_file|
+          zip_file.each { |f|
+            f_path=File.join(destination, f.name)
+            FileUtils.mkdir_p(File.dirname(f_path))
+            zip_file.extract(f, f_path) unless File.exist?(f_path)
+          }
+        }
+      else
+        Console.show 'No type is specified or the type is not supported/wrong', 'error'
+    end
+  end
+
   #install all dependencies
   def install_dependencies
     @dependencies.install_dependencies
-  end
-
-  def install_gem(gem)
-    System.gem
   end
 
   #This function is called to set the dependencies

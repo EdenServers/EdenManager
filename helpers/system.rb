@@ -92,7 +92,6 @@ module System
   def aptitude(command, arguments = nil)
     Open3.popen3("aptitude -y #{command} #{arguments}") {|stdin, stdout, stderr, wait_thr|
       exit_status = wait_thr.value.exitstatus
-      if !stderr.nil?
         stderr.readlines.each do |e|
           error = e.gsub("\n", '')  # we do not want new lines
           case exit_status
@@ -102,16 +101,14 @@ module System
             else
               #Unknown error, should be reported on edenservers' forum
               Console.show error, 'error'
-              false
-          end
+              return false
         end
-      else
-        stdout.readlines.each do |l|
+      end
+      stdout.readlines.each do |l|
           msg = l.gsub("\n", '')
           Console.show msg, 'log'
-        end
-        true
       end
+      true
     }
   end
 

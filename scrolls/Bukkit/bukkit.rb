@@ -3,6 +3,7 @@ class Bukkit < Scroll
     self.name = 'Bukkit'
     self.author = 'Dernise'
     self.version = '2788'
+    self.dependable = false
     self.homepage = 'http://wwww.edenservers.fr'
     self.url = 'http://dl.bukkit.org/downloads/craftbukkit/get/02169_1.5.2-R1.0/craftbukkit.jar'
     super
@@ -12,9 +13,10 @@ class Bukkit < Scroll
     add_dep('Java')
   end
 
-  def install
+  def install(options = {})
     download('craftbukkit.jar')
-
+    copy("/home/#{options[:user]}/#{options[:folder]}", 'craftbukkit.jar')
+    copy("/home/#{options[:user]}/#{options[:folder]}", 'server.properties', './scrolls/Bukkit')
     System.gem('install','java_properties')
   end
 end

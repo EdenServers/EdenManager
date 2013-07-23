@@ -17,11 +17,5 @@ class Bukkit < Scroll
     download('craftbukkit.jar')
     copy("/home/#{options[:user]}/#{options[:folder]}/craftbukkit.jar", 'craftbukkit.jar')
     copy("/home/#{options[:user]}/#{options[:folder]}/server.properties", 'server.properties', './scrolls/Bukkit')
-    System.gem('install','java_properties')
-    require 'java_properties'
-    props = JavaProperties::Properties.new("/home/#{options[:user]}/#{options[:folder]}/server.properties")
-    props.each do |key,value|
-      puts "#{key} = #{value}"
-    end
   end
 end

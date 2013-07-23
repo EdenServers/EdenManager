@@ -25,6 +25,8 @@ module Console
         when 'debug'
           puts "#{Time.now} [DEBUG] #{msg}".yellow
           log.debug msg
+        when 'log'
+          log.debug msg
         else
           puts "#{Time.now} #{msg}"
           log.unknown msg

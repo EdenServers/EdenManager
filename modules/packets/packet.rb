@@ -23,7 +23,14 @@ class Packet < EM::Connection
   # Method who will analyse the order and execute it
   def executeOrder
     if @request[0] == $masterKey
-
+      case @order
+        ### GENERAL ###
+        when "getStatus"
+          #Interroger la BDD
+          #Trouver le serveur et les infos
+          #Renvoyer les infos
+          self.send_data({ram: 25, cpu: 35}.to_json)
+      end
     end
   end
 end

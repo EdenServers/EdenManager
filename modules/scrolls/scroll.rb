@@ -3,6 +3,7 @@ class Scroll
 
   def initialize
     Console.show "Installing scroll #{self.name} v#{self.version}  made by #{self.author} <#{self.homepage}>",'info'
+    self.dependable = true unless self.dependable
     @dependencies=Dependencies.new
     set_dependencies
   end

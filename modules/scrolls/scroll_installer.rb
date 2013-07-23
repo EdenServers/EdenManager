@@ -32,9 +32,7 @@ class ScrollInstaller
     scroll = get_scroll.new
     begin
       scroll.install_dependencies
-      unless scroll.dependable
-        scroll.install
-      end
+      scroll.install
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
       raise InvalidScrollError

@@ -89,8 +89,8 @@ module System
     }
   end
 
-  def aptitude(command, arguments = nil)
-    Open3.popen3("aptitude -y #{command} #{arguments}") {|stdin, stdout, stderr, wait_thr|
+  def apt_get(command, arguments = nil)
+    Open3.popen3("apt-get -y #{command} #{arguments}") {|stdin, stdout, stderr, wait_thr|
       exit_status = wait_thr.value.exitstatus
         stderr.readlines.each do |e|
           error = e.gsub("\n", '')  # we do not want new lines

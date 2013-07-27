@@ -31,7 +31,7 @@ EM.run do
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
   Console.show 'Scheduler loaded !', 'success'
 
-  #SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
+  #SampleScroll = ScrollInstaller.new('bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
   #SampleScroll.install
 
   #Sample

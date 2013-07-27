@@ -2,10 +2,14 @@ class Scroll
   attr_accessor :name, :homepage, :author, :url, :version, :options, :install_folder ,:dependable
 
   def initialize
-    Console.show "Installing scroll #{self.name} v#{self.version}  made by #{self.author} <#{self.homepage}>",'info'
-    self.dependable = true unless self.dependable
-    @dependencies=Dependencies.new
-    set_dependencies
+    unless is_installed?
+      Console.show "Installing scroll #{self.name} v#{self.version}  made by #{self.author} <#{self.homepage}>",'info'
+      self.dependable = true unless self.dependable
+      @dependencies=Dependencies.new
+      set_dependencies
+    else
+      raise AlreadyInstalledError
+    end
   end
 
   #add a dependency
@@ -65,7 +69,17 @@ class Scroll
 
   #We want to know if the scroll is installed
   def is_installed?
+    Server.all.each do |server|
+      puts server.service.to_s
+      if server.service == self.name
+        return true
+      end
+    end
+    false
+  end
 
+  def register(home, start_command)
+    Server.create({:service => self.name, :folderName => home, :startCommand => start_command})
   end
 
   #This function is called to set the dependencies

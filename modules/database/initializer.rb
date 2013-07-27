@@ -12,6 +12,7 @@ unless ActiveRecord::Base.connection.table_exists? 'servers'
     create_table :servers do |t|
       t.integer :idServer
       t.string  :folderName
+      t.string :startCommand
       t.string :service
     end
   end

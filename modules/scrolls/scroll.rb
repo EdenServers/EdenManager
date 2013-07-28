@@ -32,6 +32,10 @@ class Scroll
 
   #Download a file
   def download(filename, folder= './downloads')
+    unless File.exist?(folder)
+      Console.show "Creating folder #{folder}"
+      FileUtils.mkdir_p(File.dirname(folder))
+    end
     if self.url.nil?
       Console.show 'Download request is nil or name is nil', 'error'
     else

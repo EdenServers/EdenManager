@@ -24,6 +24,8 @@ class ScrollInstaller
       scroll.install(@options)
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
+    rescue AlreadyInstalledError
+      Console.show "#{@scroll} is already installed", 'info'
     end
   end
 
@@ -34,6 +36,8 @@ class ScrollInstaller
       scroll.install
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
+    rescue AlreadyInstalledError
+      Console.show "Dependency #{@scroll} is already installed", 'info'
     end
   end
 end

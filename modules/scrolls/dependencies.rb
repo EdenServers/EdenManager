@@ -23,7 +23,7 @@ class Dependencies
         installer.install_dependency
       rescue
         #TODO : Report it on the panel
-        Console.error "Could not install dependency #{dep}", 'error'
+        Console.show "Could not install dependency #{dep}", 'error'
         raise InstallScrollError
       end
     end

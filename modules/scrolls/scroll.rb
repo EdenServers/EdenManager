@@ -32,7 +32,7 @@ class Scroll
 
   #Download a file
   def download(filename, folder= './downloads')
-    unless File.exist?(folder)
+    unless File.directory?(folder)
       Console.show "Creating folder #{folder}"
       FileUtils.mkdir_p(File.dirname(folder))
     end

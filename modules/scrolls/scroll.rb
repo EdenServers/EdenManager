@@ -69,9 +69,8 @@ class Scroll
 
   #We want to know if the scroll is installed
   def is_installed?
-    Server.all.each do |server|
-      puts server.service.to_s
-      if server.service == self.name
+    $db.services.each do |service|
+      if service[:serviceName] == self.name
         return true
       end
     end
@@ -79,7 +78,7 @@ class Scroll
   end
 
   def register(home, start_command)
-    Server.create({:service => self.name, :folderName => home, :startCommand => start_command})
+    $db.services.insert(:serviceName => self.name, :folderName => home, :startCommand => start_command)
   end
 
   #This function is called to set the dependencies

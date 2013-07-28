@@ -1,4 +1,3 @@
-require "sequel"
 require_relative './database'
 
 Console.show 'Loading database...', 'info'

@@ -29,7 +29,7 @@ class Packet < EM::Connection
           #Interroger la BDD
           #Trouver le serveur et les infos
           #Renvoyer les infos
-          self.send_data({ram: 25, cpu: 35}.to_json)
+          send_data({ram: 25, cpu: 35}.to_json)
       end
     end
   end

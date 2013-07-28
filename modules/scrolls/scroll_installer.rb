@@ -24,7 +24,6 @@ class ScrollInstaller
       scroll.install(@options)
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
-      raise InvalidScrollError
     end
   end
 
@@ -35,7 +34,6 @@ class ScrollInstaller
       scroll.install
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
-      raise InvalidScrollError
     end
   end
 end

@@ -1,7 +1,6 @@
 # Gems (don't forget to do a `bundle install` before running this software)
 require 'rubygems'
 
-require 'active_record'
 require 'colored'
 require 'daemons'
 require 'eventmachine'

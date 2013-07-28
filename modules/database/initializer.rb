@@ -1,22 +1,18 @@
+require "sequel"
+
 Console.show 'Loading database...', 'info'
-ActiveRecord::Base.establish_connection(
-    :adapter => 'sqlite3',
-    :database => 'database.db'
-)
 
-require_relative 'servers'
+$db = Sequel.connect('sqlite://database.db')
 
-unless ActiveRecord::Base.connection.table_exists? 'servers'
+unless $db.table_exists?(:servers)
   Console.show 'Creating database...', 'info'
-  ActiveRecord::Migration.class_eval do
-    create_table :servers do |t|
-      t.integer :idServer
-      t.string  :folderName
-      t.string :startCommand
-      t.string :service
-    end
+  $db.create_table :servers do
+    primary_key :id
+    Integer :idServer
+    String :folderName
+    String :startCommand
+    String :service
   end
-  Console.show 'Database created !', 'success'
 end
 
 Console.show 'Database loaded !', 'success'

@@ -1,10 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'activerecord'
 gem 'colored'
 gem 'daemons'
 gem 'eventmachine'
 gem 'logger'
 gem 'rufus-scheduler'
+gem 'sequel'
 gem 'sqlite3'
 gem 'rubyzip'

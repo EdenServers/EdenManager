@@ -31,6 +31,8 @@ class Packet < EM::Connection
           #Renvoyer les infos
           send_data('{"ram": "25", "cpu": "33"}') #Format data to a json string
           send_data("\n") #Do not forget this shit !
+        else
+          close_connection
       end
     end
   end

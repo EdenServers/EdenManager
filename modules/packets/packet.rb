@@ -29,7 +29,8 @@ class Packet < EM::Connection
           #Interroger la BDD
           #Trouver le serveur et les infos
           #Renvoyer les infos
-          send_data('{"ram": "25", "cpu": "33"}') #Format data to a json string
+
+          send_data('{"ram": ' + Random.rand(1024).to_s + ', "cpu": ' + Random.rand(100).to_s + '}') #Format data to a json string
           send_data("\n") #Do not forget this shit !
         else
           close_connection

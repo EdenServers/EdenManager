@@ -94,7 +94,7 @@ module System
     Open3.popen3("apt-get -y #{command} #{arguments}") {|stdin, stdout, stderr, wait_thr|
       exit_status = wait_thr.value.exitstatus
         stderr.readlines.each do |e|
-          error = e.gsub("\n", '')  # we do not want new lines
+          error = e.encode('UTF-8').gsub("\n", '')  # we do not want new lines
           case exit_status
             when 0 #all is fine
               Console.show error, 'warn'
@@ -106,7 +106,7 @@ module System
         end
       end
       stdout.readlines.each do |l|
-          msg = l.gsub("\n", '')
+          msg = l.encode('UTF-8').gsub("\n", '')
           Console.show msg, 'log'
       end
       true

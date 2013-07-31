@@ -1,7 +1,8 @@
 class Scroll
   attr_accessor :name, :homepage, :author, :url, :version, :options, :install_folder ,:dependable
 
-  def initialize
+  def initialize(options = {})
+    @options = options
     unless is_installed?
       Console.show "Installing scroll #{self.name} v#{self.version}  made by #{self.author} <#{self.homepage}>",'info'
       self.dependable = true unless self.dependable
@@ -81,8 +82,18 @@ class Scroll
     false
   end
 
+  #This function register the installed scroll in database
   def register(home, start_command)
-    $db.services.insert(:serviceName => self.name, :folderName => home, :startCommand => start_command)
+    pid_file = generate_pid_file
+    $db.services.insert(:serviceName => self.name, :folderName => home, :startCommand => start_command, :pidFile => pid_file)
+  end
+
+  def generate_pid_file
+    pid_file = "#{rand(90000-10000) + 10000}.pid"
+    while File.exist?"./pid/#{pid_file}"
+      pid_file = generate_pid_file
+    end
+    pid_file
   end
 
   #This function is called to set the dependencies

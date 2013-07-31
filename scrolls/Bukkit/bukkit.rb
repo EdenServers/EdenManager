@@ -1,5 +1,5 @@
 class Bukkit < Scroll
-  def initialize
+  def initialize(options = {})
     self.name = 'Bukkit'
     self.author = 'Dernise'
     self.version = '2788'
@@ -13,10 +13,10 @@ class Bukkit < Scroll
     add_dep('Java')
   end
 
-  def install(options = {})
+  def install
     download('craftbukkit.jar')
-    copy("/home/#{options[:user]}/#{options[:folder]}/craftbukkit.jar", 'craftbukkit.jar')
-    copy("/home/#{options[:user]}/#{options[:folder]}/server.properties", 'server.properties', './scrolls/Bukkit')
-    register("/home/#{options[:user]}/#{options[:folder]}", 'java -jar craftbukkit.jar')
+    copy("/Users/#{@options[:user]}/#{@options[:folder]}/craftbukkit.jar", 'craftbukkit.jar')
+    copy("/Users/#{@options[:user]}/#{@options[:folder]}/server.properties", 'server.properties', './scrolls/Bukkit')
+    register("/Users/#{@options[:user]}/#{@options[:folder]}", 'java -jar craftbukkit.jar')
   end
 end

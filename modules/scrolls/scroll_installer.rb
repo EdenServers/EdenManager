@@ -18,10 +18,10 @@ class ScrollInstaller
   end
 
   def install
-    scroll = get_scroll.new
     begin
+      scroll = get_scroll.new(@options)
       scroll.install_dependencies
-      scroll.install(@options)
+      scroll.install
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
     rescue AlreadyInstalledError
@@ -30,14 +30,16 @@ class ScrollInstaller
   end
 
   def install_dependency
-    scroll = get_scroll.new
     begin
-      scroll.install_dependencies
-      scroll.install
-    rescue NoMethodError
-      Console.show 'The scroll is invalid, a method is missing.', 'error'
+      scroll = get_scroll.new(dependency: true)
+      if scroll.dependable
+        scroll.install_dependencies
+        scroll.install
+      end
     rescue AlreadyInstalledError
       Console.show "Dependency #{@scroll} is already installed", 'info'
+    rescue NoMethodError
+      Console.show 'The scroll is invalid, a method is missing.', 'error'
     end
   end
 end

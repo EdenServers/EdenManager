@@ -17,15 +17,9 @@ class Dependencies
 
   def install_dependencies
     @deps.each do |dep|
-      begin
-        Console.show "Installing dependency : #{dep}", 'info'
-        installer = ScrollInstaller.new(dep)
-        installer.install_dependency
-      rescue
-        #TODO : Report it on the panel
-        Console.show "Could not install dependency #{dep}", 'error'
-        raise InstallScrollError
-      end
+      Console.show "Installing dependency : #{dep}", 'info'
+      installer = ScrollInstaller.new(dep)
+      installer.install_dependency
     end
   end
 end

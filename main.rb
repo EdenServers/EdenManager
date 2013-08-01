@@ -35,11 +35,8 @@ EM.run do
   #SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
   #SampleScroll.install
 
-  #Sample
-  #procTest = Monitoring::Process.new('Minecraft', 'java -jar -Xmx380M -Xms380M ' + Dir.pwd.to_s + 'craftbukkit.jar')
-  #procTest.pid_file = Dir.pwd.to_s + '/trash_folder/test.pid'
-  #procTest.working_dir= Dir.pwd.to_s + '/trash_folder/minecraft'
-  #procTest.start_process
+  serviceManager = ServiceManager.new()
+  serviceManager.start_service('Bukkit')
 
   EM.start_server '0.0.0.0', 12348, Packet
 

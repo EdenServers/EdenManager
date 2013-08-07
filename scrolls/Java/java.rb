@@ -9,8 +9,8 @@ class Java < Scroll
   end
 
   def install
-    System.apt_get('update')
-    System.apt_get('install', 'openjdk-7-jre')
-    register('/usr/bin', 'java -version')
+    #System.apt_get('update')
+    #System.apt_get('install', 'openjdk-7-jre')
+    register('java -version', '/usr/bin/java')
   end
 end

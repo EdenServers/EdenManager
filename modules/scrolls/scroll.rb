@@ -1,11 +1,13 @@
 class Scroll
-  attr_accessor :name, :homepage, :author, :url, :version, :options, :install_folder ,:dependable
+  attr_accessor :name, :homepage, :author, :url, :version, :options, :install_folder, :pid_file ,:dependable
 
   def initialize(options = {})
     @options = options
     unless is_installed?
       Console.show "Installing scroll #{self.name} v#{self.version}  made by #{self.author} <#{self.homepage}>",'info'
       self.dependable = true unless self.dependable
+      self.install_folder=generate_install_folder
+      self.pid_file=generate_pid_file
       @dependencies=Dependencies.new
       set_dependencies
     else
@@ -27,8 +29,8 @@ class Scroll
 
   #Copy a file to destination
   def copy(destination, file, folder = './downloads')
-    FileUtils.mkdir_p(File.dirname(destination))
-    FileUtils.cp_r("#{folder}/#{file}", destination)
+    FileUtils.mkdir_p(File.dirname("#{destination}/#{file}"))
+    FileUtils.cp_r("#{folder}/#{file}", "#{destination}/#{file}")
   end
 
   #Download a file
@@ -67,13 +69,22 @@ class Scroll
     end
   end
 
-  #Generate the name of the pid file
+  #Randomly generate the name of the pid file
   def generate_pid_file
-    pid_file = "#{rand(90000-10000) + 10000}.pid"
-    while File.exist?"./pid/#{pid_file}"
+    pid_file = "./pid/#{rand(90000-10000) + 10000}.pid"
+    while File.exist? pid_file
       pid_file = generate_pid_file
     end
     pid_file
+  end
+
+  #Randomly generate the install folder
+  def generate_install_folder
+    folder = "./EdenApps/#{SecureRandom.hex(6)}"
+    while File.exist? folder
+      folder = generate_pid_file
+    end
+    folder
   end
 
   #install all dependencies
@@ -92,9 +103,8 @@ class Scroll
   end
 
   #This function register the installed scroll in database
-  def register(home, start_command)
-    pid_file = "./pid/#{generate_pid_file}"
-    $db.services.insert(:serviceName => self.name, :folderName => home, :startCommand => start_command, :pidFile => pid_file)
+  def register(start_command, home = self.install_folder)
+    $db.services.insert(:serviceName => self.name, :serviceType => self.name, :folderName => home, :startCommand => start_command, :pidFile => self.pid_file)
   end
 
   #This function is called to set the dependencies

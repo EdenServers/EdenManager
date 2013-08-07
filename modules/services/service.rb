@@ -1,27 +1,31 @@
 module Monitoring
   class Service
-    attr_accessor :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage
+    attr_accessor :id, :type, :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage
 
-    def initialize(name)
-      #default properties
-      self.name=name
-      self.monitoring = true
-      self.cpu_usage=0
-      self.ram_usage=0
+    def initialize(id)
+      if @service = is_service_installed?(id)
+        #default properties
+        self.id=id
+        self.monitoring = true
+        self.cpu_usage=0
+        self.ram_usage=0
+        self.name=@service[:serviceName]
+        self.type=@service[:serviceType]
+      else
+        raise ScrollNotInstalledError
+      end
     end
 
     #Start the program
     def start_service
-      if service = is_service_installed?
-        @daemon_id = get_pid(service[:pidFile])
-        if !process_alive?
-          @daemon_id = System.daemonize(service[:startCommand], {working_dir: service[:folderName], pid_file: service[:pidFile]})
-          Console.show "Process started, its id is : #{@daemon_id}", 'info'
-        else
-          Console.show "Process is already running, its id is : #{@daemon_id}", 'info'
-        end
-        start_monitoring if monitoring
+      @daemon_id = get_pid(@service[:pidFile])
+      if !process_alive?
+        @daemon_id = System.daemonize(@service[:startCommand], {working_dir: @service[:folderName], pid_file: @service[:pidFile]})
+        Console.show "Process started, its id is : #{@daemon_id}", 'info'
+      else
+        Console.show "Process is already running, its id is : #{@daemon_id}", 'info'
       end
+      start_monitoring if monitoring
     end
 
     def start_monitoring
@@ -80,9 +84,9 @@ module Monitoring
       end
     end
 
-    def is_service_installed?
+    def is_service_installed?(id)
       $db.services.each do |service|
-        if service[:serviceName] == self.name
+        if service[:id] == id
           return service
         end
       end

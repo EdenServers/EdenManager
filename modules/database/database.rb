@@ -11,6 +11,7 @@ class Database
         String :folderName
         String :startCommand
         String :serviceName
+        String :serviceType
         String :pidFile
       end
     end

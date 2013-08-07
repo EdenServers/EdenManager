@@ -15,8 +15,8 @@ class Bukkit < Scroll
 
   def install
     download('craftbukkit.jar')
-    copy("/home/#{@options[:user]}/#{@options[:folder]}/craftbukkit.jar", 'craftbukkit.jar')
-    copy("/home/#{@options[:user]}/#{@options[:folder]}/server.properties", 'server.properties', './scrolls/Bukkit')
-    register("/home/#{@options[:user]}/#{@options[:folder]}", 'java -jar craftbukkit.jar')
+    copy(self.install_folder, 'craftbukkit.jar')
+    copy(self.install_folder, 'server.properties', './scrolls/Bukkit')
+    register('java -jar craftbukkit.jar')
   end
 end

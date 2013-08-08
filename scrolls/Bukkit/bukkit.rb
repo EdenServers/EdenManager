@@ -17,6 +17,6 @@ class Bukkit < Scroll
     download('craftbukkit.jar')
     copy(self.install_folder, 'craftbukkit.jar')
     copy(self.install_folder, 'server.properties', './scrolls/Bukkit')
-    register('java -jar craftbukkit.jar')
+    register('java -jar -Xms1024M -Xmx1024M craftbukkit.jar')
   end
 end

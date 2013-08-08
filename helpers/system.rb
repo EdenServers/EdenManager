@@ -105,10 +105,6 @@ module System
               return false
         end
       end
-      stdout.readlines.each do |l|
-          msg = l.encode('UTF-8').gsub("\n", '')
-          Console.show msg, 'log'
-      end
       true
     }
   end

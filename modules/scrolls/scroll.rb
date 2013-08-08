@@ -71,6 +71,11 @@ class Scroll
 
   #Randomly generate the name of the pid file
   def generate_pid_file
+    folder='./pid'
+    unless File.exist?(folder)
+      Console.show "Creating folder #{folder}", 'info'
+      FileUtils.mkdir_p(folder)
+    end
     pid_file = "./pid/#{rand(90000-10000) + 10000}.pid"
     while File.exist? pid_file
       pid_file = generate_pid_file
@@ -80,11 +85,16 @@ class Scroll
 
   #Randomly generate the install folder
   def generate_install_folder
-    folder = "./EdenApps/#{SecureRandom.hex(6)}"
-    while File.exist? folder
-      folder = generate_pid_file
+    folder='./EdenApps'
+    unless File.exist?(folder)
+      Console.show "Creating folder #{folder}", 'info'
+      FileUtils.mkdir_p(folder)
     end
-    folder
+    installFolder = "./EdenApps/#{SecureRandom.hex(6)}"
+    while File.exist? installFolder
+      installFolder = generate_pid_file
+    end
+    installFolder
   end
 
   #install all dependencies

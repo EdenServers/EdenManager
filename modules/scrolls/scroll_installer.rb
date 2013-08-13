@@ -42,4 +42,16 @@ class ScrollInstaller
       Console.show 'The scroll is invalid, a method is missing.', 'error'
     end
   end
+
+  def update(service)
+    begin
+      scroll = get_scroll.new
+      scroll.update(service)
+    rescue AlreadyInstalledError
+      Console.show "Dependency #{@scroll} is already installed", 'info'
+    rescue NoMethodError
+      Console.show 'The scroll is invalid, a method is missing.', 'error'
+    end
+
+  end
 end

@@ -1,6 +1,6 @@
-module Monitoring
+module ServiceSystem
   class Service
-    attr_accessor :id, :type, :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage
+    attr_accessor :id, :type, :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage, :stdin, :stdout, :stderr
 
     def initialize(id)
       if @service = is_service_installed?(id)
@@ -18,9 +18,9 @@ module Monitoring
 
     #Start the program
     def start_service
-      @daemon_id = get_pid(@service[:pidFile])
+      puts @daemon_id = get_pid(@service[:pidFile])
       if !process_alive?
-        @daemon_id = System.daemonize(@service[:startCommand], {working_dir: @service[:folderName], pid_file: @service[:pidFile]})
+        @daemon_id = System.daemonize(@service[:startCommand], start_options)
         Console.show "Process started, its id is : #{@daemon_id}", 'info'
       else
         Console.show "Process is already running, its id is : #{@daemon_id}", 'info'
@@ -51,6 +51,7 @@ module Monitoring
         @monitor.reset_ps_axu
       else
         Console.show "Process #{@daemon_id} has been killed", 'info'
+        ServiceManager.remove_service(self.id)
         @monitor_timer.pause()
       end
     end
@@ -82,6 +83,16 @@ module Monitoring
         @alive = false
         false
       end
+    end
+
+    def start_options
+      {
+          working_dir: @service[:folderName],
+          pid_file: @service[:pidFile],
+          stdout: self.stdout,
+          stdin: self.stdin,
+          stderr: self.stderr
+      }
     end
 
     def is_service_installed?(id)

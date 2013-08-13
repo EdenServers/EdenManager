@@ -1,4 +1,4 @@
-# Gems (don't forget to do a `bundle install` before running this software)
+ # Gems (don't forget to do a `bundle install` before running this software)
 require 'rubygems'
 
 require 'colored'
@@ -32,11 +32,16 @@ EM.run do
   $scheduler = Rufus::Scheduler::EmScheduler.start_new
   Console.show 'Scheduler loaded !', 'success'
 
-  SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
-  SampleScroll.install
+  Console.show 'Loading managers...', 'info'
+  ServiceManager.init
+  Console.show 'Managers loaded', 'info'
 
-  ServiceManage = ServiceManager.new()
-  ServiceManage.start_service(2)
+  #SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
+  #SampleScroll.install
+
+  ServiceManager.start_service(2)
+  #ServiceManager.start_service(3)
+  #ServiceManager.start_service(4)
 
   EM.start_server '0.0.0.0', 12348, Packet
 

@@ -1,5 +1,5 @@
-class ServiceManager
-  def initialize
+module ServiceManager
+  def init
     @services = Array.new
   end
 
@@ -31,7 +31,7 @@ class ServiceManager
   def start_service(serviceId)
     unless service_started?(serviceId)
       Thread.new {
-        service = Monitoring::Service.new(serviceId)
+        service = ServiceSystem::Service.new(serviceId)
         service.start_service
         @services << service
       }
@@ -39,11 +39,29 @@ class ServiceManager
   end
 
   def service_started? (service)
-    @services.each do |s|
+     @services.each do |s|
       if s.id == service
         return true
       end
     end
     false
   end
+
+  def remove_service(service)
+    @services.each do |s|
+      if s.id == service
+        @services.delete(s)
+      end
+    end
+  end
+
+  def update(serviceId)
+    $db.services.each do |service|
+      if service[:id] == serviceId
+        updater = ScrollInstaller.new(service[:serviceType])
+        updater.update(service)
+      end
+    end
+  end
 end
+include ServiceManager

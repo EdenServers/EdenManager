@@ -1,6 +1,6 @@
 # The monitoring methods are from Bluepill ( https://github.com/arya/bluepill )
 
-module Monitoring
+module ServiceSystem
   class Monitor
 
     # The position of each field in ps output

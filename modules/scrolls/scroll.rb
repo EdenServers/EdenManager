@@ -104,9 +104,11 @@ class Scroll
 
   #We want to know if the scroll is installed
   def is_installed?
-    $db.services.each do |service|
-      if service[:serviceName] == self.name
-        return true
+    if (options[:dependency])
+      $db.services.each do |service|
+        if service[:serviceName] == self.name
+          return true
+        end
       end
     end
     false
@@ -114,11 +116,16 @@ class Scroll
 
   #This function register the installed scroll in database
   def register(start_command, home = self.install_folder)
-    $db.services.insert(:serviceName => self.name, :serviceType => self.name, :folderName => home, :startCommand => start_command, :pidFile => self.pid_file)
+    $db.services.insert(:serviceName => self.name, :serviceType => self.name, :folderName => home, :startCommand => start_command, :pidFile => self.pid_file, :version => self.version)
   end
 
   #This function is called to set the dependencies
   def set_dependencies
     Console.show 'There are no dependencies for this scroll', 'info'
+  end
+
+  #Update the scroll
+  def update(service)
+    Console.show "The service #{service} can not be updated", 'info'
   end
 end

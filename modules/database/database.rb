@@ -13,6 +13,7 @@ class Database
         String :serviceName
         String :serviceType
         String :pidFile
+        String :version
       end
     end
 

@@ -9,6 +9,7 @@ module ServiceSystem
         rd.close
         wr.write wait_thr[:pid]
         wr.close
+        handle_output(stdout, stderr, wait_thr)
         exit
       }
       Process.detach(p1) # divorce p1 from parent process (shell)
@@ -20,6 +21,28 @@ module ServiceSystem
       pidfile.puts "#{daemon_id}"
       pidfile.close
       daemon_id
+    end
+
+    def handle_output (stdout,stderr,wait_thr)
+      threads = []
+      threads << Thread.new {  #handle stdout
+        while wait_thr.status
+          if stdout.ready?
+            puts stdout.gets
+          end
+          sleep 1
+        end
+      }
+
+      threads << Thread.new { #handle stderr
+        while wait_thr.status
+          if stderr.ready?
+            puts stderr.gets
+          end
+          sleep 1
+        end
+      }
+      threads.map(&:join)
     end
 
     #Launch the program as a specific User.

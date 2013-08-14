@@ -4,6 +4,7 @@ require 'rubygems'
 require 'colored'
 require 'daemons'
 require 'eventmachine'
+require 'io/wait'
 require 'json'
 require 'logger'
 require 'open3'
@@ -36,7 +37,7 @@ EM.run do
   ServiceManager.init
   Console.show 'Managers loaded', 'info'
 
-  #SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
+ # SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
   #SampleScroll.install
 
   ServiceManager.start_service(2)

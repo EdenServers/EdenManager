@@ -18,9 +18,9 @@ module ServiceSystem
 
     #Start the program
     def start_service
-      puts @daemon_id = get_pid(@service[:pidFile])
+      @daemon_id = get_pid(@service[:pidFile])
       if !process_alive?
-        @daemon_id = System.daemonize(@service[:startCommand], start_options)
+        @daemon_id = System.daemonize(@service[:startCommand], self, start_options)
         Console.show "Process started, its id is : #{@daemon_id}", 'info'
       else
         Console.show "Process is already running, its id is : #{@daemon_id}", 'info'
@@ -47,6 +47,7 @@ module ServiceSystem
         @cpu_usage = @monitor.cpu_usage(@daemon_id, true)
         @ram_usage = @monitor.memory_usage(@daemon_id, true)
         Console.show "Currently, the program #{@daemon_id} use #{@ram_usage}MB of memory and #{@cpu_usage}% of CPU", 'info'
+        self.stdin.write 'list'
         #Todo : send an update to the api
         @monitor.reset_ps_axu
       else

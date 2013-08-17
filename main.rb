@@ -37,8 +37,8 @@ EM.run do
   ServiceManager.init
   Console.show 'Managers loaded', 'info'
 
- # SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
-  #SampleScroll.install
+  SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
+  SampleScroll.install
 
   ServiceManager.start_service(2)
   #ServiceManager.start_service(3)

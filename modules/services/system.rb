@@ -1,18 +1,24 @@
 #Contains system calls for the monitor
 module ServiceSystem
   module System
-    def daemonize(cmd, options = {})
+    def daemonize(cmd, service,options = {})
+      stdin_r, stdin_wr = IO.pipe
       rd, wr = IO.pipe
+      service.stdin = stdin_wr
       p1 = Process.fork {
-        Dir.chdir(ENV["PWD"] = options[:working_dir].to_s) if options[:working_dir]
+        Dir.chdir(ENV["PWD"] =
+        options[:working_dir].to_s) if options[:working_dir]
         stdin, stdout, stderr, wait_thr = Open3.popen3(*Shellwords.shellwords(cmd))
         rd.close
         wr.write wait_thr[:pid]
         wr.close
+        stdin.reopen stdin_r
         handle_output(stdout, stderr, wait_thr)
         exit
       }
       Process.detach(p1) # divorce p1 from parent process (shell)
+      stdin_r.close
+      stdin_wr.write ('list\n')
       wr.close
       daemon_id = rd.read.to_i
       rd.close

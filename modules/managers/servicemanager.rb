@@ -55,6 +55,14 @@ module ServiceManager
     end
   end
 
+  def send_command(serviceId, command)
+    @services.each do |s|
+      if s.id == service
+        s.execute(command)
+      end
+    end
+  end
+
   def update(serviceId)
     $db.services.each do |service|
       if service[:id] == serviceId

@@ -12,6 +12,14 @@ module ServiceManager
     end
   end
 
+  def get_console(service)
+    @services.each do |s|
+      if s.id == service
+        puts s.stdout_err
+      end
+    end
+  end
+
   def get_cpu_usage(service)
     @services.each do |s|
       if s.id == service
@@ -57,7 +65,7 @@ module ServiceManager
 
   def send_command(serviceId, command)
     @services.each do |s|
-      if s.id == service
+      if s.id == serviceId
         s.execute(command)
       end
     end

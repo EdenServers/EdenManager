@@ -1,6 +1,6 @@
 module ServiceSystem
   class Service
-    attr_accessor :id, :type, :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage, :stdin, :stdout, :stderr
+    attr_accessor :id, :type, :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage, :stdin, :stdout_err
 
     def initialize(id)
       if @service = is_service_installed?(id)
@@ -11,6 +11,7 @@ module ServiceSystem
         self.ram_usage=0
         self.name=@service[:serviceName]
         self.type=@service[:serviceType]
+        self.stdout_err=Array.new(50)
       else
         raise ScrollNotInstalledError
       end
@@ -47,8 +48,8 @@ module ServiceSystem
         @cpu_usage = @monitor.cpu_usage(@daemon_id, true)
         @ram_usage = @monitor.memory_usage(@daemon_id, true)
         Console.show "Currently, the program #{@daemon_id} use #{@ram_usage}MB of memory and #{@cpu_usage}% of CPU", 'info'
-        self.stdin.write 'list'
         #Todo : send an update to the api
+        self.stdin.send('list', 0)
         @monitor.reset_ps_axu
       else
         Console.show "Process #{@daemon_id} has been killed", 'info'
@@ -89,10 +90,7 @@ module ServiceSystem
     def start_options
       {
           working_dir: @service[:folderName],
-          pid_file: @service[:pidFile],
-          stdout: self.stdout,
-          stdin: self.stdin,
-          stderr: self.stderr
+          pid_file: @service[:pidFile]
       }
     end
 
@@ -103,6 +101,10 @@ module ServiceSystem
         end
       end
       false
+    end
+
+    def execute(cmd)
+      self.stdin.send(cmd)
     end
   end
 end

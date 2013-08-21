@@ -1,12 +1,14 @@
 #Configuration helper provide methods for manipulate the config file
 module Configuration
+  attr_accessor :config, :serverName, :masterKey
+
   def loadConfig
     Console.show 'Loading config...', 'info'
 
     begin
-      $config = YAML.load_file('config.yml')
-      $serverName = $config['serverName']
-      $masterKey = $config['masterKey']
+      config = YAML.load_file('config.yml')
+      @serverName = config['serverName']
+      @masterKey = config['masterKey']
     rescue Errno::ENOENT
       Console.show "Config file doesn't exists !", 'error'
       Console.show 'Stopping server', 'error'

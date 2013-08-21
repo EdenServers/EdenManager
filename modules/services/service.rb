@@ -1,6 +1,6 @@
 module ServiceSystem
   class Service
-    attr_accessor :id, :type, :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage, :stdin, :stdout_err
+    attr_accessor :id, :type, :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage, :socket, :stdout_err
 
     def initialize(id)
       if @service = is_service_installed?(id)
@@ -49,7 +49,6 @@ module ServiceSystem
         @ram_usage = @monitor.memory_usage(@daemon_id, true)
         Console.show "Currently, the program #{@daemon_id} use #{@ram_usage}MB of memory and #{@cpu_usage}% of CPU", 'info'
         #Todo : send an update to the api
-        self.stdin.send('list', 0)
         @monitor.reset_ps_axu
       else
         Console.show "Process #{@daemon_id} has been killed", 'info'
@@ -104,7 +103,11 @@ module ServiceSystem
     end
 
     def execute(cmd)
-      self.stdin.send(cmd)
+      self.socket.send([cmd.length, 1].pack('LL') + cmd, 0)
+    end
+
+    def get_console
+      self.socket.send([0, 2].pack('LL'))
     end
   end
 end

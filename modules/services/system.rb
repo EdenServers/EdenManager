@@ -2,7 +2,7 @@
 module ServiceSystem
   module System
     def daemonize(cmd, service, options = {})
-      child_socket, parent_socket = Socket.pair(:UNIX, :DGRAM, 0) # used to send message to the process
+      child_socket, parent_socket = Socket.pair(:UNIX, :STREAM, 0) # used to send message to the process
       rd, wr = IO.pipe # used to send the pid
       p1 = Process.fork { #start a new process by forking the parent
         threads = []
@@ -12,7 +12,7 @@ module ServiceSystem
         rd.close
         wr.write wait_thr[:pid]
         wr.close
-        handle_input(stdin, wait_thr, child_socket, threads) #handle app's stdin
+        handle_input(stdin, wait_thr, child_socket, threads) #handle app's stdin and packets
         handle_output(stdout, stderr, service, wait_thr, threads) #handle app's stdout/stderr
         threads.map(&:join)
         exit
@@ -26,7 +26,7 @@ module ServiceSystem
       pidfile.chmod( 0644 )
       pidfile.puts "#{daemon_id}"
       pidfile.close
-      service.stdin = parent_socket
+      service.socket = parent_socket #used to communicate with the child process
       daemon_id
     end
 
@@ -34,7 +34,17 @@ module ServiceSystem
       threads << Thread.new {
         while wait_thr.status
           if child_socket.ready?
-            stdin.write(child_socket.recv(1024))
+            header = child_socket.read(8).unpack('LL')
+            length = header[0]
+            packet = header[1]
+            case packet
+              when 1
+                stdin.write(child_socket.read(length))
+              when 2
+                #send console
+              else
+                Console.show "Unknown packet : #{packet}"
+            end
           end
           sleep 1
         end

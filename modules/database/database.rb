@@ -15,7 +15,16 @@ class Database
         String :pidFile
         String :version
       end
+
+      @database.create_table :monitors do
+        primary_key :id
+        String :ramUsage
+        String :cpuUsage
+        Date :date
+        Integet :serviceId
+      end
     end
+
 
     #Set tables
     self.services=@database[:services]

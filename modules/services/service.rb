@@ -9,8 +9,8 @@ module ServiceSystem
         self.monitoring = true
         self.cpu_usage=0
         self.ram_usage=0
-        self.name=@service[:serviceName]
-        self.type=@service[:serviceType]
+        self.name=@service[:service_name]
+        self.type=@service[:service_type]
         self.stdout_err=Array.new(50)
       else
         raise ScrollNotInstalledError
@@ -88,8 +88,8 @@ module ServiceSystem
 
     def start_options
       {
-          working_dir: @service[:folderName],
-          pid_file: @service[:pidFile]
+          working_dir: @service[:folder_name],
+          pid_file: @service[:pid_file]
       }
     end
 

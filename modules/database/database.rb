@@ -8,20 +8,20 @@ class Database
       Console.show 'Creating database...', 'info'
       @database.create_table :services do
         primary_key :id
-        String :folderName
-        String :startCommand
-        String :serviceName
-        String :serviceType
-        String :pidFile
+        String :folder_name
+        String :start_command
+        String :service_name
+        String :service_type
+        String :pid_file
         String :version
       end
 
       @database.create_table :monitors do
         primary_key :id
-        String :ramUsage
-        String :cpuUsage
+        String :ram_usage
+        String :cpu_usage
         Date :date
-        Integet :serviceId
+        Integet :service_id
       end
     end
 

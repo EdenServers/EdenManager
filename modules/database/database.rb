@@ -1,5 +1,5 @@
 class Database
-  attr_accessor :database, :services
+  attr_accessor :database, :services, :monitors
   def initialize
     @database = Sequel.connect('sqlite://database.db')
 
@@ -15,7 +15,9 @@ class Database
         String :pid_file
         String :version
       end
+    end
 
+    unless @database.table_exists?(:services)
       @database.create_table :monitors do
         primary_key :id
         String :ram_usage
@@ -26,7 +28,9 @@ class Database
     end
 
 
+
     #Set tables
     self.services=@database[:services]
+    self.monitors=@database[:monitors]
   end
 end

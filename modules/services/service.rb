@@ -19,9 +19,9 @@ module ServiceSystem
 
     #Start the program
     def start_service
-      @daemon_id = get_pid(@service[:pidFile])
+      @daemon_id = get_pid(@service[:pid_file])
       if !process_alive?
-        @daemon_id = System.daemonize(@service[:startCommand], self, start_options)
+        @daemon_id = System.daemonize(@service[:start_command], self, start_options)
         Console.show "Process started, its id is : #{@daemon_id}", 'info'
       else
         Console.show "Process is already running, its id is : #{@daemon_id}", 'info'

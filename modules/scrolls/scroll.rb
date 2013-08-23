@@ -116,7 +116,7 @@ class Scroll
 
   #This function register the installed scroll in database
   def register(start_command, home = self.install_folder)
-    $db.services.insert(:service_name => self.name, :service_nype => self.name, :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :version => self.version)
+    $db.services.insert(:service_name => self.name, :service_type => self.name, :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :version => self.version)
   end
 
   #This function is called to set the dependencies

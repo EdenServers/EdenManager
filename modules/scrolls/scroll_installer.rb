@@ -19,9 +19,14 @@ class ScrollInstaller
 
   def install
     begin
-      scroll = get_scroll.new(@options)
-      scroll.install_dependencies
-      scroll.install
+      service_id = 0
+      t1 = Thread.new {
+        scroll = get_scroll.new(@options)
+        scroll.install_dependencies
+        service_id = scroll.install #This will return the installed service's id.
+      }
+      t1.join
+      service_id
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
     rescue AlreadyInstalledError

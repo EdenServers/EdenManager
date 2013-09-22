@@ -1,5 +1,5 @@
 module Scheduler
-  def init
+  def start
     $scheduler = Rufus::Scheduler::EmScheduler.start_new
     start_events
   end

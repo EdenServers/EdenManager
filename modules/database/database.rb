@@ -1,5 +1,5 @@
 class Database
-  attr_accessor :database, :services, :monitors
+  attr_accessor :database, :services, :monitors, :monitor_services
   def initialize
     @database = Sequel.connect('sqlite://database.db')
 
@@ -38,7 +38,8 @@ class Database
 
 
     #Set tables
-    self.services=@database[:services]
     self.monitors=@database[:monitors]
+    self.monitor_services=@database[:monitor_services]
+    self.services=@database[:services]
   end
 end

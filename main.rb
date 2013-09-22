@@ -30,17 +30,11 @@ EM.run do
 
   #Rufus Scheduler
   Console.show 'Loading scheduler...', 'info'
-  Scheduler.init
+  Scheduler.start
   Console.show 'Scheduler loaded !', 'success'
 
   Console.show 'Loading managers...', 'info'
-  ServiceManager.init
-  Console.show 'Managers loaded', 'info'
-
-  #SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
-  #SampleScroll.install
-
-  #ServiceManager.start_service(2)
+  ServiceManager.new
 
   EM.start_server '0.0.0.0', 12348, Packet
 

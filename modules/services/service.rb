@@ -32,7 +32,7 @@ module ServiceSystem
     def start_monitoring
       if @monitor_timer.nil?
         @monitor = Monitor.new
-        @monitor_timer=$scheduler.every '1m' do
+        @monitor_timer=$scheduler.every '5s' do
           tick
         end
       else

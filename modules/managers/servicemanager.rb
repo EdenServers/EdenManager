@@ -1,5 +1,5 @@
 module ServiceManager
-  def init
+  def new
     @started_services = Array.new
   end
 
@@ -46,7 +46,7 @@ module ServiceManager
       Thread.new {
         service = ServiceSystem::Service.new(serviceId)
         service.start_service
-        @started_services << service
+        $started_services << service
       }
     end
   end
@@ -89,4 +89,3 @@ module ServiceManager
     end
   end
 end
-include ServiceManager

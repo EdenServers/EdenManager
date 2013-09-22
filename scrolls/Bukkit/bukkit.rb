@@ -6,6 +6,7 @@ class Bukkit < Scroll
     self.dependable = false
     self.homepage = 'http://wwww.edenservers.fr'
     self.url = 'http://dl.bukkit.org/downloads/craftbukkit/get/02169_1.5.2-R1.0/craftbukkit.jar'
+    self.options = options
     super
   end
 
@@ -17,6 +18,6 @@ class Bukkit < Scroll
     download('craftbukkit.jar')
     copy(self.install_folder, 'craftbukkit.jar')
     copy(self.install_folder, 'server.properties', './scrolls/Bukkit')
-    register('java -jar -Xms1024M -Xmx1024M craftbukkit.jar')
+    register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
   end
 end

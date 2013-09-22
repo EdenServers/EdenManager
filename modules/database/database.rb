@@ -17,16 +17,24 @@ class Database
       end
     end
 
-    unless @database.table_exists?(:services)
+    unless @database.table_exists?(:monitor_services)
+      @database.create_table :monitor_services do
+        primary_key :id
+        String :ram_usage
+        String :cpu_usage
+        Date :date
+        Integer :service_id
+      end
+    end
+
+    unless @database.table_exists?(:monitors)
       @database.create_table :monitors do
         primary_key :id
         String :ram_usage
         String :cpu_usage
         Date :date
-        Integet :service_id
       end
     end
-
 
 
     #Set tables

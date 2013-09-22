@@ -32,7 +32,7 @@ module ServiceSystem
     def start_monitoring
       if @monitor_timer.nil?
         @monitor = Monitor.new
-        @monitor_timer=$scheduler.every '5s' do
+        @monitor_timer=$scheduler.every '1m' do
           tick
         end
       else
@@ -47,8 +47,7 @@ module ServiceSystem
       if process_alive?
         @cpu_usage = @monitor.cpu_usage(@daemon_id, true)
         @ram_usage = @monitor.memory_usage(@daemon_id, true)
-        Console.show "Currently, the program #{@daemon_id} use #{@ram_usage}MB of memory and #{@cpu_usage}% of CPU", 'info'
-        #Todo : send an update to the api
+        $db.monitor_services.insert(:cpu_usage => self.cpu_usage, :ram_usage => self.ram_usage, :service_id => self.id, :date => DateTime.now)
         @monitor.reset_ps_axu
       else
         Console.show "Process #{@daemon_id} has been killed", 'info'

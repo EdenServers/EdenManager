@@ -132,5 +132,13 @@ module System
     }
   end
 
+  def get_cpu_usage
+
+  end
+
+  def get_ram_usage
+
+  end
+
 end
 include System

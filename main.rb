@@ -30,7 +30,7 @@ EM.run do
 
   #Rufus Scheduler
   Console.show 'Loading scheduler...', 'info'
-  $scheduler = Rufus::Scheduler::EmScheduler.start_new
+  Scheduler.init
   Console.show 'Scheduler loaded !', 'success'
 
   Console.show 'Loading managers...', 'info'
@@ -40,10 +40,7 @@ EM.run do
   #SampleScroll = ScrollInstaller.new('Bukkit', {folder: 'minecraft_test', user:'dernise', port:25568})
   #SampleScroll.install
 
-  ServiceManager.start_service(2)
-
-  #ServiceManager.start_service(3)
-  #ServiceManager.start_service(4)
+  #ServiceManager.start_service(2)
 
   EM.start_server '0.0.0.0', 12348, Packet
 

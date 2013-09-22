@@ -2,39 +2,22 @@
 # Interract with packets' API
 class Packet < EM::Connection
   def receive_data data
-    executeOrder if cutPacket data
-  end
-
-  # Method to decompose a packet
-  # A packet is organized like that :
-  # Master Key | Order | Data 1 | Data 2 | ...
-  def cutPacket packet
-    @request = packet.split("|")
-    if @request[0] == "" || @request[1].nil? || @request[1] == ""
-      Console.show "Packet without minimal size (no order or data). Packet content : #{packet}", 'error'
-      false
-    else
-      @order = @request[1]
-      Console.show "New request received : #{packet}", 'debug'
-      true
-    end
-  end
-
-  # Method who will analyse the order and execute it
-  def executeOrder
-    if @request[0] == $masterKey
-      case @order
-        ### GENERAL ###
-        when "getStatus"
-          #Interroger la BDD
-          #Trouver le serveur et les infos
-          #Renvoyer les infos
-
-          send_data('{"ram": ' + Random.rand(1024).to_s + ', "cpu": ' + Random.rand(100).to_s + '}') #Format data to a json string
-          send_data("\n") #Do not forget this shit !
+    length = data.length
+    if length >= 2
+      packet = JSON.parse(data)
+      case packet['packet_id']
+        when 1 #Install
+          installation = ScrollInstaller.new(packet['scroll_name'], packet['scroll_options'])
+          installation.install
+          send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
+        when 2 #Start
+          ServiceManager.start_service(packet['service_id'])
+          send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
         else
-          close_connection
+          Console.show "Unknown packet : #{packet}"
       end
+    else
+      Console.show "Just got a wrong packet with length : #{length}", 'error'
     end
   end
 end

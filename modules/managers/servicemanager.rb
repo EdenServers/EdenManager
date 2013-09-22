@@ -1,21 +1,21 @@
 module ServiceManager
   def init
-    @services = Array.new
+    @started_services = Array.new
   end
 
   #Kill the service (require its id)
   def close_service(service)
-    @services.each do |s|
+    @started_services.each do |s|
       if s.id == service
         s.kill
-        @services.delete(s)
+        @started_services.delete(s)
       end
     end
   end
 
   #return the last 50 lines of the console
   def get_console(service)
-    @services.each do |s|
+    @started_services.each do |s|
       if s.id == service
         s.get_console
       end
@@ -24,7 +24,7 @@ module ServiceManager
 
   #return the cpu usage of the service
   def get_cpu_usage(service)
-    @services.each do |s|
+    @started_services.each do |s|
       if s.id == service
         return s.cpu_usage
       end
@@ -33,7 +33,7 @@ module ServiceManager
 
   #return the ram usage of the service
   def get_ram_usage(service)
-    @services.each do |s|
+    @started_services.each do |s|
       if s.id == service
         return s.cpu_usage
       end
@@ -46,14 +46,14 @@ module ServiceManager
       Thread.new {
         service = ServiceSystem::Service.new(serviceId)
         service.start_service
-        @services << service
+        @started_services << service
       }
     end
   end
 
   #is service started?
   def service_started? (service)
-     @services.each do |s|
+      @started_services.each do |s|
       if s.id == service
         return true
       end
@@ -63,16 +63,16 @@ module ServiceManager
 
   #delete the service from the array. Should only be used if the service is already dead
   def remove_service(service)
-    @services.each do |s|
+    @started_services.each do |s|
       if s.id == service
-        @services.delete(s)
+        @started_services.delete(s)
       end
     end
   end
 
   #send a command to the process' stdin
   def send_command(serviceId, command)
-    @services.each do |s|
+    @started_services.each do |s|
       if s.id == serviceId
         s.execute(command)
       end

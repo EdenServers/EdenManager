@@ -12,7 +12,7 @@ class Packet < EM::Connection
           send_data JSON.generate({status: 'OK', service_id: id}) + "\n" #Don't forget this shit again !
         when 2 #Start
           ServiceManager.start_service(packet['service_id'])
-          send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
+          send_data JSON.generate({status: 'OK'}) + "\n"
         else
           Console.show "Unknown packet : #{packet}"
       end

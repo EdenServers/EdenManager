@@ -31,6 +31,8 @@ class ScrollInstaller
       Console.show 'The scroll is invalid, a method is missing.', 'error'
     rescue AlreadyInstalledError
       Console.show "#{@scroll} is already installed", 'info'
+    rescue InstallError
+      Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
     end
   end
 
@@ -45,6 +47,8 @@ class ScrollInstaller
       Console.show "Dependency #{@scroll} is already installed", 'info'
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
+    rescue InstallError
+      Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
     end
   end
 

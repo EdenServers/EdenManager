@@ -1,11 +1,21 @@
 require 'socket'
 require 'json'
+require 'eventmachine'
 
-s = TCPSocket.new 'localhost', 12348
+class Manager < EM::Connection
+  def self.send_data data
+    TCPSocket.open "localhost", 12348 do |s|
+      s.send data, 0
+      if line = s.gets
+        response = line
+        response.delete("\n")
+        response = JSON.parse(response.gsub('\"', '"'))
+      else
+        response = nil
+      end
+      return response
+    end
+  end
+end
 
-s.puts JSON.generate({packet_id: 1,scroll_name: "Bukkit", scroll_options: {folder: 'minecraft_test', user:'dernise', port:25568, ram:310}})
-result = JSON.parse(s.gets)
-s.puts JSON.generate({packet_id: 2, service_id: result['service_id']}) #start process
-
-puts s.gets # Read lines from socket
-s.close             # close socket when done
+puts Manager.send_data(JSON.generate({master_key: "azerty", packet_request: 'install', scroll_name: "Bukkit", scroll_options: {folder: 'minecraft_test', user:'dernise', port:25568, ram:310}}) + "\n")

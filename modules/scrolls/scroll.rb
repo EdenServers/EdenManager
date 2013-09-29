@@ -109,9 +109,9 @@ class Scroll
 
   #We want to know if the scroll is installed
   def is_installed?
-    if (options[:dependency])
+    if self.dependable
       $db.services.each do |service|
-        if service[:serviceName] == self.name
+        if service[:service_name] == self.name
           return true
         end
       end

@@ -25,15 +25,19 @@ class ScrollInstaller
         scroll.install #This will return the installed service's id.
       }
       t1.join
-      return 'SUCCESS'
+      'SUCCESS'
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
-      return 'INVALID'
+      'INVALID'
     rescue AlreadyInstalledError
       Console.show "#{@scroll} is already installed", 'info'
+      'ERROR'
     rescue InstallError
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
-      return 'ERROR'
+      'ERROR'
+    rescue
+      Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
+      'ERROR'
     end
   end
 
@@ -50,7 +54,10 @@ class ScrollInstaller
       Console.show 'The scroll is invalid, a method is missing.', 'error'
     rescue InstallError
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
+    rescue
+      Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
     end
+
   end
 
   def update(service)

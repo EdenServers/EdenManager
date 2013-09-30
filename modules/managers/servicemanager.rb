@@ -29,6 +29,7 @@ module ServiceManager
         return s.cpu_usage
       end
     end
+    'Offline' #If the service is offline
   end
 
   #return the ram usage of the service

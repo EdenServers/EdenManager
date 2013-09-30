@@ -22,21 +22,23 @@ Dir["./helpers/*.rb"].each {|file| require file }
 # Modules
 Dir['./modules/**/initializer.rb'].each{ |f| require f }
 
-#Main Loop
-EM.run do
-  Console.show 'Starting manager...', 'info'
-  Configuration.loadConfig
-  Console.show 'Config loaded !', 'success'
+ System.daemonize_process do
+    #Main Loop
+    EM.run do
+      Console.show 'Starting manager...', 'info'
+      Configuration.loadConfig
+      Console.show 'Config loaded !', 'success'
 
-  #Rufus Scheduler
-  Console.show 'Loading scheduler...', 'info'
-  Scheduler.start
-  Console.show 'Scheduler loaded !', 'success'
+      #Rufus Scheduler
+      Console.show 'Loading scheduler...', 'info'
+      Scheduler.start
+      Console.show 'Scheduler loaded !', 'success'
 
-  Console.show 'Loading managers...', 'info'
-  ServiceManager.new
+      Console.show 'Loading managers...', 'info'
+      ServiceManager.new
 
-  EM.start_server '0.0.0.0', 12348, Packet
+      EM.start_server '0.0.0.0', 12348, Packet
 
-  Console.show 'Manager is running !', 'success'
-end
+      Console.show 'Manager is running !', 'success'
+    end
+  end

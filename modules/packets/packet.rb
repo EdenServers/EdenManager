@@ -14,6 +14,13 @@ class Packet < EM::Connection
           when 'start' #Start
             ServiceManager.start_service(packet['service_id'])
             send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
+          when 'get_cpu'
+            cpu_usage = ServiceManager.get_cpu_usage(packet['service_id'])
+            if cpu_usage != 'Offline'
+              send_data JSON.generate({status: 'OK', cpu_usage: cpu_usage})
+            else
+              send_data JSON.generate({status: 'Offline'})
+            end
           else
             Console.show "Unknown packet : #{packet}"
             close_connection

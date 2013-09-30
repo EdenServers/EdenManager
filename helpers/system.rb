@@ -132,6 +132,28 @@ module System
     }
   end
 
+  def daemonize_process
+    reader, writer = IO.pipe
+    Process.fork {
+      # p1 is now running independent of, and parallel to the calling process
+      Process.setsid
+      p2 = Process.fork {
+        # p2 is now running independent of, and parallel to p1
+        $0 = 'EdenManager'
+        File.umask 0000
+        STDIN.reopen '/dev/null'
+        STDOUT.reopen '/dev/null', 'a'
+        STDERR.reopen STDOUT
+        yield
+      }
+      reader.close
+      writer.write p2
+      writer.close
+    }
+    writer.close
+    Console.show "Manager started. Process id is #{reader.read}", 'info'
+  end
+
   def get_cpu_usage
 
   end

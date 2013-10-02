@@ -29,7 +29,7 @@ class ScrollInstaller
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
       'INVALID'
-    rescue InstallError
+    rescue ScrollInstallError
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
       'ERROR'
     rescue
@@ -49,7 +49,7 @@ class ScrollInstaller
       Console.show "Dependency #{@scroll} is already installed", 'info'
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
-    rescue InstallError
+    rescue ScrollInstallError
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
     rescue
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'

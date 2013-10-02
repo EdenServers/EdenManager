@@ -133,7 +133,6 @@ module System
   end
 
   def daemonize_process
-    reader, writer = IO.pipe
     Process.fork {
       # p1 is now running independent of, and parallel to the calling process
       Process.setsid
@@ -145,13 +144,11 @@ module System
         STDOUT.reopen '/dev/null', 'a'
         STDERR.reopen STDOUT
         yield
+        exit
       }
-      reader.close
-      writer.write p2
-      writer.close
+      Console.show "Manager started. Process id is #{p2}", 'info'
+      exit
     }
-    writer.close
-    Console.show "Manager started. Process id is #{reader.read}", 'info'
   end
 
   def get_cpu_usage

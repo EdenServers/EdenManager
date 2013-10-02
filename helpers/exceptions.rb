@@ -1,5 +1,4 @@
-class InvalidScrollError < StandardError; end
-class UnknownScrollError < StandardError; end
-class AlreadyInstalledError < StandardError; end
-class ScrollNotInstalledError < StandardError; end
-class InstallError < StandardError; end
+class ScrollInvalidError < StandardError; end
+class DepAlreadyInstalledError < StandardError; end
+class ServiceNotInstalledError < StandardError; end
+class ScrollInstallError < StandardError; end

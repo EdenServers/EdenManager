@@ -37,7 +37,7 @@ class Packet < EM::Connection
 
   #Check if the measterKey is the same as in config file
   def checkMasterKey masterKey
-    return true if masterKey == $masterKey
+    return true if masterKey == Configuration.masterKey
     return false
   end
 end

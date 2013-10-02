@@ -4,14 +4,14 @@ class Scroll
   def initialize(options = {})
     @options = options
     unless is_installed?
-      Console.show "Installing scroll #{self.name} v#{self.version}  made by #{self.author} <#{self.homepage}>",'info'
+      Console.show "Installing scroll #{self.name} v#{self.version} made by #{self.author} <#{self.homepage}>",'info'
       self.dependable = true unless self.dependable
       self.install_folder=generate_install_folder
       self.pid_file=generate_pid_file
       @dependencies=Dependencies.new
       set_dependencies
     else
-      raise AlreadyInstalledError
+      raise DepAlreadyInstalledError
     end
   end
 

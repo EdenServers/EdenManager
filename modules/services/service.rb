@@ -13,7 +13,7 @@ module ServiceSystem
         self.type=@service[:service_type]
         self.stdout_err=Array.new(50)
       else
-        raise ScrollNotInstalledError
+        raise ServiceNotInstalledError
       end
     end
 

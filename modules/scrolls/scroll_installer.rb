@@ -9,11 +9,11 @@ class ScrollInstaller
     if File.exists?("./scrolls/#{@scroll}/#{@scroll_file}.rb")
       require "./scrolls/#{@scroll}/#{@scroll_file}"
       klass = Object.const_get(@scroll)
-      raise InvalidScrollError if !klass.ancestors.include?(Scroll)
+      raise ScrollInvalidError if !klass.ancestors.include?(Scroll)
       klass
     else
       Console.show "Can't find the scroll #{@scroll}", 'error'
-      raise UnknownScrollError
+      raise ScrollInvalidError
     end
   end
 
@@ -43,12 +43,12 @@ class ScrollInstaller
 
   def install_dependency
     begin
-      scroll = get_scroll.new(dependency: true)
+      scroll = get_scroll.new
       if scroll.dependable
         scroll.install_dependencies
         scroll.install
       end
-    rescue AlreadyInstalledError
+    rescue DepAlreadyInstalledError
       Console.show "Dependency #{@scroll} is already installed", 'info'
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
@@ -57,7 +57,6 @@ class ScrollInstaller
     rescue
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
     end
-
   end
 
   def update(service)

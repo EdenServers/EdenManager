@@ -29,9 +29,6 @@ class ScrollInstaller
     rescue NoMethodError
       Console.show 'The scroll is invalid, a method is missing.', 'error'
       'INVALID'
-    rescue AlreadyInstalledError
-      Console.show "#{@scroll} is already installed", 'info'
-      'ERROR'
     rescue InstallError
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
       'ERROR'

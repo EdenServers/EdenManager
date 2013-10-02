@@ -139,7 +139,6 @@ module System
       p2 = Process.fork {
         # p2 is now running independent of, and parallel to p1
         $0 = 'EdenManager'
-        $PROGRAM_NAME = 'EdenManager'
         File.umask 0000
         STDIN.reopen '/dev/null'
         STDOUT.reopen '/dev/null', 'a'
@@ -147,6 +146,10 @@ module System
         yield
         exit
       }
+      pidfile = File.new('pid/edenmanager.pid', 'w')
+      pidfile.chmod( 0644 )
+      pidfile.puts "#{daemon_id}"
+      pidfile.close
       Console.show "Manager started. Process id is #{p2}", 'info'
       exit
     }

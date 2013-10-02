@@ -19,5 +19,5 @@ class Manager < EM::Connection
 end
 
 puts Manager.send_data(JSON.generate({master_key: "azerty", packet_request: 'install', scroll_name: "Bukkit", scroll_options: {folder: 'minecraft_test', user:'dernise', port:25568, ram:310}}) + "\n")
-puts Manager.send_data(JSON.generate({master_key: "azerty", packet_request: 'start', service_id: 1}) + "\n")
+puts Manager.send_data(JSON.generate({master_key: "azerty", packet_request: 'start', service_id: 3}) + "\n")
 #puts Manager.send_data(JSON.generate({master_key: "azerty", packet_request: 'get_cpu', service_id: 1}) + "\n")

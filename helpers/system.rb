@@ -139,6 +139,7 @@ module System
       p2 = Process.fork {
         # p2 is now running independent of, and parallel to p1
         $0 = 'EdenManager'
+        $PROGRAM_NAME = 'EdenManager'
         File.umask 0000
         STDIN.reopen '/dev/null'
         STDOUT.reopen '/dev/null', 'a'

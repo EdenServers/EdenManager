@@ -146,10 +146,6 @@ module System
         yield
         exit
       }
-      pidfile = File.new('pid/edenmanager.pid', 'w')
-      pidfile.chmod( 0644 )
-      pidfile.puts "#{p2}"
-      pidfile.close
       Console.show "Manager started. Process id is #{p2}", 'info'
       exit
     }

@@ -26,7 +26,7 @@ module ServiceManager
   def get_cpu_usage(service)
     @started_services.each do |s|
       if s.id == service
-        return s.cpu_usage
+        return s.get_cpu_usage
       end
     end
     'Offline' #If the service is offline
@@ -36,9 +36,10 @@ module ServiceManager
   def get_ram_usage(service)
     @started_services.each do |s|
       if s.id == service
-        return s.cpu_usage
+        return s.get_ram_usage
       end
     end
+    'Offline' #If the service is offline
   end
 
   #start the service
@@ -47,8 +48,10 @@ module ServiceManager
       Thread.new {
         service = ServiceSystem::Service.new(serviceId)
         service.start_service
-        $started_services << service
+        @started_services << service
       }
+    else
+      Console.show "Service #{serviceId} is already running", 'info'
     end
   end
 

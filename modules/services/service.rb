@@ -45,8 +45,8 @@ module ServiceSystem
     #Check the status of the program and monitor it
     def tick
       if process_alive?
-        @cpu_usage = @monitor.cpu_usage(@daemon_id, true)
-        @ram_usage = @monitor.memory_usage(@daemon_id, true)
+        get_cpu_usage
+        get_ram_usage
         $db.monitor_services.insert(:cpu_usage => self.cpu_usage, :ram_usage => self.ram_usage, :service_id => self.id, :date => DateTime.now)
         @monitor.reset_ps_axu
       else
@@ -59,6 +59,16 @@ module ServiceSystem
     #Kill the process
     def kill
       ::Process.kill('TERM', @daemon_id)
+    end
+
+    def get_cpu_usage
+      @monitor.reset_ps_axu
+      @cpu_usage = @monitor.cpu_usage(@daemon_id, true)
+    end
+
+    def get_ram_usage
+      @monitor.reset_ps_axu
+      @ram_usage = @monitor.ram_usage(@daemon_id, true)
     end
 
     def get_pid(pid_file)

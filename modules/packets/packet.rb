@@ -14,20 +14,39 @@ class Packet < EM::Connection
           when 'start' #Start
             ServiceManager.start_service(packet['service_id'])
             send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
+          when 'generate_master_key'
+            key = 123
+            Configuration.set_config_opt('masterKey', 1234)
+            send_data JSON.generate({status: 'OK', new_key: key}) + "\n"
           when 'get_cpu'
             cpu_usage = ServiceManager.get_cpu_usage(packet['service_id'])
             if cpu_usage != 'Offline'
-              send_data JSON.generate({status: 'OK', cpu_usage: cpu_usage})
+              send_data JSON.generate({status: 'OK', cpu_usage: cpu_usage}) + "\n"
             else
-              send_data JSON.generate({status: 'Offline'})
+              send_data JSON.generate({status: 'Offline'}) + "\n"
+            end
+          when 'get_ram'
+            ram_usage = ServiceManager.get_ram_usage(packet['service_id'])
+            if ram_usage != 'Offline'
+              send_data JSON.generate({status: 'OK', ram_usage: ram_usage}) + "\n"
+            else
+              send_data JSON.generate({status: 'Offline'}) + "\n"
             end
           else
             Console.show "Unknown packet : #{packet}"
             close_connection
         end
       else
-        Console.show "Master key is invalid : #{packet}", 'error'
-        close_connection
+        if packet['packet_request'] == 'get_informations'
+          master_key_set = true
+          if Configuration.masterKey == 'BopMasterKey'
+            master_key_set = false
+          end
+          send_data JSON.generate({status: 'OK', is_master_key_set: master_key_set, load_average: System.get_load_average, ram_usage: System.get_ram_usage}) + "\n"
+        else
+          Console.show "Master key is invalid : #{packet}", 'error'
+          close_connection
+        end
       end
     else
       Console.show "Just got a wrong packet with length : #{length}", 'error'

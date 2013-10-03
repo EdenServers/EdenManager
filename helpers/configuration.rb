@@ -6,7 +6,7 @@ module Configuration
     Console.show 'Loading config...', 'info'
 
     begin
-      config = YAML.load_file('config.yml')
+      @config = YAML.load_file('config.yml')
       @serverName = config['serverName']
       @masterKey = config['masterKey']
     rescue Errno::ENOENT
@@ -14,6 +14,11 @@ module Configuration
       Console.show 'Stopping server', 'error'
       EM.stop
     end
+  end
+
+  def set_config_opt(config_name, value)
+     @config[config_name] = value
+     File.write('config.yml', @config.to_yaml)
   end
 end
 

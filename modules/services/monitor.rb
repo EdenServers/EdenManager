@@ -22,7 +22,7 @@ module ServiceSystem
       cpu_used
     end
 
-    def memory_usage(pid, include_children)
+    def ram_usage(pid, include_children)
       ps = ps_axu
       return unless ps[pid]
       mem_used = ps[pid][IDX_MAP[:rss]].to_f

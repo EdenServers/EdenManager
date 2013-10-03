@@ -1,2 +1,3 @@
-masterKey: azerty
-serverName: test
+---
+masterKey: BopMasterKey
+serverName: BaseLeaf

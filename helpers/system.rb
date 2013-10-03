@@ -151,12 +151,27 @@ module System
     }
   end
 
-  def get_cpu_usage
-
+  def get_load_average
+    load_avg = nil
+    File.open('/proc/loadavg') {|f|
+      load_avg = f.readline.split(' ')[2]
+    }
+    load_avg
   end
 
   def get_ram_usage
-
+    mem_total = mem_free = mem_cached = nil;
+    File.foreach('/proc/meminfo'){|l|
+      case l
+        when /MemTotal/
+          mem_total = Float(l.split(' ')[1])
+        when /MemFree/
+          mem_free = Float(l.split(' ')[1])
+        when %r{(?<!Swap)Cached}
+          mem_cached = Float(l.split(' ')[1])
+      end
+    }
+    100 - ((mem_free + mem_cached) / mem_total.to_f * 100).to_i
   end
 
 end

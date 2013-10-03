@@ -159,7 +159,7 @@ module System
     load_avg
   end
 
-  def get_ram_usage
+  def get_memory_usage
     mem_total = mem_free = mem_cached = nil;
     File.foreach('/proc/meminfo'){|l|
       case l

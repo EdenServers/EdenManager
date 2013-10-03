@@ -18,9 +18,11 @@ class Manager < EM::Connection
   end
 end
 
-puts Manager.send_data(JSON.generate({master_key: "azerty", packet_request: 'install', scroll_name: "Bukkit", scroll_options: {folder: 'minecraft_test', user:'dernise', port:25568, ram:310}}) + "\n")
-puts Manager.send_data(JSON.generate({master_key: "azerty", packet_request: 'start', service_id: 2}) + "\n")
-#puts Manager.send_data(JSON.generate({master_key: "BopMasterKey", packet_request: 'get_ram', service_id: 1}) + "\n")
+puts Manager.send_data(JSON.generate({packet_request: 'get_informations'}) + "\n")
+puts Manager.send_data(JSON.generate({master_key: "BopMasterKey", packet_request: 'generate_master_key'}) + "\n")
+puts Manager.send_data(JSON.generate({master_key: "1234", packet_request: 'install', scroll_name: "Bukkit", scroll_options: {folder: 'minecraft_test', user:'dernise', port:25568, ram:310}}) + "\n")
+puts Manager.send_data(JSON.generate({master_key: "1234", packet_request: 'start', service_id: 2}) + "\n")
+puts Manager.send_data(JSON.generate({master_key: "1234", packet_request: 'get_ram', service_id: 2}) + "\n")
 #puts Manager.send_data(JSON.generate({master_key: "BopMasterKey", packet_request: 'install', scroll_name: "Php", scroll_options: {}}) + "\n")
 #puts Manager.send_data(JSON.generate({packet_request: 'get_informations'}) + "\n")
 #puts Manager.send_data(JSON.generate({master_key: "BopMasterKey", packet_request: 'generate_master_key'}) + "\n")

@@ -91,7 +91,7 @@ module System
   end
 
   def apt_get(command, arguments = nil)
-    Open3.popen3("apt-get -y #{command} #{arguments}") {|stdin, stdout, stderr, wait_thr|
+    Open3.popen3("apt-get -y --force-yes #{command} #{arguments}") {|stdin, stdout, stderr, wait_thr|
       exit_status = wait_thr.value.exitstatus
         stderr.readlines.each do |e|
           error = e.encode('UTF-8').gsub("\n", '')  # we do not want new lines

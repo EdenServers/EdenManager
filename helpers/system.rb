@@ -171,7 +171,7 @@ module System
           mem_cached = Float(l.split(' ')[1])
       end
     }
-    (mem_total - (mem_free + mem_cached)) * 0.01
+    (mem_total - (mem_free + mem_cached)) * 0.001
   end
 
 end

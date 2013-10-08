@@ -153,7 +153,7 @@ module System
 
   def get_load_average
     load_avg = nil
-    File.open('/proc/loadavg') {|f|
+    File.open('/proc/loadavg') {|f| #Parsing informations in /prof/loadavg
       load_avg = f.readline.split(' ')[2]
     }
     load_avg
@@ -161,7 +161,7 @@ module System
 
   def get_memory_usage
     mem_total = mem_free = mem_cached = nil;
-    File.foreach('/proc/meminfo'){|l|
+    File.foreach('/proc/meminfo'){|l| #Parsing informations in /proc/meminfo
       case l
         when /MemTotal/
           mem_total = Float(l.split(' ')[1])

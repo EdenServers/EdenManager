@@ -15,8 +15,9 @@ class Packet < EM::Connection
             ServiceManager.start_service(packet['service_id'])
             send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
           when 'generate_master_key'
-            key = 123
-            Configuration.set_config_opt('masterKey', 1234)
+            key = SecureRandom.hex
+            Configuration.set_config_opt('masterKey', key)
+            Configuration.masterKey = key
             send_data JSON.generate({status: 'OK', new_key: key}) + "\n"
           when 'get_cpu'
             cpu_usage = ServiceManager.get_cpu_usage(packet['service_id'])
@@ -31,6 +32,12 @@ class Packet < EM::Connection
               send_data JSON.generate({status: 'OK', ram_usage: ram_usage}) + "\n"
             else
               send_data JSON.generate({status: 'Offline'}) + "\n"
+            end
+          when 'get_installed_services'
+            data[] = new Array
+            send_data JSON.generate($db.services.each do |l|
+               data << Hash.new({id: ser})
+            end) + "\n"
             end
           else
             Console.show "Unknown packet : #{packet}"

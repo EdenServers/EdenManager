@@ -38,7 +38,6 @@ class Packet < EM::Connection
             send_data JSON.generate($db.services.each do |l|
                data << Hash.new({id: ser})
             end) + "\n"
-            end
           else
             Console.show "Unknown packet : #{packet}"
             close_connection

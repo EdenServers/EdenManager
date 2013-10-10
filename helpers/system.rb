@@ -154,7 +154,7 @@ module System
   def get_load_average
     load_avg = nil
     File.open('/proc/loadavg') {|f| #Parsing informations in /prof/loadavg
-      load_avg = f.readline.split(' ')[2]
+      load_avg = f.readline.split(' ')
     }
     load_avg
   end

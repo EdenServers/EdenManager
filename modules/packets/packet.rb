@@ -49,7 +49,8 @@ class Packet < EM::Connection
           if Configuration.masterKey == 'BopMasterKey'
             master_key_set = false
           end
-          send_data JSON.generate({status: 'OK', is_master_key_set: master_key_set, load_average: System.get_load_average, ram_usage: System.get_memory_usage}) + "\n"
+          loadavg = System.get_load_average
+          send_data JSON.generate({status: 'OK', is_master_key_set: master_key_set, load_average_1: loadavg[0], load_average_5: loadavg[1], load_average_15: loadavg[2], ram_usage: System.get_memory_usage}) + "\n"
         else
           Console.show "Master key is invalid : #{packet}", 'error'
           close_connection

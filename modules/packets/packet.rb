@@ -34,10 +34,7 @@ class Packet < EM::Connection
               send_data JSON.generate({status: 'Offline'}) + "\n"
             end
           when 'get_installed_services'
-            data[] = new Array
-            send_data JSON.generate($db.services.each do |l|
-               data << Hash.new({id: ser})
-            end) + "\n"
+            send_data JSON.generate({status: 'OK', services: ServiceManager.get_installed_services}) + "\n"
           else
             Console.show "Unknown packet : #{packet}"
             close_connection

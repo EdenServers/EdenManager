@@ -32,6 +32,16 @@ module ServiceManager
     'Offline' #If the service is offline
   end
 
+  #Return the list of installed services
+  def get_installed_services
+    puts 'love'
+    installed_services = Array.new
+    $db.services.each do |s|
+      installed_services.push({id: s[:id], start_command: s[:start_command], service_name: s[:service_name], service_type: s[:service_type], version: s[:version]})
+    end
+    installed_services
+  end
+
   #return the ram usage of the service
   def get_ram_usage(service)
     @started_services.each do |s|

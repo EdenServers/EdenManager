@@ -8,9 +8,12 @@ class Packet < EM::Connection
       if checkMasterKey packet['master_key']
         case packet['packet_request']
           when 'install' #Install
-            installation = ScrollInstaller.new(packet['scroll_name'], packet['scroll_options'])
-            status = installation.install
-            send_data JSON.generate({status: status}) + "\n" #Don't forget this shit again !
+            t1 = Thread.new {
+              installation = ScrollInstaller.new(packet['scroll_name'], packet['scroll_options'])
+              status = installation.install
+              send_data JSON.generate({status: status}) + "\n" #Don't forget this shit again !
+            }
+            t1.join
           when 'start' #Start
             ServiceManager.start_service(packet['service_id'])
             send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !

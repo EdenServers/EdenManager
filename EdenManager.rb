@@ -17,7 +17,7 @@ require 'yaml'
 
 
 #Updating installation, currently hard codded.
-`git pull`
+pull = `git pull`
 
 #Loader
 # Helpers
@@ -29,6 +29,7 @@ Dir['./modules/**/initializer.rb'].each{ |f| require f }
 System.daemonize_process do
   #Main Loop
   EM.run do
+    Console.show "Manager updated : #{pull}", 'info'
     Console.show 'Starting manager...', 'info'
     Configuration.load_config
     Console.show 'Config loaded !', 'success'

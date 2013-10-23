@@ -15,6 +15,10 @@ require 'sequel'
 require 'shellwords'
 require 'yaml'
 
+
+#Updating installation, currently hard codded.
+`git pull`
+
 #Loader
 # Helpers
 Dir["./helpers/*.rb"].each {|file| require file }

@@ -1,4 +1,4 @@
-class Php < Scroll
+class PHP < Scroll
   def initialize(options = {})
     self.name = 'PHP'
     self.author = 'SofianeG'

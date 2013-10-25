@@ -34,10 +34,9 @@ module ServiceManager
 
   #Return the list of installed services
   def get_installed_services
-    puts 'love'
     installed_services = Array.new
     $db.services.each do |s|
-      installed_services.push({id: s[:id], start_command: s[:start_command], service_name: s[:service_name], service_type: s[:service_type], version: s[:version]})
+      installed_services.push({id: s[:id], start_command: s[:start_command], service_name: s[:service_name], service_type: s[:service_type], running: s[:running],version: s[:version]})
     end
     installed_services
   end
@@ -59,6 +58,7 @@ module ServiceManager
         service = ServiceSystem::Service.new(serviceId)
         service.start_service
         @started_services << service
+        $db.services.where(:id=>serviceId).first.update(:running => 1)
       }
     else
       Console.show "Service #{serviceId} is already running", 'info'
@@ -79,6 +79,7 @@ module ServiceManager
   def remove_service(service)
     @started_services.each do |s|
       if s.id == service
+        $db.services.where(:id=>s).first.update(:running => 0)
         @started_services.delete(s)
       end
     end

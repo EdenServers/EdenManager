@@ -37,6 +37,10 @@ class Packet < EM::Connection
             end
           when 'get_installed_services'
             send_data JSON.generate({status: 'OK', services: ServiceManager.get_installed_services}) + "\n"
+          when 'change_root_password'
+            if(System.change_password('root', packet['new_password']))
+              send_data JSON.generate({status: 'OK'}) + "\n"
+            end
           else
             Console.show "Unknown packet : #{packet}"
             close_connection

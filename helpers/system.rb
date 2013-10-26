@@ -69,7 +69,7 @@ module System
           case exit_status
             when 0 #all is fine
               Console.show error, 'warn'
-              true
+              return true
             when 1 # Permission denied : user invalid
               #TODO: Report to the website the error
               Console.show error, 'error'
@@ -98,7 +98,7 @@ module System
           case exit_status
             when 0 #all is fine
               Console.show error, 'warn'
-              true
+              return true
             else
               #Unknown error, should be reported on edenservers' forum
               Console.show error, 'error'

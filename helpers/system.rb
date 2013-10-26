@@ -61,7 +61,7 @@ module System
   end
 
   def change_password (name, password)
-    Open3.popen3("echo -e \"#{password}\n#{password}\" | passwd #{name}") {|stdin, stdout, stderr, wait_thr| #hacky, must be changed in the future
+    Open3.popen3("echo -e \"#{password}\\n#{password}\" | passwd #{name}") {|stdin, stdout, stderr, wait_thr| #hacky, must be changed in the future
       exit_status = wait_thr.value.exitstatus
       if !stderr.nil?
         stderr.readlines.each do |e|

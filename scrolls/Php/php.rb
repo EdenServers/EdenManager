@@ -10,7 +10,6 @@ class PHP < Scroll
 
   def set_dependencies
     add_dep('Apache')
-    add_dep('MySQL')
   end
 
   def install
@@ -18,7 +17,6 @@ class PHP < Scroll
     add_source('deb-src http://packages.dotdeb.org wheezy-php55 all')
     System.apt_get('update')
     System.apt_get('install', 'libapache2-mod-php5')
-    System.apt_get('install', 'php5-mysql')
     register('/etc/init.d/apache2 restart')
   end
 end

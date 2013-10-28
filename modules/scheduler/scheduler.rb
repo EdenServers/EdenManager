@@ -5,8 +5,6 @@ module Scheduler
   end
 
   def start_events
-    #Main server monitor
-    $scheduler.every '1m' do
-    end
+
   end
 end

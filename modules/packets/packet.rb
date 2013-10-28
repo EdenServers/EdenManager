@@ -13,8 +13,11 @@ class Packet < EM::Connection
               status = installation.install
               send_data JSON.generate({status: status}) + "\n" #Don't forget this shit again !
             }
-          when 'start' #Start
+          when 'start_service' #Start
             ServiceManager.start_service(packet['service_id'])
+            send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
+          when 'stop_service' #stop
+            ServiceManager.stop_service(packet['service_id'])
             send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
           when 'generate_master_key'
             key = SecureRandom.hex

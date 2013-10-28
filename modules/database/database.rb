@@ -14,6 +14,7 @@ class Database
         String :service_type
         String :pid_file
         Integer :running
+        Integer :dependency
         String :version
       end
     end
@@ -42,5 +43,8 @@ class Database
     self.monitors=@database[:monitors]
     self.monitor_services=@database[:monitor_services]
     self.services=@database[:services]
+
+    #Make all services DOWN.
+    self.services.update(:running => 0)
   end
 end

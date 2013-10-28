@@ -69,7 +69,7 @@ module System
           case exit_status
             when 0 #all is fine
               Console.show error, 'warn'
-              Console.show "Password of user: #{name} changer", 'info'
+              Console.show "Password of user: #{name} changed", 'info'
               return true
             when 1 # Permission denied : user invalid
               #TODO: Report to the website the error

@@ -4,11 +4,12 @@ module ServiceManager
   end
 
   #Kill the service (require its id)
-  def close_service(service)
+  def stop_service(service)
     @started_services.each do |s|
       if s.id == service
         s.kill
         @started_services.delete(s)
+        $db.services.where(:id=>s.id).update(:running => 0)
       end
     end
   end
@@ -36,7 +37,7 @@ module ServiceManager
   def get_installed_services
     installed_services = Array.new
     $db.services.each do |s|
-      installed_services.push({id: s[:id], start_command: s[:start_command], service_name: s[:service_name], service_type: s[:service_type], running: s[:running],version: s[:version]})
+      installed_services.push({id: s[:id], start_command: s[:start_command], service_name: s[:service_name], service_type: s[:service_type], dependency: s[:dependency], running: s[:running],version: s[:version]})
     end
     installed_services
   end
@@ -54,12 +55,11 @@ module ServiceManager
   #start the service
   def start_service(serviceId)
     unless service_started?(serviceId)
-      Thread.new {
-        service = ServiceSystem::Service.new(serviceId)
-        service.start_service
-        @started_services << service
-        $db.services.where(:id=>serviceId).first.update(:running => 1)
-      }
+      Console.show "Starting process: #{serviceId}", 'info'
+      service = ServiceSystem::Service.new(serviceId)
+      service.start_service
+      @started_services << service
+      $db.services.where(:id=>Integer(serviceId)).update(:running => 1)
     else
       Console.show "Service #{serviceId} is already running", 'info'
     end
@@ -79,7 +79,7 @@ module ServiceManager
   def remove_service(service)
     @started_services.each do |s|
       if s.id == service
-        $db.services.where(:id=>s).first.update(:running => 0)
+        $db.services.where(:id=>s).update(:running => 0)
         @started_services.delete(s)
       end
     end

@@ -32,7 +32,7 @@ module ServiceSystem
     def start_monitoring
       if @monitor_timer.nil?
         @monitor = Monitor.new
-        @monitor_timer=$scheduler.every '1m' do
+        @monitor_timer=$scheduler.schedule_every '1m' do
           tick
         end
       else
@@ -58,6 +58,8 @@ module ServiceSystem
 
     #Kill the process
     def kill
+      @monitor_timer.pause()
+      Console.show "Process #{@daemon_id} has been killed", 'info'
       ::Process.kill('TERM', @daemon_id)
     end
 
@@ -104,7 +106,7 @@ module ServiceSystem
 
     def is_service_installed?(id)
       $db.services.each do |service|
-        if service[:id] == id
+        if Integer(service[:id]) == Integer(id)
           return service
         end
       end

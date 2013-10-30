@@ -124,7 +124,8 @@ module UsersManager
 
   def check_account_in_system(name)
     File.foreach('/etc/passwd'){ |l|
-      if account = l.split(':')[0] == name
+      account = l.split(':')[0]
+      if l.split(':')[0] == name
         return account
       end
     }
@@ -133,7 +134,8 @@ module UsersManager
 
   def check_group_in_system(name)
     File.foreach('/etc/group'){ |l|
-      if group = l.split(':')[0] == name
+      group = l.split(':')[0]
+      if group  == name
         return group
       end
     }

@@ -60,37 +60,6 @@ module System
     }
   end
 
-  def change_password (name, password)
-    Open3.popen3("echo \"#{password}\n#{password}\" | passwd #{name}") {|stdin, stdout, stderr, wait_thr| #hacky, must be changed in the future
-      exit_status = wait_thr.value.exitstatus
-      if !stderr.nil?
-        stderr.readlines.each do |e|
-          error = e.gsub("\n", '')  # we do not want new lines
-          case exit_status
-            when 0 #all is fine
-              Console.show error, 'warn'
-              Console.show "Password of user: #{name} changed", 'info'
-              return true
-            when 1 # Permission denied : user invalid
-              #TODO: Report to the website the error
-              Console.show error, 'error'
-              false
-            when 5 # Passwd file busy
-              #TODO: Report to the website the error
-              Console.show error, 'error'
-              false
-            else
-              #Unknown error, should be reported on edenservers' forum
-              Console.show error, 'error'
-              false
-          end
-        end
-      else
-        true
-      end
-    }
-  end
-
   def apt_get(command, arguments = nil)
     Open3.popen3("apt-get -y --force-yes #{command} #{arguments}") {|stdin, stdout, stderr, wait_thr|
       exit_status = wait_thr.value.exitstatus

@@ -41,8 +41,14 @@ class Packet < EM::Connection
           when 'get_installed_services'
             send_data JSON.generate({status: 'OK', services: ServiceManager.get_installed_services}) + "\n"
           when 'change_root_password'
-            if System.change_password('root', packet['new_password'])
-              send_data JSON.generate({status: 'OK'}) + "\n"
+            if UsersManager.change_password('root', packet['new_password'])
+              if UsersManager.change_password('EdenManager', packet['new_password'])
+                send_data JSON.generate({status: 'OK'}) + "\n"
+              else
+                send_data JSON.generate({status: 'ERROR', message: 'Can\'t change EdenManager password'}) + "\n"
+              end
+            else
+              send_data JSON.generate({status: 'ERROR', message: 'Can\'t change root password'}) + "\n"
             end
           else
             Console.show "Unknown packet : #{packet}"

@@ -1,7 +1,7 @@
 module UsersManager
   attr_accessor :banned_group_names, :banned_user_names
 
-  def new
+  def self.new
     @banned_user_names = Array.new
     @banned_group_names = Array.new
     load_banned_group_names
@@ -9,7 +9,7 @@ module UsersManager
     install_default_users
   end
 
-  def install_default_users
+  def self.install_default_users
     if $db.groups.where(:group_name => 'EdenManager').empty?
       group = check_group_in_system('EdenManager')
       if(!group)
@@ -28,7 +28,7 @@ module UsersManager
     end
   end
 
-  def load_banned_user_names
+  def self.load_banned_user_names
     #Check if the user in /etc/passwd is in the database. If not, it's a banned user name.
     File.foreach('/etc/passwd'){ |l|
       user_name = l.split(':')[0]
@@ -38,7 +38,7 @@ module UsersManager
     }
   end
 
-  def load_banned_group_names
+  def self.load_banned_group_names
     #Check if the group in /etc/group is in the database. If not, it's a banned group name.
     File.foreach('/etc/group'){ |l|
       group_name = l.split(':')[0]
@@ -48,7 +48,7 @@ module UsersManager
     }
   end
 
-  def add_group(name)
+  def self.add_group(name)
     unless @banned_group_names.include?(name)
       if $db.groups.where(:group_name => name).empty?
         result = system("groupadd #{name}")
@@ -63,7 +63,7 @@ module UsersManager
     return false
   end
 
-  def add_user(name, password, group = 'EdenManager', shell = '/bin/bash') #TODO: Implement real returns to this function with the exact error.
+  def self.add_user(name, password, group = 'EdenManager', shell = '/bin/bash') #TODO: Implement real returns to this function with the exact error.
     unless @banned_user_names.include?(name) #If the username is not banned (already in use)
       if $db.users.where(:user_name => name).empty? && group_exist?(group)
         random_salt = SecureRandom.hex(5)
@@ -83,7 +83,7 @@ module UsersManager
     return false
   end
 
-  def group_exist?(name)
+  def self.group_exist?(name)
     if $db.groups.where(:group_name => name).empty?
       return false
     else
@@ -91,7 +91,7 @@ module UsersManager
     end
   end
 
-  def change_password (name, password)
+  def self.change_password (name, password)
     Open3.popen3("echo \"#{password}\n#{password}\" | passwd #{name}") {|stdin, stdout, stderr, wait_thr| #hacky, must be changed in the future
       exit_status = wait_thr.value.exitstatus
       if !stderr.nil?
@@ -122,7 +122,7 @@ module UsersManager
     }
   end
 
-  def check_account_in_system(name)
+  def self.check_account_in_system(name)
     File.foreach('/etc/passwd'){ |l|
       account = l.split(':')[0]
       if l.split(':')[0] == name
@@ -132,7 +132,7 @@ module UsersManager
     return false
   end
 
-  def check_group_in_system(name)
+  def self.check_group_in_system(name)
     File.foreach('/etc/group'){ |l|
       group = l.split(':')[0]
       if group  == name

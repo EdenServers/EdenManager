@@ -1,10 +1,11 @@
 class Scroll
-  attr_accessor :name, :homepage, :author, :url, :version, :options, :install_folder, :pid_file ,:dependable
+  attr_accessor :name, :type, :homepage, :author, :url, :version, :options, :install_folder, :pid_file ,:dependable
 
-  def initialize(options = {})
+  def initialize(options, name)
     @options = options
     unless is_installed?
-      Console.show "Installing scroll #{self.name} v#{self.version} made by #{self.author} <#{self.homepage}>",'info'
+      check_name
+      Console.show "Installing scroll #{self.type} v#{self.version} made by #{self.author} <#{self.homepage}>",'info'
       self.install_folder=generate_install_folder
       self.pid_file=generate_pid_file
       @dependencies=Dependencies.new
@@ -24,6 +25,22 @@ class Scroll
     open('/etc/apt/sources.list', 'a') { |f|
       f.puts source
     }
+  end
+
+  def check_name
+    name_correct = 0
+    i = 1
+    self.name = self.type if self.name.nil?
+    until name_correct == 1 do
+      name_correct = 1
+      $db.services.each do |service|
+        if service[:service_name] == self.name
+          self.name=self.name + "(#{i})"
+          i=i+1
+          name_correct = 0
+        end
+      end
+    end
   end
 
   #Copy a file to destination
@@ -94,7 +111,7 @@ class Scroll
       Console.show "Creating folder #{folder}", 'info'
       FileUtils.mkdir_p(folder)
     end
-    installFolder = "./EdenApps/#{SecureRandom.hex(6)}"
+    installFolder = "./EdenApps/#{self.type}/#{self.name}"
     while File.exist? installFolder
       installFolder = generate_pid_file
     end
@@ -110,7 +127,7 @@ class Scroll
   def is_installed?
     if self.dependable
       $db.services.each do |service|
-        if service[:service_name] == self.name
+        if service[:service_type] == self.type
           return true
         end
       end
@@ -124,7 +141,14 @@ class Scroll
     unless self.dependable
       dependency = 0
     end
-    $db.services.insert(:service_name => self.name, :service_type => self.name, :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
+    $db.services.insert(:service_name => self.name, :service_type => self.type, :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
+  end
+
+  def replace_in_file(file, before, after)
+    read_file = File.read("#{install_folder}/#{file}")
+    replace = read_file.gsub(/#{before}/, after)
+    puts(replace)
+    File.open("#{install_folder}/#{file}", 'w') {|file| file.puts replace}
   end
 
   #This function is called to set the dependencies

@@ -1,6 +1,7 @@
 class Apache < Scroll
-  def initialize(options = {})
-    self.name = 'Apache'
+  def initialize(name = 'Apache', options = {})
+    self.name = name
+    self.type = 'Apache'
     self.author = 'SofianeG'
     self.version = '2.4'
     self.homepage = 'http://wwww.edenservers.fr'

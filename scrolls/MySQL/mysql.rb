@@ -1,6 +1,7 @@
 class MySQL < Scroll
-  def initialize(options = {})
-    self.name = 'MySQL'
+  def initialize(name = 'MySQL',options = {})
+    self.name = name
+    self.type = 'MySQL'
     self.author = 'Koon'
     self.version = '5.5'
     self.dependable = true

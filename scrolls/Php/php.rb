@@ -1,6 +1,7 @@
 class PHP < Scroll
-  def initialize(options = {})
-    self.name = 'PHP'
+  def initialize(name = 'PHP', options = {})
+    self.name = name
+    self.type = 'PHP'
     self.author = 'SofianeG'
     self.version = '5.5'
     self.homepage = 'http://wwww.edenservers.fr'

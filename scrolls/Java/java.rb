@@ -1,6 +1,7 @@
 class Java < Scroll
-  def initialize(options = {})
-    self.name = 'Java'
+  def initialize(name = 'Java', options = {})
+    self.name = name
+    self.type = 'Java'
     self.author = 'Dernise'
     self.version = '1.7'
     self.homepage = 'http://wwww.edenservers.fr'

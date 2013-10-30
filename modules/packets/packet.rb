@@ -9,7 +9,7 @@ class Packet < EM::Connection
         case packet['packet_request']
           when 'install' #Install
             Thread.new {
-              installation = ScrollInstaller.new(packet['scroll_name'], packet['scroll_options'])
+              installation = ScrollInstaller.new(packet['scroll_type'], packet['scroll_name'], packet['scroll_options'])
               status = installation.install
               send_data JSON.generate({status: status}) + "\n" #Don't forget this shit again !
             }

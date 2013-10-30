@@ -1,7 +1,8 @@
 class ScrollInstaller
-  def initialize(s, options = {})
+  def initialize(s, name = '', options = {})
     @scroll = s
     @scroll_file = s.downcase
+    @service_name = name
     @options=options
   end
 
@@ -19,7 +20,7 @@ class ScrollInstaller
 
   def install
     begin
-      scroll = get_scroll.new(@options)
+      scroll = get_scroll.new(@options, @service_name)
       scroll.install_dependencies
       scroll.install #This will return the installed service's id.
       'SUCCESS'

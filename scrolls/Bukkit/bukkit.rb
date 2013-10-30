@@ -1,11 +1,12 @@
 class Bukkit < Scroll
-  def initialize(options = {})
-    self.name = 'Bukkit'
+  def initialize(options = {}, name = 'Bukkit')
+    self.name = name
+    self.type = 'Bukkit'
     self.author = 'Dernise'
     self.version = '2788'
     self.dependable = false
     self.homepage = 'http://wwww.edenservers.fr'
-    self.url = 'http://dl.bukkit.org/downloads/craftbukkit/get/02169_1.5.2-R1.0/craftbukkit.jar'
+    self.url = 'http://dl.bukkit.org/downloads/craftbukkit/get/02381_1.6.4-R1.0/craftbukkit.jar'
     self.options = options
     super
   end
@@ -18,6 +19,8 @@ class Bukkit < Scroll
     download('craftbukkit.jar')
     copy(self.install_folder, 'craftbukkit.jar')
     copy(self.install_folder, 'server.properties', './scrolls/Bukkit')
+    replace_in_file('server.properties', '<!port>', self.options['port'])
+    replace_in_file('server.properties', '<!motd>', self.options['motd'])
     register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
   end
 end

@@ -1,12 +1,16 @@
 module UsersManager
-  attr_accessor :banned_group_names, :banned_user_names
+  attr_accessor :banned_group_names, :banned_user_names, :users, :groups
 
   def self.new
     @banned_user_names = Array.new
     @banned_group_names = Array.new
+    @groups = Array.new
+    @users = Array.new
     load_banned_group_names
     load_banned_user_names
+    load_users_and_groups
     install_default_users
+
   end
 
   def self.install_default_users
@@ -28,6 +32,10 @@ module UsersManager
     end
   end
 
+  def self.get_group_list
+    @groups
+  end
+
   def self.load_banned_user_names
     #Check if the user in /etc/passwd is in the database. If not, it's a banned user name.
     File.foreach('/etc/passwd'){ |l|
@@ -36,6 +44,16 @@ module UsersManager
         @banned_user_names << user_name
       end
     }
+  end
+
+  def self.load_users_and_groups
+    $db.groups.all.each do |group|
+      @groups << group[:group_name]
+    end
+    $db.users.all.each do |user|
+      puts user[:user_name]
+      @users << user[:user_name]
+    end
   end
 
   def self.load_banned_group_names
@@ -124,8 +142,8 @@ module UsersManager
 
   def self.check_account_in_system(name)
     File.foreach('/etc/passwd'){ |l|
-      account = l.split(':')[0]
-      if l.split(':')[0] == name
+      account = l.split(':')
+      if account[0] == name
         return account
       end
     }

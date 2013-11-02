@@ -24,14 +24,17 @@ class ScrollInstaller
       scroll.install_dependencies
       scroll.install #This will return the installed service's id.
       'SUCCESS'
-    rescue NoMethodError
+    rescue NoMethodError => e
       Console.show 'The scroll is invalid, a method is missing.', 'error'
+      Console.show e, 'error'
       'INVALID'
-    rescue ScrollInstallError
+    rescue ScrollInstallError => e
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
+      Console.show e, 'error'
       'ERROR'
-    rescue
+    rescue StandardError => e
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
+      Console.show e, 'error'
       'ERROR'
     end
   end
@@ -45,12 +48,15 @@ class ScrollInstaller
       end
     rescue DepAlreadyInstalledError
       Console.show "Dependency #{@scroll} is already installed", 'info'
-    rescue NoMethodError
+    rescue NoMethodError => e
       Console.show 'The scroll is invalid, a method is missing.', 'error'
-    rescue ScrollInstallError
+      Console.show e, 'error'
+    rescue ScrollInstallError => e
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
-    rescue
+      Console.show e, 'error'
+    rescue StandardError => e
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
+      Console.show e, 'error'
     end
   end
 

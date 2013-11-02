@@ -1,3 +1,4 @@
 ---
-masterKey: BopMasterKey
+masterKey: !binary |-
+  MDMyYzFhMmRiZTZkNGI1ZjFhMTUxYWU3ZDE2YjNkZWE=
 serverName: BaseLeaf

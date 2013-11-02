@@ -3,7 +3,7 @@ class Scroll
 
   def initialize(options, name)
     @options = options
-    unless is_installed?
+    unless is_dependency_installed?
       check_name
       Console.show "Installing scroll #{self.type} v#{self.version} made by #{self.author} <#{self.homepage}>",'info'
       self.install_folder=generate_install_folder
@@ -30,7 +30,7 @@ class Scroll
   def check_name
     name_correct = 0
     i = 1
-    self.name = self.type if self.name.nil?
+    self.name = self.type if self.name.nil? || self.name.empty? #If no name is given (Dependency)
     until name_correct == 1 do
       name_correct = 1
       $db.services.each do |service|
@@ -85,6 +85,8 @@ class Scroll
             zip_file.extract(f, f_path) unless File.exist?(f_path)
           }
         }
+      when 'tar.gz'
+        `tar -zxvf #{filename}`
       else
         Console.show 'No type is specified or the type is not supported/wrong', 'error'
     end
@@ -124,7 +126,7 @@ class Scroll
   end
 
   #We want to know if the scroll is installed
-  def is_installed?
+  def is_dependency_installed?
     if self.dependable
       $db.services.each do |service|
         if service[:service_type] == self.type
@@ -137,10 +139,8 @@ class Scroll
 
   #This function register the installed scroll in database
   def register(start_command, home = self.install_folder)
-    dependency = 1
-    unless self.dependable
-      dependency = 0
-    end
+    dependency = 0
+    dependency = 1 if self.dependable
     $db.services.insert(:service_name => self.name, :service_type => self.type, :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
   end
 

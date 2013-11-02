@@ -12,6 +12,8 @@ class WORDPRESS < Scroll
 
   def set_dependencies
     add_dep('Apache')
+    add_dep('PHP')
+    add_dep('MySQL')
   end
 
   def install

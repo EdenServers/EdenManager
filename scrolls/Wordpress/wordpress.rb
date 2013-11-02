@@ -14,6 +14,7 @@ class WORDPRESS < Scroll
     add_dep('Apache')
     add_dep('PHP')
     add_dep('MySQL')
+    add_dep('PHPMyAdmin')
   end
 
   def install

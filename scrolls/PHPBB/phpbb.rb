@@ -18,7 +18,7 @@ class PHPBB < Scroll
 
   def install
     download('phpBB-3.0.11-fr.zip')
-    copy(self.install_folder, 'phpBB-3.0.11-fr.zip')
+    copy('/var/www/', 'phpBB-3.0.11-fr.zip')
     extract('zip', 'phpBB-3.0.11-fr.zip', self.install_folder)
   end
 end

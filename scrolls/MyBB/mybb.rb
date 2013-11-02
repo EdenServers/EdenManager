@@ -18,7 +18,7 @@ class MYBB < Scroll
 
   def install
     download('mybb_1611.zip')
-    copy(self.install_folder, 'mybb_1611.zip')
+    copy('/var/www/', 'mybb_1611.zip')
     extract('zip', 'mybb_1611.zip', self.install_folder)
   end
 end

@@ -18,7 +18,7 @@ class WORDPRESS < Scroll
 
   def install
     download('wordpress-3.7.1-fr_FR.zip')
-    copy(self.install_folder, 'wordpress-3.7.1-fr_FR.zip')
+    copy('/var/www/', 'wordpress-3.7.1-fr_FR.zip')
     extract('zip', 'wordpress-3.7.1-fr_FR.zip', self.install_folder)
   end
 end

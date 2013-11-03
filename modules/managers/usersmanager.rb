@@ -36,6 +36,10 @@ module UsersManager
     @groups
   end
 
+  def self.get_user_list
+    @users
+  end
+
   def self.load_banned_user_names
     #Check if the user in /etc/passwd is in the database. If not, it's a banned user name.
     File.foreach('/etc/passwd'){ |l|

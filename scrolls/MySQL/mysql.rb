@@ -11,9 +11,10 @@ class MySQL < Scroll
   end
 
   def install
-    System.command("debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password password #{option['password']}'")
-    System.command("debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password_again password #{option['password']}'")
-    System.apt_get('install', 'mysql-server')
-    register("/etc/init.d/mysql restart")
+    mysql_password = SecureRandom.hex(5)
+    Console.show `export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install mysql-server`, 'debug'
+    Console.show `mysqladmin -u root password #{mysql_password}`, 'debug'
+    Configuration.set_config_opt('mysql_password', mysql_password)
+    Console.show 'Mysql password is : ' + mysql_password, 'info'
   end
 end

@@ -23,8 +23,10 @@ module Console
           puts "#{Time.now} [SUCCESS] #{msg}".green
           log.unknown msg
         when 'debug'
-          puts "#{Time.now} [DEBUG] #{msg}".yellow
-          log.debug msg
+          if(Configuration.config['debug'] == 1)
+            puts "#{Time.now} [DEBUG] #{msg}".yellow
+            log.debug msg
+          end
         when 'log'
           log.debug msg
         else

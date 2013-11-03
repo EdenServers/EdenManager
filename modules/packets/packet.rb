@@ -2,6 +2,7 @@
 # Interract with packets' API
 class Packet < EM::Connection
   def receive_data data
+    Console.show data, 'debug'
     length = data.length
     if length >= 2
       packet = JSON.parse(data)
@@ -40,6 +41,8 @@ class Packet < EM::Connection
             end
           when 'get_installed_services'
             send_data JSON.generate({status: 'OK', services: ServiceManager.get_installed_services}) + "\n"
+          when 'get_users_and_groups'
+            send_data JSON.generate({status: 'OK', users: UsersManager.get_user_list, groups: UsersManager.get_group_list}) + "\n"
           when 'change_root_password'
             if UsersManager.change_password('root', packet['new_password'])
               if UsersManager.change_password('EdenManager', packet['new_password'])

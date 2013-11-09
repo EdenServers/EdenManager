@@ -1,0 +1,9 @@
+users:
+- username: edenservers
+  password: edenservers
+  groups:
+  - full_control
+- username: chatonly
+  password: example
+  groups:
+  - chat_only

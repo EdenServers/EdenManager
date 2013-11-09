@@ -19,8 +19,12 @@ class Bukkit < Scroll
     download('craftbukkit.jar')
     copy(self.install_folder, 'craftbukkit.jar')
     copy(self.install_folder, 'server.properties', './scrolls/Bukkit')
+    copy(self.install_folder + "/plugins/JSONAPI", 'config.yml', './scrolls/Bukkit')
+    copy(self.install_folder + "/plugins/JSONAPI", 'users.yml', './scrolls/Bukkit')
+    copy(self.install_folder + "/plugins/", 'JSONAPI.jar', './scrolls/Bukkit')
     replace_in_file('server.properties', '<!port>', self.options['port'])
     replace_in_file('server.properties', '<!motd>', self.options['motd'])
+    replace_in_file('plugins/JSONAPI/config.yml', '<!port>', (self.options['port'].to_i + 1).to_s)
     register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
   end
 end

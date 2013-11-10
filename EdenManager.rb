@@ -1,6 +1,3 @@
-#Updating gems
-gems = `bundle`
-
 # Gems (don't forget to do a `bundle install` before running this software)
 require 'rubygems'
 

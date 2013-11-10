@@ -16,14 +16,14 @@ module Minecraft
       url = get_plugin_url name
 
       if url.nil?
-        Console.show "Can't find a plugin named #{name}", 'error'
+        Console.show "Can't find a plugin named #{name}", 'debug'
         false
       else
         Downloader.download(url, folder, url.split("/").last)
-        Console.show "Finished download the plugin #{name} to #{folder}", 'success'
+        Console.show "Finished download the plugin #{name} to #{folder}", 'debug'
       end
     rescue ServiceNotInstalledError
-      Console.show "Seems to not be a bukkit server, installation aborted.", 'error'
+      Console.show "Seems to not be a bukkit server, installation aborted.", 'debug'
       false
     end
   end

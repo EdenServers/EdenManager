@@ -36,7 +36,7 @@ System.daemonize_process do
     Configuration.load_config
     Console.show 'Config loaded !', 'success'
 
-    Rufus Scheduler
+    #Rufus Scheduler
     Console.show 'Loading scheduler...', 'info'
     Scheduler.start
     Console.show 'Scheduler loaded !', 'success'

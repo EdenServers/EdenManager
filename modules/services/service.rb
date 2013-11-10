@@ -1,6 +1,6 @@
 module ServiceSystem
   class Service
-    attr_accessor :id, :type, :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage, :socket, :stdout_err
+    attr_accessor :id, :type, :name, :daemon_id, :alive, :monitoring, :cpu_usage, :ram_usage, :socket, :stdout_err, :service
 
     def initialize(id)
       if @service = is_service_installed?(id)

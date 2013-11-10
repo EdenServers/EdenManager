@@ -1,9 +1,13 @@
- # Gems (don't forget to do a `bundle install` before running this software)
+#Updating gems
+gems = `bundle`
+
+# Gems (don't forget to do a `bundle install` before running this software)
 require 'rubygems'
 
 require 'colored'
 require 'daemons'
 require 'eventmachine'
+require 'httpclient'
 require 'io/wait'
 require 'json'
 require 'logger'
@@ -29,13 +33,13 @@ Dir['./modules/**/initializer.rb'].each{ |f| require f }
 Console.show "Manager updated : #{pull}", 'info'
 
 System.daemonize_process do
-  #Main Loop
+#Main Loop
   EM.run do
     Console.show 'Starting manager...', 'info'
     Configuration.load_config
     Console.show 'Config loaded !', 'success'
 
-    #Rufus Scheduler
+    Rufus Scheduler
     Console.show 'Loading scheduler...', 'info'
     Scheduler.start
     Console.show 'Scheduler loaded !', 'success'
@@ -49,3 +53,4 @@ System.daemonize_process do
     Console.show 'Manager is running !', 'success'
   end
 end
+

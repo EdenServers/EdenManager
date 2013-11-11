@@ -27,6 +27,28 @@ module Minecraft
       false
     end
   end
+
+  def get_minecraft_config id_service
+    config = Hash.new
+    begin
+      service = ServiceSystem::Service.new(id_service)
+      folder = service.service[:folder_name]
+
+      begin
+        File.open("#{folder}/server.properties", "r").each_line do |line|
+          temp = line.split("=")
+          config[temp[0]] = temp[1].to_s.chomp
+        end
+
+        config
+      rescue Errno::ENOENT
+        nil
+      end
+    rescue ServiceNotInstalledError
+      nil
+    end
+
+  end
 end
 
 include Minecraft

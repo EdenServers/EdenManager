@@ -53,13 +53,15 @@ class Packet < EM::Connection
             else
               send_data JSON.generate({status: 'ERROR', message: 'Can\'t change root password'}) + "\n"
             end
-          ### PLUGINS MINECRAFT ###
+          ### MINECRAFT ###
           when 'install_plugin_minecraft'
              if Minecraft.download_plugin packet['service_id'], packet['plugin_name']
                send_data JSON.generate({status: 'OK'}) + "\n"
              else
                send_data JSON.generate({status: 'ERROR'}) + "\n"
              end
+          when 'get_minecraft_config'
+            send_data JSON.generate({status: 'OK', config: Minecraft.get_minecraft_config(packet['service_id'])})
           else
             Console.show "Unknown packet : #{packet}"
             close_connection

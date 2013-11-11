@@ -47,7 +47,34 @@ module Minecraft
     rescue ServiceNotInstalledError
       nil
     end
+  end
 
+  def change_minecraft_config id_service, key, value
+    config = Hash.new
+    begin
+      service = ServiceSystem::Service.new(id_service)
+      folder = service.service[:folder_name]
+
+      begin
+        File.open("#{folder}/server.properties", "r").each_line do |line|
+          temp = line.split("=")
+          config[temp[0]] = temp[1].to_s.chomp
+        end
+
+        config[key] = value
+
+        file = File.open("#{folder}/server.properties", "w+")
+        config.each do |k, v|
+          file.write("#{k}=#{v}\n")
+        end
+        file.close
+        true
+      rescue Errno::ENOENT
+        nil
+      end
+    rescue ServiceNotInstalledError
+      nil
+    end
   end
 end
 

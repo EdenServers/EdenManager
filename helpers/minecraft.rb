@@ -36,8 +36,10 @@ module Minecraft
 
       begin
         File.open("#{folder}/server.properties", "r").each_line do |line|
-          temp = line.split("=")
-          config[temp[0]] = temp[1].to_s.chomp
+          if line[0] != "#"
+            temp = line.split("=")
+            config[temp[0]] = temp[1].to_s.chomp
+          end
         end
 
         config
@@ -57,8 +59,10 @@ module Minecraft
 
       begin
         File.open("#{folder}/server.properties", "r").each_line do |line|
-          temp = line.split("=")
-          config[temp[0]] = temp[1].to_s.chomp
+          if line[0] != "#"
+            temp = line.split("=")
+            config[temp[0]] = temp[1].to_s.chomp
+          end
         end
 
         config[key] = value

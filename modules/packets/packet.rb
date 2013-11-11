@@ -61,7 +61,7 @@ class Packet < EM::Connection
                send_data JSON.generate({status: 'ERROR'}) + "\n"
              end
           when 'get_minecraft_config'
-            send_data JSON.generate({status: 'OK', config: Minecraft.get_minecraft_config(packet['service_id'])})
+            send_data JSON.generate({status: 'OK', config: Minecraft.get_minecraft_config(packet['service_id'])}) + "\n"
           else
             Console.show "Unknown packet : #{packet}"
             close_connection

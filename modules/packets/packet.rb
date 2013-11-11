@@ -65,6 +65,12 @@ class Packet < EM::Connection
           when 'change_minecraft_config'
             Minecraft.change_minecraft_config(packet['service_id'], packet['key'], packet['value'])
             send_data JSON.generate({status: 'OK'}) + "\n"
+          when 'update_bukkit'
+            if Minecraft.change_bukkit_version packet['service_id'], packet['build_number']
+              send_data JSON.generate({status: 'OK'}) + "\n"
+            else
+              send_data JSON.generate({status: 'ERROR'}) + "\n"
+            end
           else
             Console.show "Unknown packet : #{packet}"
             close_connection

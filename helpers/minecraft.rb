@@ -103,7 +103,7 @@ module Minecraft
         false
       else
         Downloader.download(url, folder, "craftbukkit.jar")
-        Console.show "Finished download bukkit n°#{build_number} !", 'debug'
+        Console.show "Finished download bukkit V#{build_number} !", 'debug'
       end
     rescue ServiceNotInstalledError
       Console.show "Seems to not be a bukkit server, installation aborted.", 'debug'

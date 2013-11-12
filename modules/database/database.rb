@@ -2,7 +2,7 @@ class Database
   attr_accessor :database, :services, :monitors, :monitor_services, :users, :groups
   def initialize
     @database = Sequel.connect('sqlite://database.db')
-
+    puts @database.class
     #Installing databases
     unless @database.table_exists?(:services)
       Console.show 'Creating database...', 'info'
@@ -42,6 +42,7 @@ class Database
       @database.create_table :groups do
         primary_key :id
         String :group_name
+        Integer :group_id
         String :members
       end
     end

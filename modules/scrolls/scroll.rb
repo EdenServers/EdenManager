@@ -156,6 +156,10 @@ class Scroll
     Console.show 'There are no dependencies for this scroll', 'info'
   end
 
+  def set_permissions
+
+  end
+
   #Update the scroll
   def update(service)
     Console.show "The service #{service} can not be updated", 'info'

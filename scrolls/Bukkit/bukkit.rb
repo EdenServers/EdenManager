@@ -27,4 +27,10 @@ class Bukkit < Scroll
     replace_in_file('plugins/JSONAPI/config.yml', '<!port>', (self.options['port'].to_i + 1).to_s)
     register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
   end
+
+  def uninstall(id)
+    self.install_folder = $db.services.where(id: id).first[:folder_name]
+    puts `rm -R #{self.install_folder}`
+    $db.services.where(id: id).delete
+  end
 end

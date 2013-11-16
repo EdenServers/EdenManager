@@ -1,7 +1,7 @@
 class ScrollInstaller
   def initialize(s, name = '', options = {})
     @scroll = s
-    @scroll_file = s.downcase
+    @scroll_file = s.downcase if s.class != Fixnum
     @service_name = name
     @options=options
   end
@@ -16,6 +16,14 @@ class ScrollInstaller
       Console.show "Can't find the scroll #{@scroll}", 'error'
       raise ScrollInvalidError
     end
+  end
+
+  def uninstall
+    service_id = @scroll
+    @scroll = $db.services.where(id: service_id).first[:service_type]
+    @scroll_file = @scroll.downcase
+    scroll = get_scroll.new
+    scroll.uninstall(service_id)
   end
 
   def install

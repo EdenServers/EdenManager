@@ -9,7 +9,7 @@ class Packet < EM::Connection
       if checkMasterKey packet['master_key']
         case packet['packet_request']
           when 'uninstall_service'
-            installation = ScrollInstaller.new(params['service_id'])
+            installation = ScrollInstaller.new(packet['service_id'])
             status = installation.uninstall
             send_data JSON.generate({status: status}) + "\n"
           when 'install' #Install

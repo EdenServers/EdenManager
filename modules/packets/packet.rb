@@ -8,6 +8,10 @@ class Packet < EM::Connection
       packet = JSON.parse(data)
       if checkMasterKey packet['master_key']
         case packet['packet_request']
+          when 'uninstall_service'
+            installation = ScrollInstaller.new(params['service_id'])
+            status = installation.uninstall
+            send_data JSON.generate({status: status}) + "\n"
           when 'install' #Install
             Thread.new {
               installation = ScrollInstaller.new(packet['scroll_type'], packet['scroll_name'], packet['scroll_options'])

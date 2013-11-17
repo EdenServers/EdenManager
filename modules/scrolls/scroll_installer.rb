@@ -24,6 +24,7 @@ class ScrollInstaller
     @scroll_file = @scroll.downcase
     scroll = get_scroll.new
     scroll.uninstall(service_id)
+    'SUCCESS'
   end
 
   def install

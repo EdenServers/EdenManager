@@ -160,6 +160,11 @@ class Scroll
 
   end
 
+  #Called if the uninstall method is missing
+  def uninstall
+    Console.show 'Cannot uninstall this service', 'error'
+  end
+
   #Update the scroll
   def update(service)
     Console.show "The service #{service} can not be updated", 'info'

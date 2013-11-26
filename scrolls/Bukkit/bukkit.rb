@@ -28,7 +28,7 @@ class Bukkit < Scroll
     register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
   end
 
-  def uninstall(id)
+  def uninstall(id) #TODO: Recode this. Really.
     self.install_folder = $db.services.where(id: id).first[:folder_name]
     puts `rm -R #{self.install_folder}`
     $db.services.where(id: id).delete

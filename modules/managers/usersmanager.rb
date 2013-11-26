@@ -85,12 +85,15 @@ module UsersManager
     return false
   end
 
-  def self.add_user(name, password, group = 'EdenManager', shell = '/bin/bash') #TODO: Implement real returns to this function with the exact error.
+  def self.add_user(name, password, group='EdenManager', shell='/bin/bash', home_directory='/opt/EdenManager/EdenApps') #TODO: Implement real returns to this function with the exact error.
+    group = 'EdenManager' if group.nil?
+    shell = '/bin/bash' if group.nil?
+    home_directory = '/opt/EdenManager/EdenApps' if home_directory.nil?
     unless @banned_user_names.include?(name) #If the username is not banned (already in use)
       if $db.users.where(:user_name => name).empty? && group_exist?(group)
         random_salt = SecureRandom.hex(5)
         crypted_password = password.crypt("$6$#{random_salt}")
-        result = system("useradd -m -p '#{crypted_password}' -d '/opt/EdenManager/EdenApps' -g '#{group}' -s '#{shell}' #{name}")
+        result = system("useradd -m -p '#{crypted_password}' -d #{home_directory} -g '#{group}' -s '#{shell}' #{name}")
         if result
           user_informations = IO.readlines('/etc/passwd').last.split(':')
           $db.users.insert(:user_name => name, :user_gid => user_informations[2], :primary_group => group)
@@ -163,5 +166,6 @@ module UsersManager
     }
     return false
   end
+
 
 end

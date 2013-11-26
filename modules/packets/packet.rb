@@ -43,6 +43,12 @@ class Packet < EM::Connection
             else
               send_data JSON.generate({status: 'Offline'}) + "\n"
             end
+          when 'add_linux_user'
+            if UsersManager.add_user(packet['username'], packet['password'], packet['group'], packet['shell'], packet['home_directory'])
+              send_data JSON.generate({status: 'OK', message: 'User created'}) + "\n"
+            else
+              send_data JSON.generate({status: 'ERROR', message: 'Error while creating user'}) + "\n"
+            end
           when 'get_installed_services'
             send_data JSON.generate({status: 'OK', services: ServiceManager.get_installed_services}) + "\n"
           when 'get_users_and_groups'

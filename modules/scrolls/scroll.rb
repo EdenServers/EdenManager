@@ -147,7 +147,6 @@ class Scroll
   def replace_in_file(file, before, after)
     read_file = File.read("#{install_folder}/#{file}")
     replace = read_file.gsub(/#{before}/, after)
-    puts(replace)
     File.open("#{install_folder}/#{file}", 'w') {|file| file.puts replace}
   end
 
@@ -165,6 +164,8 @@ class Scroll
     end
     unless options['group'].nil? && options['username'].nil?
       FileUtils.chown_R(options['group'],options['username'],self.install_folder)
+    else
+      FileUtils.chown_R('EdenManager', 'EdenManager', self.install_folder)
     end
   end
 

@@ -160,7 +160,7 @@ class Scroll
        File.chmod_R(option['chmod'], self.install_folder)
     else
       Console.show 'Setting permissions to 0770', 'info'
-      FileUtils.chmod_R('0770', self.install_folder)
+      FileUtils.chmod_R(0770, self.install_folder)
     end
     unless options['group'].nil? && options['username'].nil?
       FileUtils.chown_R(options['group'],options['username'],self.install_folder)

@@ -141,7 +141,7 @@ class Scroll
   def register(start_command, home = self.install_folder)
     dependency = 0
     dependency = 1 if self.dependable
-    $db.services.insert(:service_name => self.name, :service_type => self.type, :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
+    $db.services.insert(:service_name => self.name, :service_type => self.type, :folder_name => self.install_folder, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
   end
 
   def replace_in_file(file, before, after)

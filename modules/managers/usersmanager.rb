@@ -10,7 +10,7 @@ module UsersManager
     load_banned_user_names
     load_users_and_groups
     install_default_users
-
+    check_permissions
   end
 
   def self.install_default_users
@@ -167,5 +167,13 @@ module UsersManager
     return false
   end
 
-
+  def self.check_permissions
+    #Checking and setting permissions of EdenApps if the permissions are broken
+    if File.exist? 'EdenApps'
+      File.chmod(0555, 'EdenApps')
+      Dir.foreach('EdenApps') do |file|
+        File.chmod(0555,"EdenApps/#{file}")
+      end
+    end
+  end
 end

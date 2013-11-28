@@ -1,0 +1,11 @@
+source 'http://rubygems.org'
+
+gem 'colored'
+gem 'daemons'
+gem 'eventmachine'
+gem 'json'
+gem 'logger'
+gem 'rufus-scheduler'
+gem 'sequel'
+gem 'sqlite3'
+gem 'zip'

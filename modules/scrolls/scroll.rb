@@ -27,6 +27,7 @@ class Scroll
     }
   end
 
+
   def check_name
     name_correct = 0
     i = 1

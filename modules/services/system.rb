@@ -5,6 +5,7 @@ module ServiceSystem
       child_socket, parent_socket = Socket.pair(:UNIX, :STREAM, 0) # used to send message to the process
       rd, wr = IO.pipe # used to send the pid
       p1 = Process.fork { #start a new process by forking the parent
+        set_user(options[:username])
         threads = []
         Dir.chdir(ENV["PWD"] = options[:working_dir].to_s) if options[:working_dir] #teleport to the install folder
         stdin, stdout, stderr, wait_thr = Open3.popen3(*Shellwords.shellwords(cmd))

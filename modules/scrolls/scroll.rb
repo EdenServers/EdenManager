@@ -27,7 +27,6 @@ class Scroll
     }
   end
 
-
   def check_name
     name_correct = 0
     i = 1
@@ -143,13 +142,12 @@ class Scroll
     dependency = 0
     dependency = 1 if self.dependable
     options['username'] ||= 'EdenManager'
-    $db.services.insert(:service_name => self.name, :service_type => self.type, :user_name => options['username'], :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
+    $db.services.insert(:service_name => self.name, :service_type => self.type, :username => options['username'], :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
   end
 
   def replace_in_file(file, before, after)
     read_file = File.read("#{install_folder}/#{file}")
     replace = read_file.gsub(/#{before}/, after)
-    puts(replace)
     File.open("#{install_folder}/#{file}", 'w') {|file| file.puts replace}
   end
 
@@ -163,7 +161,7 @@ class Scroll
        File.chmod_R(option['chmod'], self.install_folder)
     else
       Console.show 'Setting permissions to 0770', 'info'
-      FileUtils.chmod_R('0770', self.install_folder)
+      FileUtils.chmod_R(0770, self.install_folder)
     end
     unless options['group'].nil? && options['username'].nil?
       FileUtils.chown_R(options['group'],options['username'],self.install_folder)

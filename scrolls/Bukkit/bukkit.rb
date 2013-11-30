@@ -25,14 +25,15 @@ class Bukkit < Scroll
     replace_in_file('server.properties', '<!port>', self.options['port'])
     replace_in_file('server.properties', '<!motd>', self.options['motd'])
     replace_in_file('plugins/JSONAPI/config.yml', '<!port>', (self.options['port'].to_i + 1).to_s)
+    UsersManager.add_user(self.name, options['password'], 'EdenManager', '/bin/bash', self.install_folder)
     set_permissions
     register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
   end
 
   def uninstall(id)
-    self.install_folder = $db.services.where(id: id).first[:folder_name]
+    username = $db.services.where(id: id).first[:username]
     ServiceManager.stop_service(id)
-    puts `rm -R #{self.install_folder}`
+    System.delete_account(username, true)
     $db.services.where(id: id).delete
   end
 end

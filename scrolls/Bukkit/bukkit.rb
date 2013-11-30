@@ -26,6 +26,8 @@ class Bukkit < Scroll
     replace_in_file('server.properties', '<!motd>', self.options['motd'])
     replace_in_file('plugins/JSONAPI/config.yml', '<!port>', (self.options['port'].to_i + 1).to_s)
     UsersManager.add_user(self.name, options['password'], 'EdenManager', '/bin/bash', self.install_folder)
+    options['username'] = self.name
+    options['group'] = 'EdenManager'
     set_permissions
     register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
   end

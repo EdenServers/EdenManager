@@ -12,7 +12,7 @@ class Database
         String :service_name
         String :service_type
         String :pid_file
-        Integer :username
+        String :username
         Integer :running
         Integer :dependency
         String :version

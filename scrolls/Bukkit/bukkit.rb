@@ -31,6 +31,7 @@ class Bukkit < Scroll
 
   def uninstall(id)
     self.install_folder = $db.services.where(id: id).first[:folder_name]
+    ServiceManager.stop_service(id)
     puts `rm -R #{self.install_folder}`
     $db.services.where(id: id).delete
   end

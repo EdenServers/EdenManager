@@ -79,8 +79,8 @@ module ServiceManager
   def self.remove_service(service)
     @started_services.each do |s|
       if s.id == service
-        $db.services.where(:id=>s).update(:running => 0)
         @started_services.delete(s)
+        $db.services.where(:id=>s.id).update(:running => 0)
       end
     end
   end

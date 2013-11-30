@@ -163,7 +163,7 @@ class Scroll
 
   def set_permissions
     unless options['chmod'].nil?
-       File.chmod_R(options['chmod'], self.install_folder)
+      FileUtils.chmod_R(options['chmod'], self.install_folder)
     else
       Console.show 'Setting permissions to 0770', 'info'
       FileUtils.chmod_R(0770, self.install_folder)

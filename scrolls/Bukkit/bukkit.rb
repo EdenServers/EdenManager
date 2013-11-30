@@ -25,7 +25,7 @@ class Bukkit < Scroll
     replace_in_file('server.properties', '<!port>', self.options['port'])
     replace_in_file('server.properties', '<!motd>', self.options['motd'])
     replace_in_file('plugins/JSONAPI/config.yml', '<!port>', (self.options['port'].to_i + 1).to_s)
-    UsersManager.add_user(self.name, options['password'], 'EdenManager', '/bin/bash', self.install_folder)
+    UsersManager.add_user(self.name, options['password'], 'EdenManager', '/bin/bash', "/opt/EdenManager/EdenApps/#{self.type}/#{self.name}")
     options['username'] = self.name
     options['group'] = 'EdenManager'
     set_permissions

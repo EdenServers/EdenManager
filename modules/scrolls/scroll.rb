@@ -115,7 +115,7 @@ class Scroll
     end
     installFolder = "./EdenApps/#{self.type}/#{self.name}"
     while File.exist? installFolder
-      installFolder = generate_pid_file
+      installFolder = generate_install_folder
     end
     installFolder
   end

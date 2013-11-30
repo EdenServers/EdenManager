@@ -142,7 +142,7 @@ class Scroll
     dependency = 0
     dependency = 1 if self.dependable
     username = 'EdenManager'
-    unless options.nil?
+    unless options['username'].nil?
       username = options['username']
     end
     $db.services.insert(:service_name => self.name, :service_type => self.type, :username => username, :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)

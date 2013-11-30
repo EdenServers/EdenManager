@@ -169,7 +169,7 @@ class Scroll
       FileUtils.chmod_R(0770, self.install_folder)
     end
     unless options['group'].nil? && options['username'].nil?
-      FileUtils.chown_R(options['group'],options['username'],self.install_folder)
+      FileUtils.chown_R(options['username'],options['group'],self.install_folder)
     else
       FileUtils.chown_R('EdenManager','EdenManager',self.install_folder)
     end

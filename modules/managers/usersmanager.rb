@@ -55,7 +55,6 @@ module UsersManager
       @groups << group[:group_name]
     end
     $db.users.all.each do |user|
-      puts user[:user_name]
       @users << user[:user_name]
     end
   end

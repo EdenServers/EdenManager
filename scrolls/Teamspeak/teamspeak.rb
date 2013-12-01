@@ -12,7 +12,7 @@ class Teamspeak < Scroll
   end
 
   def install
-    register("export LD_LIBRARY_PATH='$(pwd):${LD_LIBRARY_PATH}' && ./ts3server_linux_amd64")
+    register('sh ts3server_minimal_runscript.sh')
     download('teamspeak.tar.gz')
     copy(self.install_folder, 'teamspeak.tar.gz')
     Console.show `cd #{self.install_folder} && tar xvfz teamspeak.tar.gz`, 'debug'

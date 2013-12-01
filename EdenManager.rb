@@ -29,25 +29,19 @@ Dir['./modules/**/initializer.rb'].each{ |f| require f }
 
 Console.show "Manager updated : #{pull}", 'info'
 
-System.daemonize_process do
 #Main Loop
-  EM.run do
-    Console.show 'Starting manager...', 'info'
-    Configuration.load_config
-    Console.show 'Config loaded !', 'success'
-
-    #Rufus Scheduler
-    Console.show 'Loading scheduler...', 'info'
-    Scheduler.start
-    Console.show 'Scheduler loaded !', 'success'
-
-    Console.show 'Loading managers...', 'info'
-    ServiceManager.new
-    UsersManager.new
-
-    EM.start_server '0.0.0.0', 12348, Packet
-
-    Console.show 'Manager is running !', 'success'
-  end
+EM.run do
+  Console.show 'Starting manager...', 'info'
+  Configuration.load_config
+  Console.show 'Config loaded !', 'success'
+  #Rufus Scheduler
+  Console.show 'Loading scheduler...', 'info'
+  Scheduler.start
+  Console.show 'Scheduler loaded !', 'success'
+  Console.show 'Loading managers...', 'info'
+  ServiceManager.new
+  UsersManager.new
+  EM.start_server '0.0.0.0', 12348, Packet
+  Console.show 'Manager is running !', 'success'
 end
 

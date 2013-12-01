@@ -58,9 +58,13 @@ module ServiceSystem
 
     #Kill the process
     def kill
-      @monitor_timer.pause()
-      Console.show "Process #{@daemon_id} has been killed", 'info'
-      ::Process.kill('TERM', @daemon_id)
+      begin
+        @monitor_timer.pause()
+        Console.show "Process #{@daemon_id} has been killed", 'info'
+        ::Process.kill('TERM', @daemon_id)
+      rescue Errno::ESRCH
+        Console.show "Process already dead #{@daemon_id}", 'error'
+      end
     end
 
     def get_cpu_usage

@@ -16,6 +16,7 @@ class Bukkit < Scroll
   end
 
   def install
+    register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
     download('craftbukkit.jar')
     copy(self.install_folder, 'craftbukkit.jar')
     copy(self.install_folder, 'server.properties', './scrolls/Bukkit')
@@ -26,7 +27,7 @@ class Bukkit < Scroll
     replace_in_file('server.properties', '<!motd>', self.options['motd'])
     replace_in_file('plugins/JSONAPI/config.yml', '<!port>', (self.options['port'].to_i + 1).to_s)
     set_permissions
-    register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
+    update_status
   end
 
   def uninstall(id)

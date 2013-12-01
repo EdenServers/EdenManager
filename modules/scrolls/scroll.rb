@@ -147,7 +147,7 @@ class Scroll
         username = options['username']
       end
     end
-    $db.services.insert(:service_name => self.name, :service_type => self.type, :username => username, :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
+    $db.services.insert(:service_name => self.name, :service_type => self.type, :username => username, :folder_name => home, :status => 'Installing', :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
   end
 
   def replace_in_file(file, before, after)
@@ -178,5 +178,9 @@ class Scroll
   #Update the scroll
   def update(service)
     Console.show "The service #{service} can not be updated", 'info'
+  end
+
+  def update_status
+    $db.services.where(:status=>'Installing', :service_name => self.name).update(:status => 'OK')
   end
 end

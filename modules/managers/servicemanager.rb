@@ -37,7 +37,7 @@ module ServiceManager
   def self.get_installed_services
     installed_services = Array.new
     $db.services.each do |s|
-      installed_services.push({id: s[:id], start_command: s[:start_command], service_name: s[:service_name], service_type: s[:service_type], dependency: s[:dependency], running: s[:running],version: s[:version]})
+      installed_services.push({id: s[:id], start_command: s[:start_command], service_name: s[:service_name], service_type: s[:service_type], dependency: s[:dependency], running: s[:running], status: s[:status],version: s[:version]})
     end
     installed_services
   end

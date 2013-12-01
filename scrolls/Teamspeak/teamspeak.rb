@@ -12,10 +12,11 @@ class Teamspeak < Scroll
   end
 
   def install
+    register("export LD_LIBRARY_PATH='$(pwd):${LD_LIBRARY_PATH}' && ./ts3server_linux_amd64")
     download('teamspeak.tar.gz')
     copy(self.install_folder, 'teamspeak.tar.gz')
     Console.show `cd #{self.install_folder} && tar xvfz teamspeak.tar.gz`, 'debug'
-    register("export LD_LIBRARY_PATH='$(pwd):${LD_LIBRARY_PATH}' && ./ts3server_linux_amd64")
+    update_status
   end
 
   def uninstall(id) #TODO: Recode this. Really.

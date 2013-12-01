@@ -6,7 +6,7 @@ class Teamspeak < Scroll
     self.version = '3.0.10.1'
     self.dependable = false
     self.homepage = 'http://wwww.edenservers.fr'
-    self.url = 'http://dl.4players.de/ts/releases/3.0.10.1/teamspeak3-server_linux-x86-3.0.10.1.tar.gz'
+    self.url = 'http://dl.4players.de/ts/releases/3.0.10.1/teamspeak3-server_linux-amd64-3.0.10.1.tar.gz'
     self.options = options
     super
   end

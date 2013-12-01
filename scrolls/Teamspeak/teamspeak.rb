@@ -11,11 +11,11 @@ class Teamspeak < Scroll
     super
   end
 
-  def install
-    register('cd teamspeak3-server_linux-amd64 && sh ts3server_minimal_runscript.sh')
+  def install #No time: hardcoding
+    register('sh ts3server_minimal_runscript.sh')
     download('teamspeak.tar.gz')
-    copy(self.install_folder, 'teamspeak.tar.gz')
-    Console.show `cd #{self.install_folder} && tar xvfz teamspeak.tar.gz`, 'debug'
+    Console.show `cd ./downloads && tar xvfz teamspeak.tar.gz`, 'debug'
+    Console.show  `cp -R teamspeak3-server_linux-amd64/* #{self.install_folder}`, 'info'
     update_status
   end
 

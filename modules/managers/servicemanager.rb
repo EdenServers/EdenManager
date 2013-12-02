@@ -26,7 +26,7 @@ module ServiceManager
   #return the cpu usage of the service
   def self.get_cpu_usage(service)
     @started_services.each do |s|
-      if s.id == service
+      if s.id.to_i == service
         return s.get_cpu_usage
       end
     end
@@ -45,7 +45,7 @@ module ServiceManager
   #return the ram usage of the service
   def self.get_ram_usage(service)
     @started_services.each do |s|
-      if s.id == service
+      if s.id.to_i == service
         return s.get_ram_usage
       end
     end

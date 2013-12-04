@@ -33,9 +33,10 @@ class Bukkit < Scroll
   end
 
   def uninstall(id)
-    username = $db.services.where(id: id).first[:username]
+    user = $db.services.where(id: id).first
     ServiceManager.stop_service(id)
-    System.delete_account(username, true)
+    System.delete_account(user[:username], true)
+    `rm -R #{user[:install_folder]}`
     $db.services.where(id: id).delete
   end
 end

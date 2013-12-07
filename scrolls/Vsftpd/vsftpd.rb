@@ -10,10 +10,11 @@ class Vsftpd < Scroll
   end
 
   def install
+    register('/etc/init.d/vsftpd restart')
     System.apt_get('update')
     System.apt_get('install', 'vsftpd')
     copy('/etc', 'vsftpd.conf', './scrolls/Vsftpd')
     `/etc/init.d/vsftpd restart`
-    register('/etc/init.d/vsftpd restart')
+    update_status
   end
 end

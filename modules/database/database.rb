@@ -13,6 +13,7 @@ class Database
         String :service_type
         String :pid_file
         String :username
+        String :status
         Integer :running
         Integer :dependency
         String :version

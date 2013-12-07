@@ -144,7 +144,7 @@ class Scroll
         username = options['username']
       end
     end
-    $db.services.insert(:service_name => self.name, :service_type => self.type, :username => username, :folder_name => home, :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
+    $db.services.insert(:service_name => self.name, :service_type => self.type, :username => username, :folder_name => home, :status => 'Installing', :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
   end
 
   def replace_in_file(file, before, after)
@@ -159,15 +159,21 @@ class Scroll
   end
 
   def set_permissions
-    unless options['chmod'].nil?
-      FileUtils.chmod_R(options['chmod'], self.install_folder)
+    unless options.nil?
+      unless options['chmod'].nil?
+         File.chmod_R(option['chmod'], self.install_folder)
+      else
+        Console.show 'Setting permissions to 0770', 'info'
+        FileUtils.chmod_R(0770, self.install_folder)
+      end
+      unless options['group'].nil? && options['username'].nil?
+        FileUtils.chown_R(options['group'],options['username'],self.install_folder)
+      else
+        FileUtils.chown_R('EdenManager','EdenManager',self.install_folder)
+      end
     else
       Console.show 'Setting permissions to 0770', 'info'
       FileUtils.chmod_R(0770, self.install_folder)
-    end
-    unless options['group'].nil? && options['username'].nil?
-      FileUtils.chown_R(options['username'],options['group'],self.install_folder)
-    else
       FileUtils.chown_R('EdenManager','EdenManager',self.install_folder)
     end
   end
@@ -175,5 +181,9 @@ class Scroll
   #Update the scroll
   def update(service)
     Console.show "The service #{service} can not be updated", 'info'
+  end
+
+  def update_status
+    $db.services.where(:status=>'Installing', :service_name => self.name).update(:status => 'OK')
   end
 end

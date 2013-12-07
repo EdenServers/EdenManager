@@ -16,7 +16,6 @@ class Bukkit < Scroll
   end
 
   def install
-    register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
     download('craftbukkit.jar')
     copy(self.install_folder, 'craftbukkit.jar')
     copy(self.install_folder, 'server.properties', './scrolls/Bukkit')
@@ -30,6 +29,7 @@ class Bukkit < Scroll
     options['username'] = self.name
     options['group'] = 'EdenManager'
     set_permissions
+    register("java -jar -Xms250M -Xmx#{self.options['ram']}M craftbukkit.jar")
     update_status
   end
 

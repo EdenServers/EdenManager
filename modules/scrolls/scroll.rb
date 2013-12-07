@@ -139,9 +139,9 @@ class Scroll
     dependency = 0
     dependency = 1 if self.dependable
     username = 'EdenManager'
-    unless options.nil?
-      unless options['username'].nil?
-        username = options['username']
+    unless self.options.nil?
+      unless self.options['username'].nil?
+        username = self.options['username']
       end
     end
     $db.services.insert(:service_name => self.name, :service_type => self.type, :username => username, :folder_name => home, :status => 'Installing', :start_command => start_command, :pid_file => self.pid_file, :running => 0, :dependency => dependency, :version => self.version)
@@ -159,15 +159,15 @@ class Scroll
   end
 
   def set_permissions
-    unless options.nil?
-      unless options['chmod'].nil?
-        FileUtils.chmod_R(options['chmod'], self.install_folder)
+    unless self.options.nil?
+      unless self.options['chmod'].nil?
+        FileUtils.chmod_R(self.options['chmod'], self.install_folder)
       else
         Console.show 'Setting permissions to 0770', 'info'
         FileUtils.chmod_R(0770, self.install_folder)
       end
-      unless options['group'].nil? && options['username'].nil?
-        FileUtils.chown_R(options['username'],options['group'],self.install_folder)
+      unless self.options['group'].nil? && self.options['username'].nil?
+        FileUtils.chown_R(self.options['username'],self.options['group'],self.install_folder)
       else
         FileUtils.chown_R('EdenManager','EdenManager',self.install_folder)
       end

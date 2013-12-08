@@ -35,7 +35,7 @@ class Scroll
       name_correct = 1
       $db.services.each do |service|
         if service[:service_name] == self.name
-          self.name=self.name + "(#{i})"
+          self.name=self.name + "#{i}"
           i=i+1
           name_correct = 0
         end

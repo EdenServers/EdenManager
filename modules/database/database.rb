@@ -1,5 +1,5 @@
 class Database
-  attr_accessor :database, :services, :monitors, :monitor_services, :users, :groups
+  attr_accessor :database, :services, :monitors, :monitor_services, :users, :groups, :controller_lists
   def initialize
     @database = Sequel.connect('sqlite://database.db')
     #Installing databases
@@ -13,10 +13,16 @@ class Database
         String :service_type
         String :pid_file
         String :username
-        String :status
         Integer :running
         Integer :dependency
         String :version
+      end
+    end
+
+    unless @database.table_exists?(:controller_lists)
+      @database.create_table :controller_lists do
+        primary_key :id
+        String :controller_name
       end
     end
 
@@ -63,6 +69,7 @@ class Database
     self.services=@database[:services]
     self.groups=@database[:groups]
     self.users=@database[:users]
+    self.controller_lists=@database[:controller_lists]
 
     #Make all services DOWN.
     self.services.update(:running => 0)

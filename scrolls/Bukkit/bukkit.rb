@@ -27,6 +27,7 @@ class Bukkit < Scroll
     replace_in_file('server.properties', '<!motd>', self.options['motd'])
     replace_in_file('plugins/JSONAPI/config.yml', '<!port>', (self.options['port'].to_i + 1).to_s)
     set_permissions
+    install_controller('Bukkit')
     update_status
   end
 

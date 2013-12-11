@@ -35,7 +35,7 @@ class Scroll
       name_correct = 1
       $db.services.each do |service|
         if service[:service_name] == self.name
-          self.name=self.name + "(#{i})"
+          self.name=self.name + "#{i}"
           i=i+1
           name_correct = 0
         end
@@ -45,7 +45,7 @@ class Scroll
 
   #Copy a file to destination
   def copy(destination, file, folder = './downloads')
-    FileUtils.mkdir_p(File.dirname("#{destination}/#{file}"))
+    FileUtils.mkdir_p(File.dirname("#{destination}"))
     FileUtils.cp_r("#{folder}/#{file}", "#{destination}/#{file}")
   end
 
@@ -114,10 +114,24 @@ class Scroll
       FileUtils.mkdir_p(folder)
     end
     installFolder = "./EdenApps/#{self.type}/#{self.name}"
-    while File.exist? installFolder
-      installFolder = generate_pid_file
+    unless File.exist?(installFolder)
+      Console.show "Creating folder #{installFolder}", 'info'
+      FileUtils.mkdir_p(installFolder)
     end
     installFolder
+  end
+
+  #install a controller
+  def install_controller(name)
+    if $db.controller_lists.where(:controller_name => name).empty?
+      if File.exists?("./scrolls/#{self.type}/#{name}Controller.rb")
+        FileUtils.cp_r("./scrolls/#{self.type}/#{name}Controller.rb", "./modules/controllers/#{name}Controller.rb")
+        $db.controller_lists.insert(:controller_name => name)
+        ControllersManager.load_controller(name)
+      else
+        raise ControllerInvalidError
+      end
+    end
   end
 
   #install all dependencies
@@ -162,15 +176,15 @@ class Scroll
   end
 
   def set_permissions
-    unless options.nil?
-      unless options['chmod'].nil?
-         File.chmod_R(option['chmod'], self.install_folder)
+    unless self.options.nil?
+      unless self.options['chmod'].nil?
+        FileUtils.chmod_R(self.options['chmod'], self.install_folder)
       else
         Console.show 'Setting permissions to 0770', 'info'
         FileUtils.chmod_R(0770, self.install_folder)
       end
-      unless options['group'].nil? && options['username'].nil?
-        FileUtils.chown_R(options['group'],options['username'],self.install_folder)
+      unless self.options['group'].nil? && self.options['username'].nil?
+        FileUtils.chown_R(self.options['username'],self.options['group'],self.install_folder)
       else
         FileUtils.chown_R('EdenManager','EdenManager',self.install_folder)
       end

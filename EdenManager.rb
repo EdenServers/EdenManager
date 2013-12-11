@@ -44,6 +44,7 @@ System.daemonize_process do
     Console.show 'Loading managers...', 'info'
     ServiceManager.new
     UsersManager.new
+    ControllersManager.new
 
     EM.start_server '0.0.0.0', 12348, Packet
 

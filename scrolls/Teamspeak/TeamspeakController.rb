@@ -16,10 +16,15 @@ class TeamspeakController < Controller
   def get_tokens(id)
     tokens = Array.new
     server = $db.services.where(id => id).first
-    db = SQLite3::Database.new("#{server[:folder_name]}/ts3server.sqlitedb")
-    db.execute( "select * from tokens" ) do |row|
-      tokens << row[1]
+    db_path = "#{server[:folder_name]}/ts3server.sqlitedb"
+    unless File.exist?(db_path)
+      db = SQLite3::Database.new(db_path)
+      db.execute( "select * from tokens" ) do |row|
+        tokens << row[1]
+      end
+      return {status: 'OK', tokens: tokens}
+    else
+      return {status: 'ERROR', message: 'NO DATABASE'}
     end
-    return {status: 'OK', tokens: tokens}
   end
 end

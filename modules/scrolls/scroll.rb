@@ -45,7 +45,7 @@ class Scroll
 
   #Copy a file to destination
   def copy(destination, file, folder = './downloads')
-    FileUtils.mkdir_p(File.dirname("#{destination}"))
+    FileUtils.mkdir_p(File.dirname("#{destination}/#{file}"))
     FileUtils.cp_r("#{folder}/#{file}", "#{destination}/#{file}")
   end
 

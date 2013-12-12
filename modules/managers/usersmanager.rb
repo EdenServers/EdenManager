@@ -1,11 +1,12 @@
 module UsersManager
   attr_accessor :banned_group_names, :banned_user_names, :users, :groups
 
+  @banned_user_names = Array.new
+  @banned_group_names = Array.new
+  @groups = Array.new
+  @users = Array.new
+
   def self.new
-    @banned_user_names = Array.new
-    @banned_group_names = Array.new
-    @groups = Array.new
-    @users = Array.new
     load_banned_group_names
     load_banned_user_names
     load_users_and_groups

@@ -11,8 +11,17 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
-
 # YARD artifacts
 .yardoc
 _yardoc
 doc/
+.idea
+server.log
+Gemfile.lock
+.DS_Store
+trash_folder/test.pid
+trash_folder/minecraft/*
+servers/*
+database.db
+1.3.6
+EdenApps

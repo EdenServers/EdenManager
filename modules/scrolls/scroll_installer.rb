@@ -32,19 +32,15 @@ class ScrollInstaller
       scroll = get_scroll.new(@options, @service_name)
       scroll.install_dependencies
       scroll.install #This will return the installed service's id.
-      'SUCCESS'
     rescue NoMethodError => e
       Console.show 'The scroll is invalid, a method is missing.', 'error'
       Console.show e, 'error'
-      'INVALID'
     rescue ScrollInstallError => e
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
       Console.show e, 'error'
-      'ERROR'
     rescue StandardError => e
       Console.show "#{@scroll} had a problem with the installation, abording.", 'error'
       Console.show e, 'error'
-      'ERROR'
     end
   end
 

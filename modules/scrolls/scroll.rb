@@ -202,5 +202,6 @@ class Scroll
 
   def update_status
     $db.services.where(:status=>'Installing', :service_name => self.name).update(:status => 'OK')
+    return $db.services.where(:service_name => self.name).first[:id] #Return the ID.
   end
 end

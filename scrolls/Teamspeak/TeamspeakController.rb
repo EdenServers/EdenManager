@@ -17,7 +17,7 @@ class TeamspeakController < Controller
     tokens = Array.new
     server = $db.services.where(id => id).first
     db_path = "#{server[:folder_name]}/ts3server.sqlitedb"
-    unless File.exist?(db_path)
+    if File.exist?(db_path)
       db = SQLite3::Database.new(db_path)
       db.execute( "select * from tokens" ) do |row|
         tokens << row[1]

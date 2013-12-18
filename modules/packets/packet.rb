@@ -16,8 +16,8 @@ class Packet < EM::Connection
             when 'install' #Install
               Thread.new {
                 installation = ScrollInstaller.new(packet['scroll_type'], packet['scroll_name'], packet['scroll_options'])
-                status = installation.install
-                send_data JSON.generate({status: status}) + "\n" #Don't forget this shit again !
+                id = installation.install
+                send_data JSON.generate({status: 'OK', id:id}) + "\n" #Don't forget this shit again !
               }
             when 'start_service' #Start
               ServiceManager.start_service(packet['service_id'])

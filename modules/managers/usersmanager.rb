@@ -170,7 +170,7 @@ module UsersManager
   def self.check_permissions
     #Checking and setting permissions of EdenApps if the permissions are broken
     if File.exist? 'EdenApps'
-      File.chmod(0555, 'EdenApps')
+      File.chmod(0755, 'EdenApps')
       Dir.foreach('EdenApps') do |file|
         File.chmod(0555,"EdenApps/#{file}")
       end

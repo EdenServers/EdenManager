@@ -7,6 +7,6 @@ class SteamcmdController < Controller
   end
 
   def install_game(game_id, directory)
-    system("./EdenApps/Steamcmd/Steamcmd/steamcmd.sh +login anonymous +force_install_dir #{directory} +app_update #{game_id} validate +quit")
+    system("su EdenManager && ./EdenApps/Steamcmd/Steamcmd/steamcmd.sh +login anonymous +force_install_dir #{directory} +app_update #{game_id} validate +quit")
   end
 end

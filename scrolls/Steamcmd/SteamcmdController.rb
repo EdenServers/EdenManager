@@ -10,7 +10,7 @@ class SteamcmdController < Controller
     p1 = Process.fork {
         if ::Process::Sys.geteuid == 0
           uid_num = Etc.getpwnam('EdenManager').uid
-          ::Process::Sys.setuid(uid_num) if uid
+          ::Process::Sys.setuid(uid_num)
         end
         system("./EdenApps/Steamcmd/Steamcmd/steamcmd.sh +login anonymous +force_install_dir #{directory} +app_update #{game_id} validate +quit")
         exit

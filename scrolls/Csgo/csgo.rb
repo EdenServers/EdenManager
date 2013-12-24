@@ -15,7 +15,7 @@ class Csgo < Scroll
   end
 
   def install #No time: hardcoding
-    register('./srcds_run -game csgo -console -usercon +game_type 0 +game_mode 0 +mapgroup mg_bomb +map de_dust')
+    register("./srcds_run -game csgo -console -usercon -port #{self.options['port']} +game_type 0 +game_mode 0 +mapgroup mg_bomb +map de_dust")
     ControllersManager.get_controller('Steamcmd').install_game(740, self.install_folder)
     set_permissions
     update_status

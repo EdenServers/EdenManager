@@ -15,7 +15,7 @@ class Gmod < Scroll
   end
 
   def install #No time: hardcoding
-    register('./srcds_run -game garrysmod +maxplayers 32 +map gm_construct')
+    register("./srcds_run -game garrysmod -port #{self.options['port']} +maxplayers 32 +map gm_construct")
     ControllersManager.get_controller('Steamcmd').install_game(4020, self.install_folder)
     set_permissions
     update_status

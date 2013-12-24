@@ -13,7 +13,7 @@ class SteamcmdController < Controller
         ::Process::Sys.setuid(infos.uid)
         ENV['HOME'] = infos.dir
       end
-      system("./EdenApps/Steamcmd/Steamcmd/steamcmd.sh +login anonymous +force_install_dir #{directory} +app_update #{game_id} validate +quit")
+      system("./EdenApps/Steamcmd/Steamcmd/steamcmd.sh +login anonymous +force_install_dir ../../../#{directory} +app_update #{game_id} validate +quit") #Working directory is steam in /EdenApps/Steamcmd/Steamcmd when you run this command
       exit
     }
     Process.waitpid(p1, 0)

@@ -12,7 +12,7 @@ class Steamcmd < Scroll
   end
 
   def install #No time: hardcoding
-    register('sh ts3server_minimal_runscript.sh')
+    register('./steamcmd.sh')
     `dpkg --add-architecture i386`
     System.apt_get('update')
     System.apt_get('install', 'ia32-libs')

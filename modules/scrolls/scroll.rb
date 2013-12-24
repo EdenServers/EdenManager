@@ -106,17 +106,20 @@ class Scroll
     pid_file
   end
 
-  #Randomly generate the install folder
+  #Randomly generate the install folder, giving it to EdenManager, if we need to change the owner, see set_permissions, EdenManager or root have to handle the installation
   def generate_install_folder
     folder='./EdenApps'
     unless File.exist?(folder)
       Console.show "Creating folder #{folder}", 'info'
       FileUtils.mkdir_p(folder)
+      FileUtils.chown_R('EdenManager','EdenManager',folder)
+      FileUtils.chmod_R(0775, folder)
     end
     installFolder = "./EdenApps/#{self.type}/#{self.name}"
     unless File.exist?(installFolder)
       Console.show "Creating folder #{installFolder}", 'info'
       FileUtils.mkdir_p(installFolder)
+      FileUtils.chown_R('EdenManager','EdenManager',installFolder)
     end
     installFolder
   end

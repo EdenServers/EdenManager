@@ -98,6 +98,8 @@ class Scroll
     unless File.exist?(folder)
       Console.show "Creating folder #{folder}", 'info'
       FileUtils.mkdir_p(folder)
+      FileUtils.chown_R('EdenManager','EdenManager',folder)
+      FileUtils.chmod_R(0777, folder)
     end
     pid_file = "./pid/#{rand(90000-10000) + 10000}.pid"
     while File.exist? pid_file

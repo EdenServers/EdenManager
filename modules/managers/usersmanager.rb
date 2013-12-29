@@ -176,5 +176,14 @@ module UsersManager
         File.chmod(0775,"EdenApps/#{file}")
       end
     end
+
+    #Checking and setting permissions of pid if the permissions are broken
+    if File.exist? 'pid'
+      FileUtils.chown_R('EdenManager','EdenManager','./pid')
+      File.chmod(0777, 'pid')
+      Dir.foreach('pid') do |file|
+        File.chmod(0777,"pid/#{file}")
+      end
+    end
   end
 end

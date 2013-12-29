@@ -102,11 +102,11 @@ module ServiceSystem
     end
 
     def start_options
-      {
-          username: @service[:username],
-          working_dir: @service[:folder_name],
-          pid_file: @service[:pid_file]
-      }
+    {
+      username: @service[:username],
+      working_dir: @service[:folder_name],
+      pid_file: @service[:pid_file]
+    }
     end
 
     def is_service_installed?(id)

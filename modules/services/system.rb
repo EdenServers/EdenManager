@@ -56,8 +56,13 @@ module ServiceSystem
       threads << Thread.new {  #handle stdout
         while wait_thr.status
           if stdout.ready?
-            service.stdout_err.shift
-            service.stdout_err << stdout.gets
+            begin
+              pidfile = File.new("../../../#{service.service[:pid_file]}", 'a')
+              pidfile.puts "#{stdout.gets}"
+              pidfile.close
+            rescue => e
+              Console.show e, 'error'
+            end
           end
           sleep 1
         end
@@ -65,9 +70,12 @@ module ServiceSystem
 
       threads << Thread.new { #handle stderr
         while wait_thr.status
-          if stderr.ready?
-            service.stdout_err.shift
-            service.stdout_err << stderr.gets
+          begin
+            pidfile = File.new("../../../#{service.service[:pid_file]}", 'a')
+            pidfile.puts "#{stderr.gets}"
+            pidfile.close
+          rescue => e
+            Console.show e, 'error'
           end
           sleep 1
         end

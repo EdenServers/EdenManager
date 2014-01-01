@@ -48,7 +48,6 @@ module ServiceSystem
         get_cpu_usage
         get_ram_usage
         $db.monitor_services.insert(:cpu_usage => self.cpu_usage, :ram_usage => self.ram_usage, :service_id => self.id, :date => DateTime.now)
-        @monitor.reset_ps_axu
       else
         Console.show "Process #{@daemon_id} has been killed", 'info'
         ServiceManager.remove_service(self.id)
@@ -68,12 +67,10 @@ module ServiceSystem
     end
 
     def get_cpu_usage
-      @monitor.reset_ps_axu
       @cpu_usage = @monitor.cpu_usage(@daemon_id, true)
     end
 
     def get_ram_usage
-      @monitor.reset_ps_axu
       @ram_usage = @monitor.ram_usage(@daemon_id, true)
     end
 
@@ -83,19 +80,24 @@ module ServiceSystem
         pid = file.readline
         Integer(pid)
       rescue Errno::ENOENT #The file doesn't exist
-        return
+        return 0
       end
     end
 
     def process_alive?
-      begin
-        ::Process.getpgid(@daemon_id)
-        @alive = true
-        true
-      rescue Errno::ESRCH
-        @alive = false
-        false
-      rescue TypeError
+      if @daemon_id != 0
+        begin
+          ::Process.getpgid(@daemon_id)
+          @alive = true
+          true
+        rescue Errno::ESRCH
+          @alive = false
+          false
+        rescue TypeError
+          @alive = false
+          false
+        end
+      else
         @alive = false
         false
       end

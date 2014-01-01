@@ -24,7 +24,7 @@ module ServiceSystem
       daemon_id = rd.read.to_i
       rd.close
       pidfile = File.new(options[:pid_file], 'w')
-      pidfile.chmod( 0644 )
+      pidfile.chmod( 0777 )
       pidfile.puts "#{daemon_id}"
       pidfile.close
       service.socket = parent_socket #used to communicate with the child process

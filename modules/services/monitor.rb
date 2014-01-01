@@ -64,12 +64,8 @@ module ServiceSystem
       @store ||= Hash.new
     end
 
-    def reset_ps_axu
-      @store = nil
-    end
-
     def ps_axu
-      store[:ps_axu] ||= begin
+      store[:ps_axu] = begin
         # BSD style ps invocation
         lines = `ps axo pid,ppid,pcpu,rss,etime`.split("\n")
 

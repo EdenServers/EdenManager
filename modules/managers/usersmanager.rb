@@ -1,11 +1,12 @@
 module UsersManager
   attr_accessor :banned_group_names, :banned_user_names, :users, :groups
 
+  @banned_user_names = Array.new
+  @banned_group_names = Array.new
+  @groups = Array.new
+  @users = Array.new
+
   def self.new
-    @banned_user_names = Array.new
-    @banned_group_names = Array.new
-    @groups = Array.new
-    @users = Array.new
     load_banned_group_names
     load_banned_user_names
     load_users_and_groups
@@ -169,9 +170,19 @@ module UsersManager
   def self.check_permissions
     #Checking and setting permissions of EdenApps if the permissions are broken
     if File.exist? 'EdenApps'
-      File.chmod(0555, 'EdenApps')
+      FileUtils.chown_R('EdenManager','EdenManager','./EdenApps')
+      File.chmod(0775, 'EdenApps')
       Dir.foreach('EdenApps') do |file|
-        File.chmod(0555,"EdenApps/#{file}")
+        File.chmod(0775,"EdenApps/#{file}")
+      end
+    end
+
+    #Checking and setting permissions of pid if the permissions are broken
+    if File.exist? 'pid'
+      FileUtils.chown_R('EdenManager','EdenManager','./pid')
+      File.chmod(0777, 'pid')
+      Dir.foreach('pid') do |file|
+        File.chmod(0777,"pid/#{file}")
       end
     end
   end

@@ -11,6 +11,7 @@ class Vsftpd < Scroll
 
   def install
     register('/etc/init.d/vsftpd restart')
+    add_source('deb http://ftp.fr.debian.org/debian/ unstable main')
     System.apt_get('update')
     System.apt_get('install', 'vsftpd')
     copy('/etc', 'vsftpd.conf', './scrolls/Vsftpd')

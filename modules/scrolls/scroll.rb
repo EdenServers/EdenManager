@@ -98,6 +98,8 @@ class Scroll
     unless File.exist?(folder)
       Console.show "Creating folder #{folder}", 'info'
       FileUtils.mkdir_p(folder)
+      FileUtils.chown_R('EdenManager','EdenManager',folder)
+      FileUtils.chmod_R(0777, folder)
     end
     pid_file = "./pid/#{rand(90000-10000) + 10000}.pid"
     while File.exist? pid_file
@@ -106,15 +108,35 @@ class Scroll
     pid_file
   end
 
-  #Randomly generate the install folder
+  #Randomly generate the install folder, giving it to EdenManager, if we need to change the owner, see set_permissions, EdenManager or root have to handle the installation
   def generate_install_folder
     folder='./EdenApps'
     unless File.exist?(folder)
       Console.show "Creating folder #{folder}", 'info'
       FileUtils.mkdir_p(folder)
+      FileUtils.chown_R('EdenManager','EdenManager',folder)
+      FileUtils.chmod_R(0775, folder)
     end
     installFolder = "./EdenApps/#{self.type}/#{self.name}"
+    unless File.exist?(installFolder)
+      Console.show "Creating folder #{installFolder}", 'info'
+      FileUtils.mkdir_p(installFolder)
+      FileUtils.chown_R('EdenManager','EdenManager',installFolder)
+    end
     installFolder
+  end
+
+  #install a controller
+  def install_controller(name)
+    if $db.controller_lists.where(:controller_name => name).empty?
+      if File.exists?("./scrolls/#{self.type}/#{name}Controller.rb")
+        FileUtils.cp_r("./scrolls/#{self.type}/#{name}Controller.rb", "./modules/controllers/#{name}Controller.rb")
+        $db.controller_lists.insert(:controller_name => name)
+        ControllersManager.load_controller(name)
+      else
+        raise ControllerInvalidError
+      end
+    end
   end
 
   #install all dependencies
@@ -185,5 +207,6 @@ class Scroll
 
   def update_status
     $db.services.where(:status=>'Installing', :service_name => self.name).update(:status => 'OK')
+    return $db.services.where(:service_name => self.name).first[:id] #Return the ID.
   end
 end

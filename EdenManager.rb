@@ -34,13 +34,14 @@ EM.run do
   Console.show 'Starting manager...', 'info'
   Configuration.load_config
   Console.show 'Config loaded !', 'success'
-  #Rufus Scheduler
+   #Rufus Scheduler
   Console.show 'Loading scheduler...', 'info'
   Scheduler.start
   Console.show 'Scheduler loaded !', 'success'
   Console.show 'Loading managers...', 'info'
   ServiceManager.new
   UsersManager.new
+  ControllersManager.new
   EM.start_server '0.0.0.0', 12348, Packet
   Console.show 'Manager is running !', 'success'
 end

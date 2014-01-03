@@ -144,6 +144,12 @@ module System
     ((mem_total - (mem_free + mem_cached)) * 0.001).to_i
   end
 
+  def get_console(lines_number)
+    #There's no tail implementation in ruby. Using native linux function.
+    last_lines = `tail -n #{lines_number} server.log`.split('\n')
+    return last_lines
+  end
+
   def command(command)
     Open3.popen3("#{command}") {|stdin, stdout, stderr, wait_thr|
       exit_status = wait_thr.value.exitstatus

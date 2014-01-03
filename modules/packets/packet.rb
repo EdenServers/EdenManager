@@ -2,10 +2,10 @@
 # Interract with packets' API
 class Packet < EM::Connection
   def receive_data data
-    Console.show data, 'debug'
     length = data.length
     if length >= 2
       packet = JSON.parse(data)
+      Console.show packet, 'debug'
       if checkMasterKey packet['master_key']
         if packet['controller'].nil? || packet['controller'] == 'core'
           case packet['packet_request']
@@ -17,19 +17,22 @@ class Packet < EM::Connection
               Thread.new {
                 installation = ScrollInstaller.new(packet['scroll_type'], packet['scroll_name'], packet['scroll_options'])
                 id = installation.install
-                send_data JSON.generate({status: 'OK', id:id}) + "\n" #Don't forget this shit again !
+                send_data JSON.generate({status: 'OK', id:id}) + "\n"
               }
             when 'start_service' #Start
               ServiceManager.start_service(packet['service_id'])
-              send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
+              send_data JSON.generate({status: 'OK'}) + "\n"
             when 'stop_service' #stop
               ServiceManager.stop_service(packet['service_id'])
-              send_data JSON.generate({status: 'OK'}) + "\n" #Don't forget this shit again !
+              send_data JSON.generate({status: 'OK'}) + "\n"
             when 'generate_master_key'
               key = SecureRandom.hex
               Configuration.set_config_opt('masterKey', key)
               Configuration.masterKey = key
               send_data JSON.generate({status: 'OK', new_key: key}) + "\n"
+            when 'get_console'
+              packet['lines_number'] ||= 15
+              send_data JSON.generate({status: 'OK', lines: System.get_console(packet['lines_number'])}) + "\n"
             when 'get_cpu'
               cpu_usage = ServiceManager.get_cpu_usage(packet['service_id'])
               if cpu_usage != 'Offline'

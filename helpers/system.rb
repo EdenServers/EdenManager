@@ -39,6 +39,7 @@ module System
           case exit_status
             when 0 #all is fine
               Console.show error, 'warn'
+              $db.users.where(:user_name => name).delete
               true
             when 2 # There is no such user.
               #TODO: Report to the website the error

@@ -189,6 +189,7 @@ module UsersManager
   def self.delete_account (name, remove_home)
     Open3.popen3("deluser #{name} #{'--remove-home' if remove_home}") {|stdin, stdout, stderr, wait_thr|
       exit_status = wait_thr.value.exitstatus
+      $db.users.where(:user_name => name).delete
       Console.show "Exit status : #{exit_status}", 'info'
       if !stderr.nil?
         stderr.readlines.each do |e|
@@ -197,7 +198,6 @@ module UsersManager
             when 0 #all is fine
               Console.show 'User deleted.', 'info'
               Console.show error, 'warn'
-              $db.users.where(:user_name => name).delete
               true
             when 2 # There is no such user.
                    #TODO: Report to the website the error
@@ -215,7 +215,6 @@ module UsersManager
         end
       else
         Console.show 'User deleted. No warnings.', 'info'
-        $db.users.where(:user_name => name).delete
         true
       end
     }

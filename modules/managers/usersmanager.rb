@@ -189,6 +189,7 @@ module UsersManager
   def self.delete_account (name, remove_home)
     Open3.popen3("deluser #{name} #{'--remove-home' if remove_home}") {|stdin, stdout, stderr, wait_thr|
       exit_status = wait_thr.value.exitstatus
+      Console.show "Exit status : #{exit_status}", 'info'
       if !stderr.nil?
         stderr.readlines.each do |e|
           error = e.gsub("\n", '')  # we do not want new lines
@@ -212,6 +213,7 @@ module UsersManager
           end
         end
       else
+        $db.users.where(:user_name => name).delete
         true
       end
     }

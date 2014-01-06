@@ -195,6 +195,7 @@ module UsersManager
           error = e.gsub("\n", '')  # we do not want new lines
           case exit_status
             when 0 #all is fine
+              Console.show 'User deleted.', 'info'
               Console.show error, 'warn'
               $db.users.where(:user_name => name).delete
               true
@@ -213,6 +214,7 @@ module UsersManager
           end
         end
       else
+        Console.show 'User deleted. No warnings.', 'info'
         $db.users.where(:user_name => name).delete
         true
       end

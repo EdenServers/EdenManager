@@ -16,7 +16,7 @@ class Bukkit < Scroll
   end
 
   def install
-    download('craftbukkit.jar')
+    download('craftbukkit.jar') unless File.exist?('./downloads/craftbukkit.jar')
     copy(self.install_folder, 'craftbukkit.jar')
     copy(self.install_folder, 'server.properties', './scrolls/Bukkit')
     copy(self.install_folder + "/plugins/JSONAPI", 'config.yml', './scrolls/Bukkit')

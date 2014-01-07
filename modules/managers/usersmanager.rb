@@ -186,4 +186,41 @@ module UsersManager
       end
     end
   end
+
+  def self.delete_account (name, remove_home)
+    Open3.popen3("deluser #{name} #{'--remove-home' if remove_home}") {|stdin, stdout, stderr, wait_thr|
+      exit_status = wait_thr.value.exitstatus
+      if !stderr.nil?
+        case exit_status
+          when 0 #all is fine
+            Console.show 'User deleted.', 'info'
+            $db.users.where(:user_name => name).delete
+            stderr.readlines.each do |e|
+              error = e.gsub("\n", '')  # we do not want new lines
+              Console.show error, 'warn'
+            end
+            true
+          when 2 # There is no such user.
+            stderr.readlines.each do |e|
+              error = e.gsub("\n", '')  # we do not want new lines
+              Console.show error, 'error'
+            end
+            false
+          when 9 #trying to delete root account
+            Console.show 'You cannot remove the root account', 'error'
+            false
+          else
+            stderr.readlines.each do |e|
+              error = e.gsub("\n", '')  # we do not want new lines
+              Console.show error, 'error'
+            end
+            false
+        end
+      else
+        $db.users.where(:user_name => name).delete
+        Console.show 'User deleted. No warnings.', 'info'
+        true
+      end
+    }
+  end
 end

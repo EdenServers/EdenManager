@@ -25,6 +25,7 @@ class Bukkit < Scroll
     replace_in_file('server.properties', '<!port>', self.options['port'])
     replace_in_file('server.properties', '<!motd>', self.options['motd'])
     replace_in_file('plugins/JSONAPI/config.yml', '<!port>', (self.options['port'].to_i + 1).to_s)
+    replace_in_file('plugins/JSONAPI/users.yml', '<!json_password>', self.options['json_api_password'])
     UsersManager.add_user(self.name, options['password'], 'EdenManager', '/sbin/nologin', "/opt/EdenManager/EdenApps/#{self.type}/#{self.name}")
     options['username'] = self.name
     options['group'] = 'EdenManager'

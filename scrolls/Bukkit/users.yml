@@ -1,6 +1,6 @@
 users:
 - username: edenservers
-  password: edenservers
+  password: <!json_password>
   groups:
   - full_control
 - username: chatonly

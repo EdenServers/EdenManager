@@ -56,10 +56,15 @@ module ServiceManager
   def self.start_service(serviceId)
     unless service_started?(serviceId)
       Console.show "Starting process: #{serviceId}", 'info'
-      service = ServiceSystem::Service.new(serviceId)
-      service.start_service
-      @started_services << service
-      $db.services.where(:id=>Integer(serviceId)).update(:running => 1)
+      begin
+        service = ServiceSystem::Service.new(serviceId)
+        service.start_service
+        @started_services << service
+        $db.services.where(:id=>Integer(serviceId)).update(:running => 1)
+      rescue ServiceNotInstalledError
+        Console.log 'Service is not installer', 'error'
+      end
+
     else
       Console.show "Service #{serviceId} is already running", 'info'
     end

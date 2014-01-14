@@ -12,7 +12,7 @@ class ScrollInstaller
   end
 
   def uninstall(service_id)
-    service = $db.services.where(id: service_id).first
+    service = $db.services.where(id: service_id).first #Service doesn't exist
     unless service.nil?
       @scroll = service[:service_type]
       @scroll_file = @scroll.downcase

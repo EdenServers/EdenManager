@@ -36,11 +36,9 @@ class Bukkit < Scroll
 
   def uninstall(id)
     user = $db.services.where(id: id).first
-    unless user.nil?
-      `pkill -9 -u #{user[:username]}` #Kills the user
-      UsersManager.delete_account(user[:username], true) #Delete his account
-      `rm -R #{user[:folder_name]}` #Delete his home folder
-      $db.services.where(id: id).delete #Delete it from database
-    end
+    `pkill -9 -u #{user[:username]}` #Kills the user
+    UsersManager.delete_account(user[:username], true) #Delete his account
+    `rm -R #{user[:folder_name]}` #Delete his home folder
+    $db.services.where(id: id).delete #Delete it from database
   end
 end

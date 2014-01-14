@@ -12,11 +12,14 @@ class ScrollInstaller
   end
 
   def uninstall(service_id)
-    @scroll = $db.services.where(id: service_id).first[:service_type]
-    @scroll_file = @scroll.downcase
-    scroll = get_scroll.new
-    scroll.uninstall(service_id)
-    'SUCCESS'
+    service = $db.services.where(id: service_id).first
+    unless service.nil?
+      @scroll = service[:service_type]
+      @scroll_file = @scroll.downcase
+      scroll = get_scroll.new
+      scroll.uninstall(service_id)
+      'SUCCESS'
+    end
   end
 
   def install(s, name = '', options = {})

@@ -55,12 +55,22 @@ module ServiceSystem
       end
     end
 
-    #Kill the process
-    def kill
+    #Stop the process
+    def stop
       begin
         @monitor_timer.pause()
         Console.show "Process #{@daemon_id} has been killed", 'info'
         ::Process.kill('TERM', @daemon_id)
+      rescue Errno::ESRCH
+        Console.show "Process already dead #{@daemon_id}", 'error'
+      end
+    end
+
+    def kill
+      begin
+        @monitor_timer.pause()
+        Console.show "Process #{@daemon_id} has been killed", 'info'
+        ::Process.kill('KILL', @daemon_id)
       rescue Errno::ESRCH
         Console.show "Process already dead #{@daemon_id}", 'error'
       end

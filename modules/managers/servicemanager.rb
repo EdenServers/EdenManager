@@ -7,6 +7,17 @@ module ServiceManager
   def self.stop_service(service)
     @started_services.each do |s|
       if s.id == service
+        s.stop
+        @started_services.delete(s)
+        $db.services.where(:id=>s.id).update(:running => 0)
+      end
+    end
+  end
+
+  #Kill the service (require its id)
+  def self.kill_service(service)
+    @started_services.each do |s|
+      if s.id == service
         s.kill
         @started_services.delete(s)
         $db.services.where(:id=>s.id).update(:running => 0)

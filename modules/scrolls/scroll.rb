@@ -200,6 +200,19 @@ class Scroll
     end
   end
 
+  #uninstall the scroll
+  def uninstall(service_id)
+    service =  $db.services.where(id: id).first
+    if service.nil?
+      Console.show "Service #{service_id} is not installed", 'error'
+    else
+      self.install_folder = service[:folder_name]
+      ServiceManager.kill_service(id)
+      `rm -R #{self.install_folder}`
+      service.delete
+    end
+  end
+
   #Update the scroll
   def update(service)
     Console.show "The service #{service} can not be updated", 'info'

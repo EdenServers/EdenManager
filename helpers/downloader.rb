@@ -26,6 +26,8 @@ module Downloader
       Console.show 'Can\'t download this file', 'debug'
     rescue Errno::ECONNREFUSED
       Console.show 'Error while downloading file', 'error'
+    rescue => e
+      Console.show e, 'error'
     end
   end
 end

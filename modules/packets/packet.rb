@@ -44,6 +44,14 @@ class Packet < EM::Connection
               else
                 send_data JSON.generate({status: 'Offline'}) + "\n"
               end
+            when 'change_start_command'
+              service = $db.services.where(id: packet['service_id']).first
+              if service.nil?
+                send_data JSON.generate({status: 'ERROR'})
+              else
+                service.update(start_command: packet['start_command'])
+                send_data JSON.generate({status: 'OK'})
+              end
             when 'add_linux_user'
               if UsersManager.add_user(packet['username'], packet['password'], packet['group'], packet['shell'], packet['home_directory'])
                 send_data JSON.generate({status: 'OK', message: 'User created'}) + "\n"

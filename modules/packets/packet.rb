@@ -10,13 +10,13 @@ class Packet < EM::Connection
         if packet['controller'].nil? || packet['controller'] == 'core'
           case packet['packet_request']
             when 'uninstall_service'
-              installation = ScrollInstaller.new(packet['service_id'])
-              status = installation.uninstall
+              installation = ScrollInstaller.new
+              status = installation.uninstall(packet['service_id'])
               send_data JSON.generate({status: status}) + "\n"
             when 'install' #Install
               Thread.new {
-                installation = ScrollInstaller.new(packet['scroll_type'], packet['scroll_name'], packet['scroll_options'])
-                id = installation.install
+                installation = ScrollInstaller.new
+                id = installation.install(packet['scroll_type'], packet['scroll_name'], packet['scroll_options'])
                 send_data JSON.generate({status: 'OK', id:id}) + "\n" #Don't forget this shit again !
               }
             when 'start_service' #Start

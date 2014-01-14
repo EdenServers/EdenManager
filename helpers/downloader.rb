@@ -23,7 +23,9 @@ module Downloader
         end
       end
     rescue Errno::ENOENT
-      Console.show "Can't download this file", 'debug'
+      Console.show 'Can\'t download this file', 'debug'
+    rescue Errno::ECONNREFUSED
+      Console.show 'Error while downloading file', 'error'
     end
   end
 end

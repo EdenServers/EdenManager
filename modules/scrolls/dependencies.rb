@@ -18,8 +18,8 @@ class Dependencies
   def install_dependencies
     @deps.each do |dep|
       Console.show "Installing dependency : #{dep}", 'info'
-      installer = ScrollInstaller.new(dep)
-      installer.install_dependency
+      installer = ScrollInstaller.new
+      installer.install_dependency(dep)
     end
   end
 end

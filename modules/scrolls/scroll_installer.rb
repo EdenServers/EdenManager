@@ -1,11 +1,4 @@
 class ScrollInstaller
-  def initialize(s, name = '', options = {})
-    @scroll = s
-    @scroll_file = s.downcase if s.class != Fixnum
-    @service_name = name
-    @options=options
-  end
-
   def get_scroll
     if File.exists?("./scrolls/#{@scroll}/#{@scroll_file}.rb")
       require "./scrolls/#{@scroll}/#{@scroll_file}"
@@ -18,8 +11,7 @@ class ScrollInstaller
     end
   end
 
-  def uninstall
-    service_id = @scroll
+  def uninstall(service_id)
     @scroll = $db.services.where(id: service_id).first[:service_type]
     @scroll_file = @scroll.downcase
     scroll = get_scroll.new
@@ -27,9 +19,11 @@ class ScrollInstaller
     'SUCCESS'
   end
 
-  def install
+  def install(s, name = '', options = {})
     begin
-      scroll = get_scroll.new(@options, @service_name)
+      @scroll = s
+      @scroll_file = s.downcase
+      scroll = get_scroll.new(options, name)
       scroll.install_dependencies
       scroll.install #This will return the installed service's id.
     rescue NoMethodError => e
@@ -44,7 +38,9 @@ class ScrollInstaller
     end
   end
 
-  def install_dependency
+  def install_dependency(dependency_name)
+    @scroll = dependency_name
+    @scroll_file = dependency_name.downcase
     begin
       scroll = get_scroll.new
       if scroll.dependable

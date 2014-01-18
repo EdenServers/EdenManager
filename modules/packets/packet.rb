@@ -72,7 +72,7 @@ class Packet < EM::Connection
               else
                 send_data JSON.generate({status: 'ERROR', message: 'Can\'t change root password'}) + "\n"
               end
-                                                             ### MINECRAFT ###
+            ### MINECRAFT ###
             when 'install_plugin_minecraft'
               if Minecraft.download_plugin packet['service_id'], packet['plugin_name']
                 send_data JSON.generate({status: 'OK'}) + "\n"

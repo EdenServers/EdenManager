@@ -73,7 +73,7 @@ module ServiceManager
         @started_services << service
         $db.services.where(:id=>Integer(serviceId)).update(:running => 1)
       rescue ServiceNotInstalledError
-        Console.log 'Service is not installer', 'error'
+        Console.log 'Service is not installed', 'error'
       end
 
     else

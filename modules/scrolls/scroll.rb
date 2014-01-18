@@ -5,7 +5,7 @@ class Scroll
     @options = options
     unless is_dependency_installed?
       check_name
-      Console.show "Installing scroll #{self.type} v#{self.version} made by #{self.author} <#{self.homepage}>",'info'
+      Console.show "Using scroll #{self.type} v#{self.version} made by #{self.author} <#{self.homepage}>",'info'
       self.install_folder=generate_install_folder
       self.pid_file=generate_pid_file
       @dependencies=Dependencies.new
